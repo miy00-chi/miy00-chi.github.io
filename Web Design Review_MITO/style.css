@@ -34,6 +34,10 @@
     white-space: nowrap;
 }
 
+.librarybook-page h1 i{
+    margin-right: 10px;
+}
+
 form{
     display: flex;
     flex-direction: column;
