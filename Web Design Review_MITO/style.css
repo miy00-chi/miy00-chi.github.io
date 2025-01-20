@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins'); 
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins';
+}
+
+.flex{
+    display: flex;
+    align-items: center;
+}
+
+.container{
+    padding: 0 15px;
+    min-height: 100vh;
+    justify-content: center;
+    background-color: #E7F0DC;
+}
+
+.librarybook-page{
+    justify-content: space-between;
+    max-width: 1000px;
+    width: 100%;
+}
+
+.librarybook-page .text{
+    margin-bottom: 90px;
+}
+
+.librarybook-page h1{
+    color: #597445;
+    white-space: nowrap;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    background: #E7F0DC;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;max-width: 400px;
+    width: 100%;
+}
+
+form input{
+    height: 55px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    padding: 0 14px;
+}
+
+form input:focus{
+    outline: none;
+    border-color: #597445;
+}
+
+::placeholder{
+    color: #729762;
+    font-size: 1.063rem;
+}
+
+.link{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+}
+
+.link .login{
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background: #658147;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+.link .login:hover{
+    background: #729762;
+}
+
+form a{
+    text-decoration: none;
+}
+
+.link .forgot{
+    color: #597445;
+    font-size: 0.875rem;
+}
+
+.link .forgot:hover{
+    text-decoration: underline;
+}
+
+hr{
+    border:none;
+    height: 1px;
+    background-color: #729762;
+    margin-top: 20px;
+    margin-top: 20px;
+}
+
+.button{
+    margin-top: 25px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.button a{
+    padding: 15px 20px;
+    background: #658147;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 1.063rem;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+.button a:hover{
+    background: #729762;
+}
+
+@media (max-width: 900px){
+    .librarybook-page{
+        flex-direction: column;
+        text-align: center;
+    }
+    .librarybook-page .text{
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 460px){
+    .librarybook-page h1{
+        font-size: 3.5rem;
+    }
+    .librarybook-page p{
+        font-size: 1.3rem;
+    }
+    form{
+        padding: 15px;
+    }
+}
