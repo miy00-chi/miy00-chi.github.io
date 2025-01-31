@@ -19,3 +19,7 @@
     width: 100%;
     height: 50%;
 }
+
+.container .header img{
+    width: 100px;
+}
