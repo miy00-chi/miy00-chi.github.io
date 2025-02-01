@@ -7,14 +7,23 @@
     <title>TA1_MITO_TW23-BSITWMA</title>
 </head>
 <body>
-    <div class="btn">
-        <button type = "button">Change Me!</button>
-    </div>
-    <div class="container">
+  <button type = "button" onclick ="change()">Change Me!</button>
+  <script>
+    function change(){
+      element = document.getElementById("container");
+      if(element.classList.contains("container")){
+          element.classList.remove("container");
+          element.classList.add("change");
+      }else{
+          element.classList.remove("change");
+          element.classList.add("container");
+      }
+    }
+  </script>
+    <div id = "container" class="container">
+      <img src="1.jpg">
         <div class="header">
             <h2>Mito, Hazel Marites T.</h2>
-            <h3>Web Designer</h3>
-            <img src="1.jpg">
             <div class="contact">
                 <ul>
                     <li>2521 Andrade St. Sta. Cruz Manila</li>
@@ -24,9 +33,12 @@
             </div>
         </div>
         <hr>
-        <h3>Objective</h3>
-        <p>Innovative and detail-oriented Web Designer seeking to apply my skills in UI/UX design, front-end development, and responsive web design to create visually appealing and user-friendly websites. Dedicated to delivering high-quality digital experiences that enhance brand identity and user engagement.</p>
-        <h3>Academic Achievements:</h3>
+        <div class="objective">
+          <h3>Objective</h3>
+          <p>Innovative and detail-oriented Web Designer seeking to apply my skills in UI/UX design, front-end development, and responsive web design to create visually appealing and user-friendly websites. Dedicated to delivering high-quality digital experiences that enhance brand identity and user engagement.</p>
+        </div>
+        <div class="academic">
+          <h3>Academic Achievements:</h3>
         <table>
             <tr>
               <td>Primary</td>
@@ -39,7 +51,9 @@
               <td>Espiritu Santo Parochial School(S.Y 2023)</td>
             </tr>
           </table>
-          <h3>Skills: </h3>
+        </div>
+          <div class="skills">
+            <h3>Skills: </h3>
           <ul>
             <li>Adobe Creative Suite (Photoshop, Illustrator, XD) or Figma</li>
             <li>UI/UX Design Principles</li>
@@ -47,6 +61,7 @@
             <li>Basic Front-End Frameworks (Bootstrap, Tailwind CSS)</li>
             <li>WordPress & CMS Management</li>
           </ul>
+          </div>
     </div>
 </body>
 </html>
