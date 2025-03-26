@@ -46,7 +46,6 @@
 .calculator form input:active{
     background: #C599B6;
     color: #fff;
-    border-radius: 100px;
     box-shadow: rgba(112, 25, 83, 0.4) 0px 2px 4px, 
     rgba(230, 178, 186, 0.3) 0px 7px 13px -3px, 
     rgba(250, 208, 196, 0.2) 0px -3px 0px inset;    
@@ -55,7 +54,6 @@
 .calculator form input:hover{
     background: #C599B6;
     color: #fff;
-    border-radius: 100px;
     box-shadow: rgba(112, 25, 83, 0.4) 0px 2px 4px, 
     rgba(230, 178, 186, 0.3) 0px 7px 13px -3px, 
     rgba(250, 208, 196, 0.2) 0px -3px 0px inset;    
