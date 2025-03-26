@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>S4-TECHNICAL_MITO</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Bubbler+One&family=Fuzzy+Bubbles:wght@400;700&family=Hachi+Maru+Pop&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
+      *{
+         margin: 20px;
+         padding: 0;
+         font-family: "Poppins", serif;
+         font-weight: 600;
+         font-style: normal;
+         box-sizing: border-box;
+      }
+
+      header .navbar .navbar-link{
+         justify-content: space-between;
+         display: flex;
+         list-style: none;
+      }
+
+
+      header .navbar a:link{
+         text-decoration: none;
+      }
+
+      header .navbar .navbar-link{
+         margin: 30px;
+         padding: 20px;
+      }
+
+      header .navbar .navbar-link .logo-text{
+         font-size: 40px;
+      }
+
+      header .navbar .navbar-link .menu{
+         top: 20px;
+         right: 20px;
+         padding: 10px 20px;
+         background: #ffcc00;
+         color: black;
+         border: none;
+         cursor: pointer;
+         border-radius: 5px;
+         font-size: 16px;
+         z-index: 200; /* Ensure it's above the details popup */
+      }
+      main .menus{
+         padding-left: 200px;
+         justify-content: space-evenly; 
+         display: flex;
+      }
+
+      main .menus img{
+         width: 200px;
+         height: 257px;
+      }
+
+      main .menus .card {
+         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+         border-radius: 5px;
+      }
+
+      main .menus .card img{
+         margin: auto;
+      }
+
+      main .menus .card .container{
+         font-size: 13px;
+         text-align: center;
+         margin: auto;
+      }
+
+
+      
+      img {
+         border-radius: 5px 5px 0 0;
+      }
+
+      main .menus .details{
+         display: none;
+         position: absolute;
+         top: 50%;
+         left: 50%;
+         transform: translate(-50%, -50%);
+         width: 80%;
+         max-width: 400px;
+         background: white;
+         padding: 20px;
+         border-radius: 10px;
+         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+         z-index: 100;
+         overflow: auto;
+      }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+           <ul class="navbar-link">
+                <li><a href="#" class="logo-text">☕︎ Cofferz</a></li>
+                <li><a href="#" class="menu-text">Menu</a></li>
+           </ul>
+        </nav> 
+    </header>
+    <main>
+        <article class="menus">
+            <div class="card" onclick="openPopup('Oreo Overload')">
+                <img src="Drink (7).jfif">
+                <div class="container">
+                  <h4><b>Oreo Overload</b></h4>
+                </div>
+            </div>
+
+            <div class="card" onclick="openPopup('Latte Foam Cat')">
+                <img src="Drink (3).jfif">
+                <div class="container">
+                  <h4><b>Latte Foam Cat</b></h4>
+                </div>
+            </div>
+
+            <div class="card" onclick="openPopup('Choco Overload')">
+                <img src="Drink (6).jfif">
+                <div class="container">
+                  <h4><b>Choco Overload</b></h4>
+                </div>
+            </div>
+
+            <div class="card" onclick="openPopup('Coffee Dalgona')">
+                <img src="Drink (2).jfif">
+                <div class="container">
+                  <h4><b>Coffee Dalgona</b></h4>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <h2 id="popup-title"></h2>
+            <p>Details about the selected item will be displayed here.</p>
+        </div>
+    </div>
+
+    <button id="main-menu" onclick="closePopup()">Main Menu</button>
+    
+    <script>
+        function openPopup(title) {
+            document.getElementById("popup-title").innerText = title;
+            document.getElementById("popup").style.display = "block";
+        }
+        
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+    </script>
+</body>
+</html>

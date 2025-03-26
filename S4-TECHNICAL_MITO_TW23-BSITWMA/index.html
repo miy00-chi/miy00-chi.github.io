@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>S4-TECHNICAL_MITO</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+           <ul class="navbar-link">
+                <li><a href="#" class="logo-text">Best of Meridien</li>
+                <button id="main-menu" onclick="closePopup()">Main Menu</button>
+           </ul>
+           <h4>RESTURANT GUIDE<br></h4>
+           <p>Produced by: Local Magazine</p>
+        </nav> 
+    </header>
+    <main>
+        <article class="menus">
+            <div class="card" onclick="openPopup(
+                    'Gabel Loffel', 
+                    'food 1.jpg', 
+                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam',
+                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br>d nihil deserunt ut provident molestiae aut nulla quis. Id nihil laboriosam ex illo eveniet non velit odit qui nulla soluta. Et earum laborum aut neque ducimus ut ullam illo At perferendis libero aut quidem dolorem id fuga necessitatibus et deleniti temporibus. Non illo sunt est doloremque et accusantium nulla.',                     '235 Glendale Ave. Meridien City', 
+                    '490 49 4000', 
+                    'GANDG RES', 
+                    'Swiss', 
+                    '10 Am to 10 PM', 
+                    '$$$')">
+                <div class="container">
+                  <h4><b>Gabel Loffel</b></h4>
+                </div>
+                <img src="food 1.jpg">
+                <div class="overlay">
+                    <p>Get out your<br>Lederchosen!<br><br>More</p>
+                </div>
+            </div>
+            
+            <div class="card" onclick="openPopup(
+                    'Gary Gari', 
+                    'food 2.jpg', 
+                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam',
+                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br>d nihil deserunt ut provident molestiae aut nulla quis. Id nihil laboriosam ex illo eveniet non velit odit qui nulla soluta. Et earum laborum aut neque ducimus ut ullam illo At perferendis libero aut quidem dolorem id fuga necessitatibus et deleniti temporibus. Non illo sunt est doloremque et accusantium nulla.',                     '76 No. Highland Ave. Meridien City', 
+                    '490 24 6709', 
+                    'GANDG RES', 
+                    'Japanese', 
+                    '5 PM to 10 PM', 
+                    '$$')">
+                <div class="container">
+                  <h4><b>Gary Gari</b></h4>
+                </div>
+                <img src="food 2.jpg">
+                <div class="overlay">
+                    <p>The delicious<br>headquarters for all<br>your ginger related<br>needs!<br><br>More</p>
+                </div>
+            </div>
+            
+            <div class="card" onclick="openPopup(
+                    'Il Piato', 
+                    'food 3.jpg',
+                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam',
+                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br>d nihil deserunt ut provident molestiae aut nulla quis. Id nihil laboriosam ex illo eveniet non velit odit qui nulla soluta. Et earum laborum aut neque ducimus ut ullam illo At perferendis libero aut quidem dolorem id fuga necessitatibus et deleniti temporibus. Non illo sunt est doloremque et accusantium nulla.', 
+                    '1213 Shoutout Way. Meridien City', 
+                    '490 42 1204', 
+                    'ILPIATTO RES', 
+                    'Italian', 
+                    '11 Am to 10 PM', 
+                    '$$')">
+                <div class="container">
+                  <h4><b>Il Piato</b></h4>
+                </div>
+                <img src="food 3.jpg">
+                <div class="overlay">
+                    <p>Got a wild finicky kids?<br>Head for Il Piatto for<br>kid-friendly Italian<br>Fun!<br><br>More</p>
+                </div>
+            </div>
+            
+            <div class="card" onclick="openPopup(
+                    'Pierre Platters', 
+                    'food 4.jpg', 
+                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam',
+                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br>d nihil deserunt ut provident molestiae aut nulla quis. Id nihil laboriosam ex illo eveniet non velit odit qui nulla soluta. Et earum laborum aut neque ducimus ut ullam illo At perferendis libero aut quidem dolorem id fuga necessitatibus et deleniti temporibus. Non illo sunt est doloremque et accusantium nulla.', 
+                    '68 8th Ave. Meridien City', 
+                    '490 69 3080', 
+                    'PIEREPRES', 
+                    'Fushion', 
+                    '11 Am to 10 PM', 
+                    '$$$')">
+                <div class="container">
+                  <h4><b>Pierre Platters</b></h4>
+                </div>
+                <img src="food 4.jpg">
+                <div class="overlay">
+                    <p>Smart Talks, Smart Eats!<br><br>More</p>
+                </div>
+            </div>
+            
+        </article>
+    </main>
+    
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <!-- Vertical Title -->
+            <div class="popup-side-title">
+                <span id="popup-side-title"></span>
+            </div>
+            
+            <div class="popup-body">
+                <!-- Popup Image -->
+                <img id="popup-img" src="">
+            
+                <!-- Text Content Wrapper -->
+                <div class="popup-text">
+                    <!-- Title -->
+                    <h2 id="popup-title"></h2>
+            
+                    <!-- Popup Details -->
+                    <div class="popup-details">
+                        <ul class="popup-details-box">
+                            <li><p><strong>ADDRESS:</strong> <span id="popup-address"></span></p></li>
+                            <li><p><strong>PHONE:</strong> <span id="popup-phone"></span></p></li>
+                            <li><p><strong>WEBSITE:</strong> <span id="popup-website"></span></li>
+                        </ul>
+                        <ul class="popup-details-box2">
+                        <li><p><strong>CATEGORY:</strong> <span id="popup-category"></span></p></li>
+                        <li><p><strong>OPEN:</strong> <span id="popup-hours"></span></p></li>
+                        <li><p><strong>PRICE:</strong> <span id="popup-price"></span></p></li>
+                        </ul>
+                    </div>
+            
+                    <hr>
+            
+                    <!-- Description -->
+                    <p id="popup-description"></p>
+                    <br>
+                    <p id="popup-description2"></p>
+                    <br>
+
+                    <hr>
+                </div>
+            </div>                     
+        </div>
+    </div>
+    
+        
+    <script>
+        function openPopup(title, imgSrc, description, description2, address, phone, website, category, hours, price) {
+            document.getElementById("popup-title").innerText = title;
+            document.getElementById("popup-side-title").innerText = title;
+            document.getElementById("popup-img").src = imgSrc;
+            document.getElementById("popup-description").innerText = description;
+            document.getElementById("popup-description2").innerText = description2;
+        
+            // Update popup details
+            document.getElementById("popup-address").innerText = address;
+            document.getElementById("popup-phone").innerText = phone;
+            document.getElementById("popup-website").innerText = website;
+            document.getElementById("popup-category").innerText = category;
+            document.getElementById("popup-hours").innerText = hours;
+            document.getElementById("popup-price").innerText = price;
+        
+            // Show popup
+            document.getElementById("popup").style.display = "flex";
+        }
+        
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+        
+    </script>
+</body>
+</html>
