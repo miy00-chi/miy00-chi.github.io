@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PMI Certification Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F7F4EF;--surface:#fff;--s2:#F0EDE7;--text:#1A1714;--t2:#6B6560;--t3:#9E9890;--accent:#2D5BE3;--al:#EEF2FD;--ok:#1A7A4A;--okbg:#EAF6EF;--err:#C0392B;--errbg:#FDECEA;--warn:#966000;--warnbg:#FEF6E4;--border:rgba(26,23,20,.12);--b2:rgba(26,23,20,.06);--r:12px;--rs:8px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+.page{display:none;min-height:100vh}.page.active{display:flex;flex-direction:column}
+.wrap{max-width:720px;margin:0 auto;padding:0 20px;width:100%}
+#home{background:var(--bg);align-items:center;justify-content:center;padding:40px 20px}
+.home-inner{max-width:600px;width:100%}
+.badge{display:inline-flex;align-items:center;gap:6px;background:var(--al);color:var(--accent);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:5px 12px;border-radius:20px;margin-bottom:24px}
+.home-title{font-family:'DM Serif Display',serif;font-size:clamp(34px,6vw,52px);line-height:1.1;margin-bottom:16px}
+.home-title em{font-style:italic;color:var(--accent)}
+.home-sub{font-size:17px;color:var(--t2);font-weight:300;margin-bottom:48px;max-width:460px}
+.home-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.hcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:28px 24px;cursor:pointer;transition:transform .18s,box-shadow .18s,border-color .18s;position:relative;overflow:hidden}
+.hcard::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--al),transparent 70%);opacity:0;transition:opacity .2s}
+.hcard:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.08);border-color:rgba(45,91,227,.3)}.hcard:hover::before{opacity:1}
+.hcard-icon{font-size:28px;margin-bottom:14px;display:block}.hcard h2{font-size:17px;font-weight:600;margin-bottom:6px}
+.hcard p{font-size:13px;color:var(--t2);line-height:1.5}.hcard-arr{position:absolute;top:24px;right:20px;font-size:18px;color:var(--t3)}
+.home-stat{margin-top:40px;display:flex;gap:32px}
+.hs-num{font-family:'DM Serif Display',serif;font-size:32px}.hs-lbl{font-size:12px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;font-weight:500}
+.topbar{background:var(--surface);border-bottom:1px solid var(--b2);padding:14px 0;position:sticky;top:0;z-index:10}
+.topbar-inner{display:flex;align-items:center;gap:12px}
+.back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--t2);cursor:pointer;background:none;border:none;padding:6px 10px;border-radius:var(--rs);transition:background .15s,color .15s;font-family:inherit}
+.back:hover{background:var(--s2);color:var(--text)}.topbar-title{font-size:15px;font-weight:600;flex:1}
+#review{background:var(--bg)}.rev-body{padding:24px 0 60px}
+.search-wrap{margin-bottom:20px;position:relative}.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--t3);font-size:16px}
+.search-input{width:100%;padding:11px 14px 11px 40px;border:1px solid var(--border);border-radius:var(--rs);font-size:14px;font-family:inherit;color:var(--text);background:var(--surface);transition:border-color .15s}
+.search-input:focus{outline:none;border-color:var(--accent)}.rev-count{font-size:13px;color:var(--t3);margin-bottom:16px}
+.ritem{background:var(--surface);border:1px solid var(--b2);border-radius:var(--r);padding:20px;margin-bottom:10px}
+.ritem-head{display:flex;gap:10px;margin-bottom:12px}
+.qnum{min-width:28px;height:28px;border-radius:50%;background:var(--al);color:var(--accent);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.type-pill{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:20px;margin-bottom:8px}
+.tp-mc{background:var(--al);color:var(--accent)}.tp-match{background:#FEF0FF;color:#8B2FC9}.tp-order{background:var(--warnbg);color:var(--warn)}.tp-classify{background:#E8F7F0;color:#117A50}
+.rqtext{font-size:14px;color:var(--text);line-height:1.6;padding-top:4px}
+.ropts{display:grid;gap:6px;margin-top:10px}
+.ropt{display:flex;align-items:flex-start;gap:8px;padding:8px 12px;border-radius:var(--rs);font-size:13px;color:var(--t2);line-height:1.5}
+.ropt.correct{background:var(--okbg);color:var(--ok)}.ropt .key{font-weight:600;min-width:18px}
+.rexpl{margin-top:12px;padding:10px 14px;background:var(--s2);border-radius:var(--rs);border-left:3px solid var(--accent);font-size:13px;color:var(--t2);line-height:1.55}
+.rtable{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}
+.rtable th{background:var(--s2);color:var(--t2);font-weight:600;padding:8px 12px;text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+.rtable td{padding:8px 12px;border-bottom:1px solid var(--b2);color:var(--text);vertical-align:top}.rtable tr:last-child td{border-bottom:none}
+.rtable tr.ans-row td{background:var(--okbg);color:var(--ok)}
+.rorder-list{list-style:none;margin-top:10px;display:grid;gap:6px}
+.rorder-list li{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--okbg);color:var(--ok);border-radius:var(--rs);font-size:13px}
+.step-num{min-width:24px;height:24px;border-radius:50%;background:var(--ok);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.rclassify{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.rcol{background:var(--s2);border-radius:var(--rs);padding:10px 12px}.rcol-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;color:var(--t2)}
+.rcol-item{font-size:13px;padding:5px 8px;background:var(--okbg);color:var(--ok);border-radius:6px;margin-bottom:5px}
+#quiz-setup{background:var(--bg)}.setup-body{padding:32px 0 60px}
+.setup-title{font-family:'DM Serif Display',serif;font-size:28px;margin-bottom:6px}.setup-sub{font-size:14px;color:var(--t2);margin-bottom:32px}
+.setup-sec{margin-bottom:28px}.setup-lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:10px}
+.titem{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--b2);border-radius:var(--rs);padding:14px 16px;margin-bottom:8px;cursor:pointer}
+.titem-left{display:flex;flex-direction:column;gap:2px}.titem-left span{font-size:14px;font-weight:500}.titem-left small{font-size:12px;color:var(--t3)}
+.ts{position:relative;width:40px;height:22px;flex-shrink:0}.ts input{opacity:0;width:0;height:0}
+.ts-track{position:absolute;inset:0;background:var(--s2);border-radius:20px;border:1px solid var(--border);transition:background .2s;cursor:pointer}
+.ts-track::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--t3);transition:transform .2s,background .2s}
+.ts input:checked+.ts-track{background:var(--accent);border-color:var(--accent)}.ts input:checked+.ts-track::after{transform:translateX(18px);background:#fff}
+.count-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.cbtn{padding:12px 0;border:1px solid var(--border);border-radius:var(--rs);background:var(--surface);font-size:14px;font-weight:500;color:var(--t2);cursor:pointer;transition:all .15s;font-family:inherit;text-align:center}
+.cbtn:hover{border-color:var(--accent);color:var(--accent)}.cbtn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.start-btn{width:100%;padding:15px;border-radius:var(--r);background:var(--accent);border:none;color:#fff;font-size:16px;font-weight:600;font-family:inherit;cursor:pointer;margin-top:8px;transition:opacity .15s,transform .15s}
+.start-btn:hover{opacity:.9}.start-btn:active{transform:scale(.99)}
+#quiz{background:var(--bg)}.qtopbar{background:var(--surface);border-bottom:1px solid var(--b2);padding:14px 0;position:sticky;top:0;z-index:10}
+.qtop-inner{display:flex;align-items:center;gap:14px}.prog-text{font-size:13px;color:var(--t3);white-space:nowrap}
+.prog-bar{flex:1;height:5px;background:var(--s2);border-radius:3px;overflow:hidden}.prog-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .4s ease}
+.qbody{padding:28px 0 60px}
+.qlabel{font-size:12px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.qtext{font-size:17px;color:var(--text);line-height:1.65;margin-bottom:24px;font-weight:400}
+.opts-list{display:grid;gap:10px}
+.opt{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--surface);cursor:pointer;text-align:left;font-family:inherit;transition:all .15s;width:100%}
+.opt:hover:not(:disabled){border-color:var(--accent);background:var(--al)}
+.opt-key{min-width:28px;height:28px;border-radius:50%;background:var(--s2);color:var(--t2);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.opt-txt{font-size:14px;color:var(--text);line-height:1.55;padding-top:4px}
+.opt.sel{border-color:var(--accent);background:var(--al)}.opt.sel .opt-key{background:var(--accent);color:#fff}
+.opt.correct{border-color:var(--ok);background:var(--okbg)}.opt.correct .opt-key{background:var(--ok);color:#fff}.opt.correct .opt-txt{color:var(--ok)}
+.opt.wrong{border-color:var(--err);background:var(--errbg)}.opt.wrong .opt-key{background:var(--err);color:#fff}.opt.wrong .opt-txt{color:var(--err)}
+.opt:disabled{cursor:default}
+.hint-box{font-size:13px;color:var(--t2);margin-bottom:16px;padding:10px 14px;background:var(--surface);border-radius:var(--rs);border-left:3px solid #8B2FC9}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.match-col-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);margin-bottom:10px}
+.msrc{display:flex;align-items:center;padding:10px 14px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;color:var(--text);margin-bottom:8px;line-height:1.45;cursor:pointer;transition:all .15s;user-select:none;min-height:44px}
+.msrc:hover:not(.used):not(.locked){border-color:#8B2FC9;background:#FEF0FF}.msrc.sel{border-color:#8B2FC9;background:#FEF0FF}
+.msrc.used{opacity:.38;cursor:default;pointer-events:none}.msrc.locked{cursor:default}
+.mtgt{cursor:pointer;transition:all .15s;min-height:56px;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--rs);margin-bottom:8px;background:var(--surface)}
+.mtgt:hover:not(.filled):not(.locked){border-color:#8B2FC9;background:#FEF0FF}
+.mtgt.filled{background:var(--al);border-color:var(--accent);cursor:pointer}.mtgt.filled:hover:not(.locked){background:var(--errbg);border-color:var(--err)}
+.mtgt.ok{background:var(--okbg)!important;border-color:var(--ok)!important;cursor:default!important}.mtgt.bad{background:var(--errbg)!important;border-color:var(--err)!important;cursor:default!important}
+.mtgt.locked{cursor:default}.mtgt-lbl{font-size:11px;font-weight:600;color:var(--t3);display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em}
+.mtgt-val{font-size:13px;color:var(--t2)}.mtgt.filled .mtgt-val{color:var(--accent);font-weight:500}.mtgt.ok .mtgt-val{color:var(--ok);font-weight:500}.mtgt.bad .mtgt-val{color:var(--err);font-weight:500}
+.match-submit{margin-top:16px;width:100%;padding:12px;border-radius:var(--rs);border:none;background:#8B2FC9;color:#fff;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:opacity .15s}
+.match-submit:hover{opacity:.9}.match-submit:disabled{opacity:.4;cursor:default}
+.order-pool{display:grid;gap:8px;margin-bottom:16px}
+.oitem{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rs);font-size:14px;color:var(--text);cursor:pointer;transition:all .15s;user-select:none}
+.oitem:hover:not(.placed):not(.locked){border-color:var(--warn);background:var(--warnbg)}.oitem.placed{opacity:.32;cursor:default;pointer-events:none}.oitem.locked{cursor:default}
+.odot{width:10px;height:10px;border-radius:50%;background:var(--t3);flex-shrink:0;transition:background .15s}.oitem:hover:not(.placed):not(.locked) .odot{background:var(--warn)}
+.order-targets{display:grid;gap:8px}
+.otgt{display:flex;align-items:center;gap:12px;padding:10px 14px;border:1.5px dashed var(--border);border-radius:var(--rs);min-height:46px;cursor:pointer;transition:all .15s}
+.otgt:hover:not(.filled):not(.locked){border-color:var(--warn);border-style:solid;background:var(--warnbg)}
+.otgt.filled{border-style:solid;border-color:var(--accent);background:var(--al);cursor:pointer}.otgt.filled:hover:not(.locked){border-color:var(--err);background:var(--errbg)}
+.otgt.ok{border-color:var(--ok)!important;background:var(--okbg)!important;border-style:solid!important;cursor:default!important}
+.otgt.bad{border-color:var(--err)!important;background:var(--errbg)!important;border-style:solid!important;cursor:default!important}.otgt.locked{cursor:default}
+.oslot-num{width:28px;height:28px;border-radius:50%;background:var(--s2);color:var(--t3);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.otgt.filled .oslot-num{background:var(--accent);color:#fff}.otgt.ok .oslot-num{background:var(--ok);color:#fff}.otgt.bad .oslot-num{background:var(--err);color:#fff}
+.oslot-txt{font-size:14px;color:var(--t2);font-style:italic}.otgt.filled .oslot-txt{color:var(--accent);font-style:normal;font-weight:500}.otgt.ok .oslot-txt{color:var(--ok);font-style:normal;font-weight:500}.otgt.bad .oslot-txt{color:var(--err);font-style:normal;font-weight:500}
+.order-submit{margin-top:16px;width:100%;padding:12px;border-radius:var(--rs);border:none;background:var(--warn);color:#fff;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:opacity .15s}
+.order-submit:hover{opacity:.9}.order-submit:disabled{opacity:.4;cursor:default}
+.classify-pool{display:grid;gap:8px;margin-bottom:20px}
+.citem{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rs);font-size:14px;color:var(--text);cursor:pointer;transition:all .15s;user-select:none;line-height:1.45}
+.citem:hover:not(.classified):not(.locked){border-color:#117A50;background:#E8F7F0}.citem.classified{opacity:.32;cursor:default;pointer-events:none}.citem.locked{cursor:default}
+.cdot{width:10px;height:10px;border-radius:50%;background:var(--t3);flex-shrink:0}
+.classify-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cdrop{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:14px;min-height:120px;cursor:pointer;transition:all .15s}
+.cdrop:hover:not(.locked){border-color:#117A50;background:#E8F7F0}.cdrop.locked{cursor:default}
+.cdrop-hdr{font-size:13px;font-weight:700;color:var(--t2);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--b2)}
+.cplaced{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;background:var(--al);border:1px solid rgba(45,91,227,.2);border-radius:var(--rs);font-size:13px;color:var(--accent);margin-bottom:6px;cursor:pointer;transition:all .15s;line-height:1.4}
+.cplaced:hover:not(.locked){background:var(--errbg);color:var(--err);border-color:var(--err)}.cplaced.locked{cursor:default}
+.cplaced.ok{background:var(--okbg)!important;color:var(--ok)!important;border-color:rgba(26,122,74,.3)!important;cursor:default!important}
+.cplaced.bad{background:var(--errbg)!important;color:var(--err)!important;border-color:rgba(192,57,43,.3)!important;cursor:default!important}
+.cx{font-size:16px;opacity:.6;flex-shrink:0}.cempty{font-size:13px;color:var(--t3);font-style:italic;padding:8px 4px}
+.classify-submit{margin-top:16px;width:100%;padding:12px;border-radius:var(--rs);border:none;background:#117A50;color:#fff;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:opacity .15s}
+.classify-submit:hover{opacity:.9}.classify-submit:disabled{opacity:.4;cursor:default}
+.feedback{margin-top:20px;padding:16px 18px;border-radius:var(--r);font-size:14px;line-height:1.6;display:none}
+.feedback.correct{background:var(--okbg);color:var(--ok);border-left:3px solid var(--ok)}
+.feedback.wrong{background:var(--errbg);color:var(--err);border-left:3px solid var(--err)}
+.feedback.show{display:block}.fb-verdict{font-weight:600;margin-bottom:6px;font-size:15px}
+.fb-correct{font-size:13px;margin-top:8px;padding:8px 10px;background:rgba(255,255,255,.6);border-radius:var(--rs)}
+.fb-expl{color:var(--t2);font-size:13px;margin-top:6px}
+.qactions{margin-top:24px;display:flex;gap:10px}
+.abtn{flex:1;padding:13px 20px;border-radius:var(--rs);font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .15s;border:1.5px solid transparent}
+.abtn.primary{background:var(--accent);color:#fff}.abtn.primary:hover{opacity:.9}
+.abtn.outline{background:var(--surface);color:var(--t2);border-color:var(--border)}.abtn.outline:hover{border-color:var(--accent);color:var(--accent)}
+#results{background:var(--bg)}.res-body{padding:40px 0 60px}
+.score-ring{width:140px;height:140px;border-radius:50%;background:var(--surface);border:1.5px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 32px}
+.score-pct{font-family:'DM Serif Display',serif;font-size:42px;line-height:1}.score-lbl{font-size:12px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-top:4px}
+.res-headline{font-family:'DM Serif Display',serif;font-size:28px;text-align:center;margin-bottom:8px}.res-sub{font-size:14px;color:var(--t2);text-align:center;margin-bottom:32px}
+.res-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:36px}
+.rstat{background:var(--surface);border:1px solid var(--b2);border-radius:var(--r);padding:16px;text-align:center}
+.rstat-num{font-family:'DM Serif Display',serif;font-size:30px}.rstat-num.g{color:var(--ok)}.rstat-num.r{color:var(--err)}
+.rstat-lbl{font-size:12px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;font-weight:500;margin-top:4px}
+.missed-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px;text-transform:uppercase;letter-spacing:.06em}
+.mcard{background:var(--surface);border:1px solid var(--b2);border-left:3px solid var(--err);border-radius:var(--r);padding:18px;margin-bottom:10px}
+.mq{font-size:14px;color:var(--text);line-height:1.6;margin-bottom:10px}
+.myour{font-size:13px;color:var(--err);margin-bottom:4px}.mright{font-size:13px;color:var(--ok);margin-bottom:4px}
+.mexpl{margin-top:10px;font-size:13px;color:var(--t2);line-height:1.55;padding:10px 12px;background:var(--s2);border-radius:var(--rs)}
+.res-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:32px}
+.rbtn{padding:13px;border-radius:var(--rs);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .15s;border:1.5px solid var(--border);background:var(--surface);color:var(--t2)}
+.rbtn:hover{border-color:var(--accent);color:var(--accent)}.rbtn.acc{background:var(--accent);color:#fff;border-color:var(--accent)}.rbtn.acc:hover{opacity:.9}
+@media(max-width:520px){.home-cards,.rclassify,.match-grid,.classify-cols{grid-template-columns:1fr}.count-grid{grid-template-columns:repeat(2,1fr)}.res-btns{grid-template-columns:1fr}.qtext{font-size:15px}}
+</style>
+</head>
+<body>
+
+<div id="home" class="page active">
+  <div style="margin:auto" class="wrap">
+    <div class="home-inner">
+      <div class="badge">📋 PMP · CAPM · PMI</div>
+      <h1 class="home-title">Project Management<br><em>Certification</em> Reviewer</h1>
+      <p class="home-sub">87 questions exactly from your reviewer — multiple choice, matching, ordering, and classification.</p>
+      <div class="home-cards">
+        <div class="hcard" onclick="showPage('review');renderReview()">
+          <span class="hcard-icon">📖</span><h2>View Questions</h2>
+          <p>Browse all questions and answers with full explanations</p><span class="hcard-arr">→</span>
+        </div>
+        <div class="hcard" onclick="showPage('quiz-setup')">
+          <span class="hcard-icon">✏️</span><h2>Take the Quiz</h2>
+          <p>Test yourself with all question types and instant feedback</p><span class="hcard-arr">→</span>
+        </div>
+      </div>
+      <div class="home-stat">
+        <div><div class="hs-num">87</div><div class="hs-lbl">Questions</div></div>
+        <div><div class="hs-num">4</div><div class="hs-lbl">Types</div></div>
+        <div><div class="hs-num">12</div><div class="hs-lbl">Topics</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="review" class="page">
+  <div class="topbar"><div class="wrap topbar-inner">
+    <button class="back" onclick="showPage('home')">← Back</button>
+    <div class="topbar-title">Question Reviewer</div>
+  </div></div>
+  <div class="rev-body"><div class="wrap">
+    <div class="search-wrap"><span class="search-icon">🔍</span><input class="search-input" id="searchInput" placeholder="Search questions…" oninput="renderReview()"></div>
+    <div class="rev-count" id="revCount"></div>
+    <div id="revList"></div>
+  </div></div>
+</div>
+
+<div id="quiz-setup" class="page">
+  <div class="topbar"><div class="wrap topbar-inner">
+    <button class="back" onclick="showPage('home')">← Back</button>
+    <div class="topbar-title">Quiz Settings</div>
+  </div></div>
+  <div class="setup-body"><div class="wrap">
+    <h1 class="setup-title">Customize your quiz</h1>
+    <p class="setup-sub">Set up your practice session before you start.</p>
+    <div class="setup-sec">
+      <div class="setup-lbl">Options</div>
+      <div class="titem" onclick="toggleCb('shuffleQ')">
+        <div class="titem-left"><span>Shuffle questions</span><small>Randomize order each time</small></div>
+        <label class="ts" onclick="event.stopPropagation()"><input type="checkbox" id="shuffleQ" checked><span class="ts-track"></span></label>
+      </div>
+      <div class="titem" onclick="toggleCb('shuffleA')">
+        <div class="titem-left"><span>Shuffle answer choices</span><small>Randomize MC options and matching items</small></div>
+        <label class="ts" onclick="event.stopPropagation()"><input type="checkbox" id="shuffleA" checked><span class="ts-track"></span></label>
+      </div>
+    </div>
+    <div class="setup-sec">
+      <div class="setup-lbl">Number of questions</div>
+      <div class="count-grid">
+        <button class="cbtn active" onclick="setCount(this,10)">10</button>
+        <button class="cbtn" onclick="setCount(this,20)">20</button>
+        <button class="cbtn" onclick="setCount(this,40)">40</button>
+        <button class="cbtn" onclick="setCount(this,87)">All 87</button>
+      </div>
+    </div>
+    <button class="start-btn" onclick="startQuiz()">Start Quiz →</button>
+  </div></div>
+</div>
+
+<div id="quiz" class="page">
+  <div class="qtopbar"><div class="wrap qtop-inner">
+    <button class="back" onclick="if(confirm('Exit quiz?'))showPage('home')">✕</button>
+    <div class="prog-bar"><div class="prog-fill" id="progFill"></div></div>
+    <div class="prog-text" id="progText"></div>
+  </div></div>
+  <div class="qbody"><div class="wrap">
+    <div class="qlabel" id="qLabel"></div>
+    <div class="qtext" id="qText"></div>
+    <div id="questionArea"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-verdict" id="fbVerdict"></div>
+      <div class="fb-correct" id="fbCorrect" style="display:none"></div>
+      <div class="fb-expl" id="fbExpl"></div>
+    </div>
+    <div class="qactions" id="qActions" style="display:none">
+      <button class="abtn outline" onclick="showPage('home')">Quit</button>
+      <button class="abtn primary" id="nextBtn" onclick="nextQ()">Next question →</button>
+    </div>
+  </div></div>
+</div>
+
+<div id="results" class="page">
+  <div class="topbar"><div class="wrap topbar-inner"><div class="topbar-title">Quiz Results</div></div></div>
+  <div class="res-body"><div class="wrap">
+    <div class="score-ring"><div class="score-pct" id="resPct"></div><div class="score-lbl">Score</div></div>
+    <h2 class="res-headline" id="resHL"></h2><p class="res-sub" id="resSub"></p>
+    <div class="res-stats">
+      <div class="rstat"><div class="rstat-num g" id="resOk"></div><div class="rstat-lbl">Correct</div></div>
+      <div class="rstat"><div class="rstat-num r" id="resErr"></div><div class="rstat-lbl">Incorrect</div></div>
+      <div class="rstat"><div class="rstat-num" id="resTotal"></div><div class="rstat-lbl">Total</div></div>
+    </div>
+    <div class="res-btns">
+      <button class="rbtn" onclick="showPage('home')">← Home</button>
+      <button class="rbtn" onclick="showPage('quiz-setup')">New quiz</button>
+      <button class="rbtn" id="retryBtn" onclick="retryMissed()">Retry missed</button>
+      <button class="rbtn acc" onclick="showPage('review');renderReview()">Review all</button>
+    </div>
+    <div id="missedSection"></div>
+  </div></div>
+</div>
+
+<script>
+const QS=[
+  // Q1
+  {type:'mc',q:"What is a deliverable?",opts:["A unique output of a project","A resource allocated to the project","A checkpoint in the project timeline","A team member working on a project"],ans:0,expl:"A deliverable is a product, service, or result produced during a project. It represents a tangible or measurable output that contributes to the completion of the project."},
+  // Q2
+  {type:'mc',q:"Your customer states that the packaging for the new product being developed must be easy for everyone to open. During product testing, only 60% of the people were able to open the packaging easily. As the project manager, what should you do?",opts:["Request a team meeting to decide on corrective action","Inform the project sponsor that the project has failed","Meet with the product testers to change the results","Inform the customer that more than 50% is an acceptable result"],ans:0,expl:"The requirement states the packaging must be easy for everyone to open. Since only 60% succeeded, the requirement is not met. The project manager must initiate corrective action through team collaboration."},
+  // Q3
+  {type:'mc',q:"What is a project life cycle?",opts:["The sequence of activities that determines the shortest possible duration of a project","The tasks performed to deliver a product, service, or result with specified features and functions","The series of phases that a project passes through from its start to its completion","The steps used to identify the best possible solution to a problem"],ans:2,expl:"The project life cycle defines the structured stages of a project, typically including initiating, planning, executing, monitoring, and closing."},
+  // Q4
+  {type:'mc',q:"What is a benefit of creating a lessons learned document?",opts:["Sharing best practice approaches among the team members","Creating marketing materials that can be used to promote the product","Meeting with the client to provide closure to the project","Ensuring team members are held responsible for their mistakes"],ans:0,expl:"Lessons learned help capture knowledge gained during the project, allowing future teams to avoid mistakes and replicate successes."},
+  // Q5
+  {type:'mc',q:"What is a key characteristic of the adaptive project management approach?",opts:["Continuous refinement of the product based upon stakeholder feedback","Minimal changes due to familiarity with project requirements","Sequential completion of tasks with no change in scope","Delivery of the product after the final phase has been completed"],ans:0,expl:"Adaptive or Agile approaches rely on continuous stakeholder feedback and iterative improvements to the product."},
+  // Q6
+  {type:'mc',q:"You are part of a project team that is working on developing a new app. A team member suggests that you add a feature to the app. The project manager says that the feature is out of scope. What should you do if a product feature is out of scope?",opts:["You should decline the development of the feature","You should develop the feature as part of the project","You should consider the feature a project dependency","You should add the feature to the scope statement"],ans:0,expl:"Features outside the approved scope should not be implemented unless formally approved through change management."},
+  // Q7
+  {type:'mc',q:"What role does quality assurance play in the project development process?",opts:["It ensures the project is delivered within budget","It ensures procedures are followed to meet standards for performance","It ensures employees are qualified to complete their assigned tasks","It ensures the project is delivered on time"],ans:1,expl:"Quality assurance focuses on process compliance, ensuring project processes meet defined standards."},
+  // Q8
+  {type:'mc',q:"Which scenario demonstrates a schedule dependency?",opts:["Team members must schedule activities during business hours","Team members must wait to start a task until after another task is completed","Team members must work independently on tasks","Team members must determine the minimum time necessary to complete a project"],ans:1,expl:"Dependencies exist when one activity relies on the completion of another before it can begin."},
+  // Q9 MATCH
+  {type:'match',q:"Move each element of a project charter from the list on the left to its description on the right.",hint:"Select an item on the left, then click its matching description on the right. Click a filled slot to remove it.",sources:["Project purpose","Project scope","Stakeholders","Authority"],targets:["Why the project exists","High-level boundaries of the project","Key individuals involved","PM authority to use resources"],ans:[0,1,2,3],expl:"The project charter includes: purpose (why it exists), scope (high-level boundaries), stakeholders (key individuals), and authority (PM's right to use resources)."},
+  // Q10
+  {type:'mc',q:"You are an event coordinator for an upcoming party. The customer changes the party date. You know that this change will result in an increase in the cost of the venue. What should you do to resolve the budget variance?",opts:["Determine the cost difference and discuss options with the customer","Cancel the venue contract and then find a new venue","Stay at the same venue and tell the caterers to remove menu items to save money","Approve the date change and invoice the customer for more money"],ans:0,expl:"Budget changes require transparent communication with stakeholders before implementing adjustments."},
+  // Q11
+  {type:'mc',q:"Which action signifies the formal acceptance of the final product?",opts:["Closing of vendor contracts by the project team","Final budget approval by the project manager","Completion of all paperwork by the project manager","Approval by the project sponsor and customer"],ans:3,expl:"The customer or sponsor must formally approve the deliverables to confirm they meet requirements."},
+  // Q12
+  {type:'mc',q:"You are the project manager for a small construction project. You receive an updated quote from one of the material suppliers and the cost has increased by $2000. You request a meeting with your project sponsor to discuss what to do next. Which stage of the change management process are you beginning?",opts:["Identify the change","Approve the change","Assess the change impact","Implement the approved change"],ans:2,expl:"Meeting with the sponsor to discuss cost implications is part of impact assessment before approval."},
+  // Q13
+  {type:'mc',q:"Recent feedback from a client requires adjusting the scope of a project as well as some additional funding. Who needs to provide the approval to move forward with the changes?",opts:["Business analyst","Project manager","Project sponsor","Resource manager"],ans:2,expl:"Sponsors control budget authorization and major project changes."},
+  // Q14
+  {type:'mc',q:"You need to select a project management approach for your team. Key considerations include: the team has worked on similar projects, the deliverable must comply with standards and regulations, the project tasks are well-defined, and the project deliverable is clearly defined. What project management approach should you choose?",opts:["Scrum","Adaptive","Predictive","Incremental"],ans:2,expl:"Predictive is best when tasks are well defined, requirements are stable, and compliance standards exist."},
+  // Q15
+  {type:'mc',q:"Which project document authorizes the project manager to begin working on a project?",opts:["Project management plan","Project scope statement","Project charter","Project communication plan"],ans:2,expl:"The charter formally authorizes the project and assigns authority to the PM."},
+  // Q16
+  {type:'mc',q:"You are one of the team members planning a small community event. The project manager assigns you the task of planning for the event at a specific location. You find a better location and want to alert your team to the change in location. What responsibility and authority do you have regarding your assigned task?",opts:["You need to speak with the project manager about changing the location and wait for approval","You can change the location without approval and set up for the community event","You cannot approve the location change until all team members have voted on the decision","You need to inform the sponsor directly about the change and then move the event to the new location"],ans:0,expl:"Team members cannot change project scope independently."},
+  // Q17
+  {type:'mc',q:"What impact does gold plating have on a project?",opts:["The scope increases and the cost to the customer remains the same","The scope increases and the cost to the customer increases","The scope remains the same and the cost to the customer decreases","The scope remains the same and the cost to the customer increases"],ans:1,expl:"Gold plating adds unapproved features, increasing cost and complexity."},
+  // Q18
+  {type:'mc',q:"You are evaluating the skills needed in your project team to successfully complete a project. Which component of the project management plan are you working on?",opts:["Cost management plan","Scope management plan","Schedule management plan","Resource management plan"],ans:3,expl:"This plan defines team roles, responsibilities, and skills needed."},
+  // Q19
+  {type:'mc',q:"Which component of the project management plan outlines the work needed to meet project objectives and deliverables?",opts:["Cost management plan","Scope management plan","Resource management plan","Schedule management plan"],ans:1,expl:"Scope management defines what work is required to achieve project goals."},
+  // Q20
+  {type:'mc',q:"Which project characteristic suggests that a predictive project management approach should be used?",opts:["High levels of change and risk","Defined deliverables and deadlines","Evolving goals and requirements","Multiple releases of product features"],ans:1,expl:"Predictive approaches work when requirements are stable and clear."},
+  // Q21
+  {type:'mc',q:"What is project procurement?",opts:["The purchasing of external goods and services needed to complete a project","The analysis of the business requirements needed to complete a project","The identification of all the funding requirements needed to complete a project","The planning of all communication methods needed to complete a project"],ans:0,expl:"Procurement involves acquiring materials or services from vendors."},
+  // Q22
+  {type:'mc',q:"In a project, what describes work that should be included and work that should be excluded?",opts:["Project baseline","Scope statement","Business case","Work breakdown structure (WBS)"],ans:1,expl:"The scope statement defines what is included and excluded in the project."},
+  // Q23
+  {type:'mc',q:"You are estimating the cost of a project by using the budget from a similar project last month. Which type of budget estimation technique are you using?",opts:["Expert judgment estimation","Three-point estimation","Bottom-up estimation","Analogous/historical estimation"],ans:3,expl:"Analogous estimation uses data from similar past projects."},
+  // Q24
+  {type:'mc',q:"Why should you archive project documents and processes?",opts:["To complete the project management plan","To store all project documents on the project manager's personal computer","To keep a historical record of project activities","To redistribute remaining resources to other projects"],ans:2,expl:"Archived documents help future teams learn from past projects."},
+  // Q25 (repeat in PDF)
+  {type:'mc',q:"You are estimating the cost of a project by using the budget from a similar project last month. Which type of budget estimation technique are you using? (Q25)",opts:["Expert judgment estimation","Three-point estimation","Bottom-up estimation","Analogous/historical estimation"],ans:3,expl:"Again, this uses historical project data. Analogous estimation uses data from similar past projects."},
+  // Q26
+  {type:'mc',q:"You are managing a project that is experiencing significant scope creep. What is the impact on the project?",opts:["The project will require fewer resources to develop","The project will take additional time to complete","The project will be assigned a new project manager","The project will include fewer deliverables"],ans:1,expl:"Scope creep increases workload, schedule duration, and often cost."},
+  // Q27 CLASSIFY
+  {type:'classify',q:"Predictive and adaptive project management approaches have different key characteristics. For each key characteristic, select Predictive or Adaptive.",hint:"Click a characteristic to select it, then click the correct column to place it. Click a placed item to remove it.",items:["Reliance on customer input throughout the project","Increased flexibility to make project adjustments","Completion of project according to the project management plan created at the beginning of the project"],cols:["Predictive","Adaptive"],ans:[1,1,0],expl:"Adaptive: customer input throughout, flexible adjustments. Predictive: follows the plan created at the beginning of the project."},
+  // Q28
+  {type:'mc',q:"What is a vendor?",opts:["A business analyst who works with the finance team for a project","An external supplier who provides goods or services to a project","A procurement team member who negotiates contracts for a project","An experienced business professional who can sell the final product"],ans:1,expl:"Vendors provide products or services needed by the project."},
+  // Q29
+  {type:'mc',q:"As a project manager, what information do you need to include in a status update to your boss?",opts:["Project work that has been completed","A list of project stakeholders","Project goals and objectives","A description of the project scope"],ans:0,expl:"Status updates inform stakeholders about project progress and accomplishments."},
+  // Q30
+  {type:'mc',q:"Your project team is using an agile project delivery method. In preparation for an upcoming meeting, your manager asks you to review the prioritized list of deliverables. What should you review?",opts:["Kanban board","Backlog","User story","Work breakdown structure (WBS)"],ans:1,expl:"In Agile, the prioritized list is the product backlog."},
+  // Q31
+  {type:'mc',q:"As a project manager, how should you encourage your team to be focused, energized, and positive for the duration of a project?",opts:["Discover what personally motivates each team member","Report poor behavior to upper management","Give each team member the authority to change project deadlines","Rank team members' performance during team meetings"],ans:0,expl:"Understanding individual motivations helps increase productivity and engagement."},
+  // Q32
+  {type:'mc',q:"What is the primary goal of creating a work breakdown structure (WBS)?",opts:["To prepare an organizational chart for the project team members","To describe the key stakeholders and their roles in the project","To decompose the project work into assignable work activities","To determine which team members will be responsible for each project activity"],ans:2,expl:"WBS divides a project into manageable components."},
+  // Q33
+  {type:'mc',q:"Who is responsible for overseeing the daily activities of a project from start to finish?",opts:["Project manager","Client","Vendor","Sponsor"],ans:0,expl:"The PM coordinates planning, execution, and monitoring."},
+  // Q34
+  {type:'mc',q:"A project team is arguing about the start date for an important task in the project. The project sponsor intervenes and sets the start date. Which type of conflict resolution technique is the project sponsor using?",opts:["Avoiding","Smoothing","Forcing","Collaborating"],ans:2,expl:"The sponsor imposed a decision using authority — this is the Forcing technique."},
+  // Q35
+  {type:'mc',q:"You are one of the event planners for a large town festival. You are reviewing a list of potential bakeries that will supply the desserts at the festival. When you review the list, you notice that your favorite aunt owns one of the bakeries, but no one else on your team knows this information. According to project management ethical guidelines, what should you do?",opts:["Tell your aunt to lower her prices so that she can be easily selected for the event","Inform your aunt that she will need to remove her bakery from the selection list","Proceed with the selection process, confident that you will act fairly","Notify your supervisor that your aunt's bakery is on the list"],ans:3,expl:"Ethical transparency avoids conflict of interest."},
+  // Q36
+  {type:'mc',q:"What is the purpose of following a change management process?",opts:["To document a change in scope and any impact to the project","To delay a new feature request so the customer will reconsider any changes","To inform the customer that your team takes their suggested product changes seriously","To show the project sponsor that you follow correct procedures"],ans:0,expl:"Change management ensures controlled project modifications."},
+  // Q37
+  {type:'mc',q:"As a project manager, which activity should you perform when using a predictive project management approach?",opts:["Create a detailed project plan that includes all of the project activities","Begin the current sprint before planning for the next one","View the backlog to determine the next planning activity required","Review deliverables after each iteration with the customer"],ans:0,expl:"Predictive projects rely heavily on upfront planning."},
+  // Q38
+  {type:'mc',q:"A community center director hires your project team to build a playground for the families in the community. Upon completion of the playground, who is responsible for the final acceptance of the project?",opts:["The director (your client)","The project team","The families in the community","The project manager (you)"],ans:0,expl:"The client confirms the deliverables meet requirements."},
+  // Q39
+  {type:'mc',q:"You have contracted an external supplier to provide a tool needed for the development phase in a project. The tool has been delivered and the project team finds the tool acceptable and they are using it. Why should you now close the contract with the supplier?",opts:["To inform the procurement team that the new tool has been delivered","To prevent the supplier from contacting team members for payment","To request that the supplier be paid for the delivery of the tool","To thank the supplier for delivering the tool according to the contract"],ans:2,expl:"Contract closure ensures payment processing and documentation."},
+  // Q40
+  {type:'mc',q:"Your manager explains that the project team starts every new project with a design stage where they create a design, test the design, make updates to the design, retest, and then create a final design. After this design stage, they create and follow a detailed project plan for all the remaining project deliverables. Which project management approach are they using?",opts:["Hybrid","Predictive","Scrum","Adaptive"],ans:0,expl:"Combination of iterative design + predictive planning = Hybrid."},
+  // Q41 ORDER
+  {type:'order',q:"You have received a request to add a new scope item to your project and need to follow the change management process. Move the four actions to the answer area and place them in the correct order.",hint:"Click each step to add it to the sequence in order. Click a filled slot to remove it.",items:["Identify the change","Assess the change impact","Approve or deny the change","Implement the approved change"],ans:[0,1,2,3],expl:"Correct order: 1. Identify the change → 2. Assess the change impact → 3. Approve or deny the change → 4. Implement the approved change."},
+  // Q42
+  {type:'mc',q:"You are the project manager on an interior design project. The floor tiles in the original project plan are no longer available. Who has the authority to choose a new style for the replacement tiles?",opts:["The project team","The business analyst","The project manager","The customer"],ans:3,expl:"The customer controls design decisions affecting the deliverable."},
+  // Q43
+  {type:'mc',q:"How does an adaptive project management approach engage customers?",opts:["It encourages customers to contribute to the lessons learned process","It encourages customers to complete sections of the project management plan","It encourages customers to provide continuous feedback","It encourages customers to complete tasks on the project backlog"],ans:2,expl:"Adaptive methods depend on frequent stakeholder interaction."},
+  // Q44
+  {type:'mc',q:"Why is quality assurance included in the project development process?",opts:["To evaluate the performance of new employees","To motivate project team members to complete project milestones on time","To ensure products meet specifications and requirements","To verify that project expenses remain under baseline budgets"],ans:2,expl:"Quality assurance ensures products meet defined specifications and requirements."},
+  // Q45
+  {type:'mc',q:"You need to select a project management approach for an upcoming project. Key considerations include: you are working with new technologies and processes, the scope of the project is unclear, the client wants to be informed and involved in all phases of the project, you have a highly qualified and motivated team, and the project requires a significant amount of testing and retesting. Which project management approach should you choose?",opts:["Adaptive","Predictive","Hybrid","Critical path"],ans:0,expl:"Adaptive methods suit uncertain requirements and experimentation. Adaptive suits: unclear scope, high testing, stakeholder involvement."},
+  // Q46
+  {type:'mc',q:"While working on your current project, the team learned a new, creative approach to managing project resources. What is a benefit of reporting this new approach in the lessons learned documentation?",opts:["To inform other teams of the new approach","To inform the legal team of the new approach","To inform competitors of the new approach","To inform the client of the new approach"],ans:0,expl:"Lessons learned improve organizational knowledge management."},
+  // Q47 (repeat of Q28 wording in PDF)
+  {type:'mc',q:"What is a vendor? (Q47)",opts:["A procurement team member who negotiates contracts for a project","An experienced business professional who can sell the final product","An external supplier who provides goods or services to a project","A business analyst who works with the finance team for a project"],ans:2,expl:"Vendors provide products or services needed by the project."},
+  // Q48
+  {type:'mc',q:"At a team meeting, your project sponsor states the customer is concerned that the software being developed will not perform reliably. As the project manager, how should you respond?",opts:["Ask the engineering team to increase software reliability","Email the customer to inform them reliability will be addressed at the end of the project","Meet with the customer to understand the basis of their concerns","Inform the project sponsor that the customer is using old performance data"],ans:2,expl:"PM should investigate issues and clarify expectations."},
+  // Q49
+  {type:'mc',q:"In a project, who has the highest level of authority to make project decisions such as changes to the project scope, schedule, or budget?",opts:["The business analyst","The sponsor","The quality assurance manager","The project manager"],ans:1,expl:"Sponsors approve major changes in scope, schedule, or cost."},
+  // Q50
+  {type:'mc',q:"You are creating a budget for your project by calculating the accurate cost of each activity in the project. Which method of budget development are you using?",opts:["Three-point estimate","Analogous/historical comparison","Top-down","Bottom-up"],ans:3,expl:"Bottom-up estimation calculates cost per task then totals them."},
+  // Q51
+  {type:'mc',q:"During a project, your team develops new procedures to create certain product features more efficiently. Why should the team archive the project documents and new procedures?",opts:["To show the sponsor the efficiency of the team","To provide reference material for teams working on similar projects","To identify the employees that discovered the new procedures","To receive recognition for developing new procedures"],ans:1,expl:"Knowledge reuse — archived documents help future teams."},
+  // Q52
+  {type:'mc',q:"What describes a project's requirements, including major deliverables and exclusions of the project?",opts:["Scope statement","Status report","Work breakdown structure","Business case"],ans:0,expl:"The scope statement defines requirements, deliverables, and exclusions."},
+  // Q53 (repeat of Q26 wording in PDF)
+  {type:'mc',q:"You are managing a project that is experiencing significant scope creep. What is the impact on the project? (Q53)",opts:["The project will require fewer resources to develop","The project will be assigned a new project manager","The project will include fewer deliverables","The project will take additional time to complete"],ans:3,expl:"Scope creep increases workload, schedule duration, and often cost."},
+  // Q54
+  {type:'mc',q:"You are a team member working on a project. All the team members signed a non-disclosure agreement (NDA) and promised not to share information with other people outside of the project team. You witness a team member talking about the project to someone outside the team. According to project management ethical guidelines, what should you do?",opts:["Send an email to all employees with the definition of non-disclosure","Let the project manager discover and take care of the issue","Bring the situation to the attention of the project manager","Remind the team about the importance of keeping project details confidential"],ans:2,expl:"Reporting the issue ensures proper handling of confidentiality breaches."},
+  // Q55
+  {type:'mc',q:"Which action signifies the formal acceptance of the final product? (Q55)",opts:["Closing of vendor contracts by the project team","Approval by the project sponsor and customer","Final budget approval by the project manager","Completion of all paperwork by the project manager"],ans:1,expl:"Formal acceptance occurs when the customer or sponsor officially approves the deliverable. Administrative activities like paperwork or closing vendor contracts happen after acceptance, not before."},
+  // Q56
+  {type:'mc',q:"You are part of a project team that is working on developing a new app. A team member suggests that you add a feature to the app. They say that the feature is out of scope. What should you do if a product feature is out of scope? (Q56)",opts:["You should develop the feature as part of the project","You should add the feature to the scope statement","You should consider the feature a project dependency","You should decline the development of the feature"],ans:3,expl:"If a feature is not included in the project scope, the team should not implement it unless it goes through the change management process. Developing features outside the scope leads to scope creep."},
+  // Q57
+  {type:'mc',q:"Which document is issued by the project sponsors to formally authorize the existence of a project and is the starting point for initial project planning?",opts:["Procurement contract","Scope statement","Project charter","Project management plan"],ans:2,expl:"The project charter is the official document that authorizes the project and gives the project manager authority to use resources."},
+  // Q58
+  {type:'mc',q:"What is a dependency?",opts:["The difference between the estimated and the actual length of a task","An accidental change in project requirements","A relationship between two or more tasks","The work needed to complete the project"],ans:2,expl:"A dependency occurs when one task cannot start or finish until another task is completed."},
+  // Q59
+  {type:'mc',q:"You are an event planner for an upcoming wedding. In your meetings with the couple, they often disagree about colors and styles for the wedding decorations. When you try to get involved, it tends to make the disagreement worse so you decide to give them time to talk about their choices. Eventually the couple agrees on a joint decision. Which conflict resolution technique are you using?",opts:["Withdrawal","Collaborating","Compromising","Forcing"],ans:0,expl:"Withdrawal (also called avoidance) occurs when someone steps away from a conflict temporarily to allow others to resolve it."},
+  // Q60
+  {type:'mc',q:"You are a project team member working on a community festival. Your project manager assigns you the task of creating a map of all the games, rides, and vendors at the festival. You want to take another team member off their assigned task to help you, which will save you half the time. What responsibility and authority do you have regarding your assigned task?",opts:["You need to promise your team member that you will help them after they help you","You need to get approval from the project manager before asking for help","You can reassign tasks as long as both tasks are completed on time","You can use your team member's help as long as you complete your assigned task faster"],ans:1,expl:"Team members typically cannot reassign tasks or resources without approval. The project manager controls resource allocation."},
+  // Q61
+  {type:'mc',q:"You are an event coordinator and meet with the customer to review the current status of the project. When reviewing the event invitations, your customer requests a change in the design work. Which stage of the change management process does this represent?",opts:["Implement the approved change","Identify the change","Assess the change impact","Approve the change"],ans:1,expl:"When a customer requests a modification, the first step is to identify and document the requested change before analyzing its impact."},
+  // Q62
+  {type:'mc',q:"What is a deliverable? (Q62)",opts:["A result created as an outcome of a project","A task that leads to a larger outcome","An organized list of activities","A set of resources needed to accomplish an activity"],ans:0,expl:"A deliverable is a product, service, or result produced by the project."},
+  // Q63
+  {type:'mc',q:"Which project characteristic suggests that a predictive project management approach should be used? (Q63)",opts:["Multiple releases of product features","High levels of change and risk","Defined deliverables and deadlines","Evolving goals and requirements"],ans:2,expl:"The predictive (waterfall) approach works best when the scope, deliverables, and deadlines are clearly defined at the beginning of the project."},
+  // Q64
+  {type:'mc',q:"A project team is having difficulty meeting deadlines and focusing on the tasks that need to be completed. After meeting with each team member, the project manager decides to offer a paid bonus to three of them, extra time off to two of them, and the ability to work remotely to the remaining two members if they complete the project on time. Why did the project manager decide to provide the team members with different perks?",opts:["The project manager wanted to reward the team with something fun","The project manager discovered how to motivate each team member individually","The project manager had additional budget that needed to be spent","The project manager hoped that random perks would inspire the team to work harder"],ans:1,expl:"Different people are motivated by different factors such as money, time off, flexibility, or recognition. Effective project managers tailor motivation strategies to individual needs."},
+  // Q65
+  {type:'mc',q:"What impact does gold plating have on a project? (Q65)",opts:["The scope increases and the cost to the customer remains the same","The scope increases and the cost to the customer increases","The scope remains the same and the cost to the customer decreases","The scope remains the same and the cost to the customer increases"],ans:1,expl:"Gold plating means adding extra features or work that were not requested by the client. This increases scope, which often increases cost and time without stakeholder approval."},
+  // Q66 CLASSIFY
+  {type:'classify',q:"Predictive and adaptive project management approaches have different key characteristics. For each project description, select Adaptive or Predictive.",hint:"Click a description to select it, then click the correct column to place it. Click a placed item to remove it.",items:["The project is executed in sprints","The client is flexible to what the end deliverable will look like","The project has clear deliverables, specific deadlines, and follows the project management plan closely"],cols:["Predictive","Adaptive"],ans:[1,1,0],expl:"Adaptive (Agile) uses iterations/sprints and frequent changes. Predictive (Waterfall) has clear deliverables, specific deadlines, and follows the project management plan."},
+  // Q67
+  {type:'mc',q:"What is a purpose of including a schedule in the project management plan?",opts:["To communicate project deliverable deadlines","To obtain management support for the project","To evaluate the work performance of the team","To assign team members to different activities"],ans:0,expl:"A project schedule defines the timeline of activities, milestones, and deadlines, ensuring everyone understands when tasks must be completed."},
+  // Q68
+  {type:'mc',q:"Who is responsible for completing project deliverables?",opts:["Sponsors","Product managers","Business analysts","Team members"],ans:3,expl:"While the project manager oversees the project, the actual work and deliverables are completed by project team members."},
+  // Q69
+  {type:'mc',q:"What is project procurement? (Q69)",opts:["The planning of all communication methods needed to complete a project","The identification of all the funding requirements needed to complete a project","The analysis of the business requirements needed to complete a project","The purchasing of external goods and services needed to complete a project"],ans:3,expl:"Procurement involves obtaining materials, tools, equipment, or services from external vendors needed for the project."},
+  // Q70
+  {type:'mc',q:"What should you include in the project purpose section of the project charter?",opts:["A description of the business need","An outline of the key points in time in the project","A list of key milestones","A statement describing the expected deliverables"],ans:0,expl:"The project purpose explains why the project exists and what problem or opportunity it addresses."},
+  // Q71
+  {type:'mc',q:"You provide the following information to your boss: work planned vs. work completed, budget planned vs. budget spent, and issues or roadblocks. Which type of communication are you providing?",opts:["A contingency plan","A business plan","A project charter","A status update"],ans:3,expl:"Status updates usually include: work planned vs completed, budget status, and issues or risks."},
+  // Q72
+  {type:'mc',q:"Which statement describes the main purpose of using a change management process?",opts:["To list project scope requirements and create an initial scope baseline","To discuss new requirements and have customers add them to the work breakdown structure (WBS)","To document all modifications and formalize their approval","To identify new stakeholders and add them to the stakeholder register"],ans:2,expl:"Change management ensures every change is evaluated, approved, and documented, preventing uncontrolled scope changes."},
+  // Q73
+  {type:'mc',q:"You are the project manager for an upcoming bicycle race. You discover that road construction nearby may interfere with the path of the race. Which part of the project management plan should you update?",opts:["Schedule","Risk","Cost","Resource"],ans:1,expl:"Road construction interfering with the race route represents a potential project risk, so the risk management plan must be updated."},
+  // Q74
+  {type:'mc',q:"Which statement describes a characteristic of a predictive project management approach?",opts:["Planning is completed for the entire scope of the project at the beginning","Planning is completed for deliverables needed in the next two weeks","Planning is completed in short increments as part of a cycle","Planning is completed annually as part of a company finance cycle"],ans:0,expl:"Predictive projects involve detailed planning before execution begins."},
+  // Q75
+  {type:'mc',q:"Why is contract closure an important element of project closing?",opts:["It ensures that the work described in the contract was completed as specified","It ensures that workers can no longer access project materials","It ensures that the project management plan is updated with contract completion status","It ensures that the project budget has enough money to cover the expenses"],ans:0,expl:"Contract closure verifies that vendors fulfilled their obligations before final payment is issued."},
+  // Q76 ORDER
+  {type:'order',q:"Move all the project life cycle phases to the answer area and place them in the correct order.",hint:"Click each phase to add it to the sequence in order. Click a filled slot to remove it.",items:["Ending the project","Organizing and preparing","Initiating the project","Carrying out the work"],ans:[2,1,3,0],expl:"Correct order: 1. Initiating the project → 2. Organizing and preparing → 3. Carrying out the work → 4. Ending the project."},
+  // Q77/78 (hybrid scenario + question)
+  {type:'mc',q:"A project consists of the development of a new product that contains software and hardware components. The software will be developed using sprints. The hardware prototype will be developed according to product specifications in the project management plan with minimal customer feedback. Which type of project management approach does this scenario describe?",opts:["Hybrid","Incremental","Adaptive","Predictive"],ans:0,expl:"Hybrid combines two methods: Agile for software development (sprints) and Predictive for hardware development (fixed specifications)."},
+  // Q79
+  {type:'mc',q:"You are a project coordinator working to build a new house. You are meeting with the customer to review progress when they notice that the kitchen cabinets that were installed do not match the kitchen cabinets that they selected as part of the scope. What should you do to resolve the scope variance?",opts:["Contact the cabinet maker to order the right cabinets, regardless of the impact on the schedule and cost","Require the customer to accept the house as-is and give them a discount on the house price","Discuss options with the customer to correct the issue and gain their approval on the course of action","Communicate with the customer that the project will be over budget with any additional changes and their house price will increase"],ans:2,expl:"If the delivered product does not match the agreed scope, the project manager must consult the customer and agree on corrective action."},
+  // Q80 MATCH
+  {type:'match',q:"You are managing a house painting project. Move each change management process step from the list on the left to the scenario that describes it on the right.",hint:"Select a step on the left, then click its matching scenario on the right. Click a filled slot to remove it.",sources:["Identify the change","Assess the change impact","Approve the change","Implement the approved change"],targets:["The construction manager informs you that the team will need an additional 15 gallons of paint","You request a cost estimate for 15 gallons of paint","The sponsor tells the purchasing manager to buy 15 gallons of additional paint","15 gallons of paint are delivered to the construction site"],ans:[0,1,2,3],expl:"Correct order: Identify (construction manager reports need) → Assess impact (get cost estimate) → Approve (sponsor authorizes) → Implement (paint delivered). This ensures changes are evaluated before implementation."},
+  // Q81
+  {type:'mc',q:"Why is contract closure an important element of project closing? (Q81)",opts:["It ensures that the project budget has enough money to cover the expenses","It ensures that workers can no longer access project materials","It ensures that the work described in the contract was completed as specified","It ensures that the project management plan is updated with contract completion status"],ans:2,expl:"Contract closure confirms the vendor has met all obligations before finalizing the agreement."},
+  // Q82
+  {type:'mc',q:"What is the purpose of a work breakdown structure (WBS)?",opts:["To identify all the stakeholders impacted by a project","To identify all the activities needed to complete a project","To identify all the communication methods needed for a project","To identify all the roles and responsibilities in a project"],ans:1,expl:"The WBS breaks the project into smaller manageable tasks, making planning and scheduling easier."},
+  // Q83 ORDER (repeat in PDF)
+  {type:'order',q:"Move all the project life cycle phases to the answer area and place them in the current order. (Q83)",hint:"Click each phase to add it to the sequence in order. Click a filled slot to remove it.",items:["Ending the project","Organizing and preparing","Initiating the project","Carrying out the work"],ans:[2,1,3,0],expl:"Correct order: 1. Initiating the project → 2. Organizing and preparing → 3. Carrying out the work → 4. Ending the project."},
+  // Q84
+  {type:'mc',q:"Which project characteristic suggests that a predictive project management approach should be used? (Q84)",opts:["High levels of change and risk","Evolving goals and requirements","Defined deliverables and deadlines","Multiple releases of product features"],ans:2,expl:"Predictive projects work best when requirements are stable and clearly defined."},
+  // Q85
+  {type:'mc',q:"In a project, who has the highest level of authority to make project decisions such as changes to the project scope, schedule, or budget? (Q85)",opts:["The project manager","The business analyst","The quality assurance manager","The sponsor"],ans:3,expl:"The project sponsor has the highest authority regarding scope, budget, and schedule changes."},
+  // Q86
+  {type:'mc',q:"In an adaptive project management approach, which statement describes the actions of team members?",opts:["They work on the highest priority items in the product backlog","They work through all the tasks sequentially to complete the final product","They gather all customer requirements at the beginning of the project","They take turns leading the project so they can each gain experience in leadership"],ans:0,expl:"In Agile or adaptive environments, the team works on prioritized tasks from the product backlog during each sprint."},
+  // Q87
+  {type:'mc',q:"Which document is issued by the project sponsors to formally authorize the existence of a project and is the starting point for initial project planning? (Q87)",opts:["Project charter","Procurement contract","Project management plan","Scope statement"],ans:0,expl:"The project charter officially initiates the project and authorizes the project manager to begin work."}
+];
+
+let pool=[],idx=0,answers=[],selCount=10;
+let matchSel=null,orderSlots=[],classSel=null;
+const KEYS=['A','B','C','D'];
+
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0)}
+function toggleCb(id){const c=document.getElementById(id);c.checked=!c.checked}
+function setCount(btn,v){document.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selCount=v}
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+
+function renderReview(){
+  const q=(document.getElementById('searchInput').value||'').toLowerCase();
+  const filtered=QS.filter(item=>{
+    const txt=(item.q+(item.opts||[]).join('')+(item.items||[]).join('')+(item.sources||[]).join('')+(item.targets||[]).join('')+item.expl).toLowerCase();
+    return txt.includes(q);
+  });
+  document.getElementById('revCount').textContent=`Showing ${filtered.length} of ${QS.length} questions`;
+  document.getElementById('revList').innerHTML=filtered.map(item=>{
+    const n=QS.indexOf(item)+1;
+    const tl={mc:'Multiple Choice',match:'Matching',order:'Ordering',classify:'Classification'}[item.type];
+    const tc={mc:'tp-mc',match:'tp-match',order:'tp-order',classify:'tp-classify'}[item.type];
+    let body='';
+    if(item.type==='mc'){body=`<div class="ropts">${item.opts.map((o,i)=>`<div class="ropt ${i===item.ans?'correct':''}"><span class="key">${KEYS[i]}.</span>${o}</div>`).join('')}</div>`;}
+    else if(item.type==='match'){body=`<table class="rtable"><thead><tr><th>Item</th><th>Matches with</th></tr></thead><tbody>${item.sources.map((s,i)=>`<tr class="ans-row"><td>${s}</td><td>${item.targets[item.ans[i]]}</td></tr>`).join('')}</tbody></table>`;}
+    else if(item.type==='order'){const ord=item.ans.map(i=>item.items[i]);body=`<ol class="rorder-list">${ord.map((o,i)=>`<li><span class="step-num">${i+1}</span>${o}</li>`).join('')}</ol>`;}
+    else if(item.type==='classify'){const cols=item.cols.map(c=>({name:c,its:[]}));item.items.forEach((it,i)=>cols[item.ans[i]].its.push(it));body=`<div class="rclassify">${cols.map(c=>`<div class="rcol"><div class="rcol-title">${c.name}</div>${c.its.map(it=>`<div class="rcol-item">${it}</div>`).join('')}</div>`).join('')}</div>`;}
+    return `<div class="ritem"><div class="ritem-head"><div class="qnum">${n}</div><div><div class="type-pill ${tc}">${tl}</div><div class="rqtext">${item.q}</div></div></div>${body}<div class="rexpl"><strong>Explanation:</strong> ${item.expl}</div></div>`;
+  }).join('');
+}
+
+function startQuiz(){
+  const sQ=document.getElementById('shuffleQ').checked, sA=document.getElementById('shuffleA').checked;
+  let p=sQ?shuffle(QS):[...QS];
+  p=p.slice(0,Math.min(selCount,p.length));
+  pool=p.map(item=>{
+    if(item.type==='mc'&&sA){const pr=item.opts.map((o,i)=>({t:o,a:i===item.ans}));const sh=shuffle(pr);return{...item,opts:sh.map(x=>x.t),ans:sh.findIndex(x=>x.a)};}
+    if(item.type==='match'&&sA){const si=shuffle([...Array(item.sources.length).keys()]);return{...item,sources:si.map(i=>item.sources[i]),ans:si.map(i=>item.ans[i])};}
+    if(item.type==='order'&&sA){const di=shuffle([...Array(item.items.length).keys()]);return{...item,_disp:di.map(i=>item.items[i]),_d2o:di};}
+    if(item.type==='classify'&&sA){const sh=shuffle([...item.items]);const na=sh.map(it=>item.ans[item.items.indexOf(it)]);return{...item,items:sh,ans:na};}
+    return{...item};
+  });
+  idx=0;answers=[];
+  showPage('quiz');renderQ();
+}
+
+function renderQ(){
+  const tot=pool.length;
+  document.getElementById('progFill').style.width=((idx/tot)*100)+'%';
+  document.getElementById('progText').textContent=`${idx+1} / ${tot}`;
+  const item=pool[idx];
+  const tl={mc:'Multiple Choice',match:'Matching',order:'Ordering',classify:'Classification'}[item.type];
+  const tc={mc:'tp-mc',match:'tp-match',order:'tp-order',classify:'tp-classify'}[item.type];
+  document.getElementById('qLabel').innerHTML=`Question ${idx+1} <span class="type-pill ${tc}">${tl}</span>`;
+  document.getElementById('qText').textContent=item.q;
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('fbCorrect').style.display='none';
+  document.getElementById('qActions').style.display='none';
+  matchSel=null;orderSlots=[];classSel=null;
+  if(item.type==='mc')renderMC(item);
+  else if(item.type==='match')renderMatch(item);
+  else if(item.type==='order')renderOrder(item);
+  else if(item.type==='classify')renderClassify(item);
+}
+
+// MC
+function renderMC(item){
+  document.getElementById('questionArea').innerHTML=`<div class="opts-list">${item.opts.map((o,i)=>`<button class="opt" onclick="pickMC(${i})"><div class="opt-key">${KEYS[i]}</div><div class="opt-txt">${o}</div></button>`).join('')}</div>`;
+}
+function pickMC(i){
+  const item=pool[idx];const btns=document.querySelectorAll('.opt');if(btns[0].disabled)return;
+  btns.forEach(b=>b.disabled=true);const ok=i===item.ans;
+  answers.push({type:'mc',qIdx:idx,chosen:i,correct:ok,item});
+  btns[i].classList.add(ok?'correct':'wrong');if(!ok)btns[item.ans].classList.add('correct');
+  showFB(ok,null,item.expl);
+}
+
+// MATCH
+function renderMatch(item){
+  window._mItem=item;window._mSlots=item.sources.map(()=>null);
+  document.getElementById('questionArea').innerHTML=`
+    <div class="hint-box">${item.hint}</div>
+    <div class="match-grid">
+      <div><div class="match-col-title">Items</div>${item.sources.map((s,i)=>`<div class="msrc" id="ms${i}" onclick="mSrcClick(${i})">${s}</div>`).join('')}</div>
+      <div><div class="match-col-title">Descriptions</div>${item.targets.map((t,i)=>`<div class="mtgt" id="mt${i}" onclick="mTgtClick(${i})"><span class="mtgt-lbl">Slot ${i+1}</span><span class="mtgt-val" id="mv${i}">${t}</span></div>`).join('')}</div>
+    </div>
+    <button class="match-submit" id="mSub" onclick="submitMatch()" disabled>Check answers</button>`;
+}
+function mSrcClick(i){if(matchSel!==null)document.getElementById('ms'+matchSel).classList.remove('sel');matchSel=i;document.getElementById('ms'+i).classList.add('sel');}
+function mTgtClick(ti){
+  if(matchSel===null)return;const slots=window._mSlots;const item=window._mItem;
+  if(slots[ti]!==null)document.getElementById('ms'+slots[ti]).classList.remove('used');
+  slots.forEach((s,si)=>{if(s===matchSel&&si!==ti){slots[si]=null;document.getElementById('mt'+si).classList.remove('filled');document.getElementById('mv'+si).textContent=item.targets[si];}});
+  slots[ti]=matchSel;
+  document.getElementById('ms'+matchSel).classList.add('used');document.getElementById('ms'+matchSel).classList.remove('sel');
+  document.getElementById('mt'+ti).classList.add('filled');document.getElementById('mv'+ti).textContent=item.sources[matchSel];
+  matchSel=null;document.getElementById('mSub').disabled=slots.some(s=>s===null);
+}
+function submitMatch(){
+  const item=window._mItem;const slots=window._mSlots;let ok=true;
+  slots.forEach((si,ti)=>{const tgt=document.getElementById('mt'+ti);tgt.classList.remove('filled');tgt.classList.add('locked');const good=item.ans[si]===ti;tgt.classList.add(good?'ok':'bad');if(!good)ok=false;});
+  document.querySelectorAll('.msrc').forEach(e=>e.classList.add('locked'));document.getElementById('mSub').disabled=true;
+  const corrHtml=ok?null:'Correct: '+item.sources.map((s,i)=>`${s} → ${item.targets[item.ans[i]]}`).join(', ');
+  answers.push({type:'match',qIdx:idx,correct:ok,item,corrHtml});showFB(ok,corrHtml,item.expl);
+}
+
+// ORDER
+function renderOrder(item){
+  const disp=item._disp||item.items;window._oItem=item;window._oDisp=disp;
+  orderSlots=new Array(item.items.length).fill(null);
+  document.getElementById('questionArea').innerHTML=`
+    <div class="hint-box" style="border-left-color:var(--warn)">${item.hint}</div>
+    <div class="order-pool">${disp.map((it,i)=>`<div class="oitem" id="oi${i}" onclick="pickOrder(${i})"><span class="odot"></span>${it}</div>`).join('')}</div>
+    <div class="order-targets">${item.items.map((_,i)=>`<div class="otgt" id="ot${i}" onclick="removeOrder(${i})"><div class="oslot-num">${i+1}</div><div class="oslot-txt" id="os${i}">Click to place here</div></div>`).join('')}</div>
+    <button class="order-submit" id="oSub" onclick="submitOrder()" disabled>Check order</button>`;
+}
+function pickOrder(di){const el=document.getElementById('oi'+di);if(el.classList.contains('placed'))return;const sl=orderSlots.indexOf(null);if(sl===-1)return;orderSlots[sl]=di;el.classList.add('placed');document.getElementById('ot'+sl).classList.add('filled');document.getElementById('os'+sl).textContent=window._oDisp[di];checkOReady();}
+function removeOrder(sl){if(orderSlots[sl]===null)return;const di=orderSlots[sl];orderSlots[sl]=null;document.getElementById('oi'+di).classList.remove('placed');document.getElementById('ot'+sl).classList.remove('filled');document.getElementById('os'+sl).textContent='Click to place here';checkOReady();}
+function checkOReady(){document.getElementById('oSub').disabled=orderSlots.some(s=>s===null);}
+function submitOrder(){
+  const item=window._oItem;const d2o=item._d2o||[...Array(item.items.length).keys()];let ok=true;
+  orderSlots.forEach((di,sl)=>{const oi=d2o[di];const exp=item.ans[sl];const good=oi===exp;const tgt=document.getElementById('ot'+sl);tgt.classList.remove('filled');tgt.classList.add('locked');tgt.classList.add(good?'ok':'bad');if(!good)ok=false;});
+  document.querySelectorAll('.oitem').forEach(e=>e.classList.add('locked'));document.getElementById('oSub').disabled=true;
+  const corrHtml=ok?null:'Correct order: '+item.ans.map((i,n)=>`${n+1}. ${item.items[i]}`).join(' → ');
+  answers.push({type:'order',qIdx:idx,correct:ok,item,corrHtml});showFB(ok,corrHtml,item.expl);
+}
+
+// CLASSIFY
+function renderClassify(item){
+  window._cItem=item;window._cPlaced=item.cols.map(()=>[]);
+  document.getElementById('questionArea').innerHTML=`
+    <div class="hint-box" style="border-left-color:#117A50">${item.hint}</div>
+    <div class="classify-pool">${item.items.map((it,i)=>`<div class="citem" id="ci${i}" onclick="cItemClick(${i})"><span class="cdot"></span>${it}</div>`).join('')}</div>
+    <div class="classify-cols">${item.cols.map((col,ci)=>`<div class="cdrop" id="cd${ci}" onclick="cColClick(${ci})"><div class="cdrop-hdr">${col}</div><div id="cc${ci}"><div class="cempty">Drop items here</div></div></div>`).join('')}</div>
+    <button class="classify-submit" id="cSub" onclick="submitClassify()" disabled>Check answers</button>`;
+}
+function cItemClick(i){if(classSel!==null)document.getElementById('ci'+classSel).style.outline='';classSel=i;document.getElementById('ci'+i).style.outline='2px solid #117A50';}
+function cColClick(ci){
+  if(classSel===null)return;const item=window._cItem;const placed=window._cPlaced;
+  placed.forEach((col,i)=>{const ix=col.indexOf(classSel);if(ix>-1){col.splice(ix,1);refreshCols();}});
+  placed[ci].push(classSel);document.getElementById('ci'+classSel).classList.add('classified');document.getElementById('ci'+classSel).style.outline='';classSel=null;
+  refreshCols();const tot=placed.reduce((a,c)=>a+c.length,0);document.getElementById('cSub').disabled=tot<item.items.length;
+}
+function refreshCols(){
+  const item=window._cItem;const placed=window._cPlaced;
+  placed.forEach((col,ci)=>{const cont=document.getElementById('cc'+ci);if(col.length===0){cont.innerHTML='<div class="cempty">Drop items here</div>';return;}cont.innerHTML=col.map(ii=>`<div class="cplaced" id="cp${ci}_${ii}" onclick="cRemove(${ci},${ii})">${item.items[ii]}<span class="cx">×</span></div>`).join('');});
+}
+function cRemove(ci,ii){const placed=window._cPlaced;const ix=placed[ci].indexOf(ii);if(ix>-1)placed[ci].splice(ix,1);document.getElementById('ci'+ii).classList.remove('classified');refreshCols();const item=window._cItem;const tot=placed.reduce((a,c)=>a+c.length,0);document.getElementById('cSub').disabled=tot<item.items.length;}
+function submitClassify(){
+  const item=window._cItem;const placed=window._cPlaced;let ok=true;
+  placed.forEach((col,ci)=>{col.forEach(ii=>{const good=item.ans[ii]===ci;const el=document.getElementById(`cp${ci}_${ii}`);if(el){el.classList.add('locked');el.classList.add(good?'ok':'bad');const x=el.querySelector('.cx');if(x)x.style.display='none';}if(!good)ok=false;});});
+  document.querySelectorAll('.cdrop').forEach(e=>e.classList.add('locked'));document.getElementById('cSub').disabled=true;
+  const corrHtml=ok?null:'Correct: '+item.items.map((it,i)=>`"${it}" → ${item.cols[item.ans[i]]}`).join('; ');
+  answers.push({type:'classify',qIdx:idx,correct:ok,item,corrHtml});showFB(ok,corrHtml,item.expl);
+}
+
+function showFB(ok,corrHtml,expl){
+  const fb=document.getElementById('feedback');fb.className='feedback show '+(ok?'correct':'wrong');
+  document.getElementById('fbVerdict').textContent=ok?'✓ Correct!':'✗ Incorrect';
+  const fbc=document.getElementById('fbCorrect');if(corrHtml){fbc.style.display='block';fbc.textContent=corrHtml;}else{fbc.style.display='none';}
+  document.getElementById('fbExpl').textContent=expl;
+  document.getElementById('qActions').style.display='flex';
+  document.getElementById('nextBtn').textContent=(idx+1>=pool.length)?'See results →':'Next question →';
+}
+
+function nextQ(){idx++;if(idx>=pool.length)showResults();else{renderQ();window.scrollTo(0,0);}}
+
+function showResults(){
+  const tot=pool.length,ok=answers.filter(a=>a.correct).length,pct=Math.round((ok/tot)*100);
+  document.getElementById('resPct').textContent=pct+'%';
+  document.getElementById('resOk').textContent=ok;document.getElementById('resErr').textContent=tot-ok;document.getElementById('resTotal').textContent=tot;
+  let hl,sub;if(pct>=90){hl='Outstanding!';sub='You have a strong grasp of project management concepts.'}else if(pct>=75){hl='Great work!';sub="You're well-prepared — review missed questions to sharpen up."}else if(pct>=60){hl='Good effort!';sub='Some areas need review. Keep studying!'}else{hl='Keep practicing!';sub='Review the explanations carefully and try again.'}
+  document.getElementById('resHL').textContent=hl;document.getElementById('resSub').textContent=sub;
+  const missed=answers.filter(a=>!a.correct);
+  document.getElementById('retryBtn').style.display=missed.length?'':'none';
+  document.getElementById('missedSection').innerHTML=missed.length
+    ?`<div class="missed-title">Questions to Review (${missed.length})</div>`+missed.map(a=>{
+        const item=a.item;let your='',right='';
+        if(a.type==='mc'){your=`Your answer: ${KEYS[a.chosen]}. ${item.opts[a.chosen]}`;right=`Correct answer: ${KEYS[item.ans]}. ${item.opts[item.ans]}`;}
+        else if(a.type==='match'){your='Your matching was incorrect.';right='Correct: '+item.sources.map((s,i)=>`${s} → ${item.targets[item.ans[i]]}`).join(', ');}
+        else if(a.type==='order'){your='Your order was incorrect.';right='Correct order: '+item.ans.map((i,n)=>`${n+1}. ${item.items[i]}`).join(' → ');}
+        else if(a.type==='classify'){your='Your classification was incorrect.';right='Correct: '+item.items.map((it,i)=>`"${it}" → ${item.cols[item.ans[i]]}`).join('; ');}
+        return `<div class="mcard"><div class="mq">${item.q}</div><div class="myour">✗ ${your}</div><div class="mright">✓ ${right}</div><div class="mexpl">${item.expl}</div></div>`;
+      }).join('')
+    :`<p style="color:var(--t2);font-size:14px;text-align:center;padding:20px 0">Perfect score — no questions to review! 🎉</p>`;
+  showPage('results');
+}
+
+function retryMissed(){const missed=answers.filter(a=>!a.correct);pool=missed.map(a=>pool[a.qIdx]);idx=0;answers=[];showPage('quiz');renderQ();}
+</script>
+</body>
+</html>
