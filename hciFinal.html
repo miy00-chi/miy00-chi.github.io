@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HCI Quiz Reviewer</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F7F3EC;--surface:#FDFAF5;--s2:#F0EAE0;--text:#2C1F0F;--t2:#6B5744;--t3:#A8917A;--accent:#4A3728;--al:#F5EDE3;--ok:#1A7A4A;--okbg:#EAF6EF;--err:#C0392B;--errbg:#FDECEA;--border:rgba(44,31,15,.12);--b2:rgba(44,31,15,.06);--r:12px;--rs:8px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+.page{display:none;min-height:100vh}.page.active{display:flex;flex-direction:column}
+.wrap{max-width:740px;margin:0 auto;padding:0 20px;width:100%}
+
+/* HOME */
+#home{background:var(--bg);align-items:center;justify-content:center;padding:40px 20px}
+.home-inner{max-width:620px;width:100%}
+.badge{display:inline-flex;align-items:center;gap:6px;background:var(--al);color:var(--accent);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:5px 12px;border-radius:20px;margin-bottom:24px}
+.home-title{font-family:'DM Serif Display',serif;font-size:clamp(30px,5vw,48px);line-height:1.1;margin-bottom:16px}
+.home-title em{font-style:italic;color:var(--accent)}
+.home-sub{font-size:15px;color:var(--t2);font-weight:300;margin-bottom:36px;max-width:480px}
+.fa-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.fa-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;cursor:pointer;transition:transform .18s,box-shadow .18s,border-color .18s;position:relative;overflow:hidden}
+.fa-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--al),transparent 70%);opacity:0;transition:opacity .2s}
+.fa-card:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.07);border-color:rgba(74,55,40,.3)}.fa-card:hover::before{opacity:1}
+.fa-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.fa-badge{font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;background:var(--al);color:var(--accent)}
+.fa-count{font-size:11px;color:var(--t3)}
+.fa-card h3{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.fa-card p{font-size:12px;color:var(--t2);line-height:1.4}
+.all-card{background:var(--accent);border-radius:var(--r);padding:18px 22px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:opacity .15s;margin-bottom:12px}
+.all-card:hover{opacity:.9}
+.all-card-left h3{font-size:16px;font-weight:600;color:#fff;margin-bottom:2px}
+.all-card-left p{font-size:13px;color:rgba(255,255,255,.7)}
+.all-card-arr{font-size:20px;color:rgba(255,255,255,.7)}
+.home-stat{display:flex;gap:28px;margin-top:8px}
+.hs-num{font-family:'DM Serif Display',serif;font-size:28px;color:var(--text)}.hs-lbl{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;font-weight:500}
+
+/* TOPBAR */
+.topbar{background:var(--surface);border-bottom:1px solid var(--b2);padding:14px 0;position:sticky;top:0;z-index:10}
+.topbar-inner{display:flex;align-items:center;gap:10px}
+.back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--t2);cursor:pointer;background:none;border:none;padding:6px 10px;border-radius:var(--rs);transition:background .15s,color .15s;font-family:inherit}
+.back:hover{background:var(--s2);color:var(--text)}.topbar-title{font-size:15px;font-weight:600;flex:1}
+.topbar-sub{font-size:12px;color:var(--t3)}
+
+/* REVIEW */
+#review{background:var(--bg)}.rev-body{padding:20px 0 60px}
+.search-wrap{margin-bottom:16px;position:relative}.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--t3);font-size:15px}
+.search-input{width:100%;padding:10px 14px 10px 38px;border:1px solid var(--border);border-radius:var(--rs);font-size:14px;font-family:inherit;color:var(--text);background:var(--surface);transition:border-color .15s}
+.search-input:focus{outline:none;border-color:var(--accent)}
+.fa-filter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.ff-btn{padding:6px 14px;border:1px solid var(--border);border-radius:20px;background:var(--surface);font-size:12px;font-weight:500;color:var(--t2);cursor:pointer;transition:all .15s;font-family:inherit}
+.ff-btn:hover{border-color:var(--accent);color:var(--accent)}.ff-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.rev-count{font-size:13px;color:var(--t3);margin-bottom:14px}
+.ritem{background:var(--surface);border:1px solid var(--b2);border-radius:var(--r);padding:18px;margin-bottom:8px}
+.ritem-head{display:flex;gap:10px;margin-bottom:10px}
+.qnum{min-width:26px;height:26px;border-radius:50%;background:var(--al);color:var(--accent);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.fa-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;margin-bottom:6px;background:var(--s2);color:var(--t2)}
+.rqtext{font-size:14px;color:var(--text);line-height:1.6}
+.ropts{display:grid;gap:5px;margin-top:8px}
+.ropt{display:flex;align-items:flex-start;gap:8px;padding:7px 10px;border-radius:var(--rs);font-size:13px;color:var(--t2);line-height:1.5}
+.ropt.correct{background:var(--okbg);color:var(--ok)}.ropt .key{font-weight:600;min-width:16px}
+
+/* SETUP */
+#quiz-setup{background:var(--bg)}.setup-body{padding:28px 0 60px}
+.setup-title{font-family:'DM Serif Display',serif;font-size:26px;margin-bottom:6px}.setup-sub{font-size:14px;color:var(--t2);margin-bottom:28px}
+.setup-sec{margin-bottom:24px}.setup-lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:8px}
+.titem{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--b2);border-radius:var(--rs);padding:13px 15px;margin-bottom:8px;cursor:pointer}
+.titem-left{display:flex;flex-direction:column;gap:2px}.titem-left span{font-size:14px;font-weight:500}.titem-left small{font-size:12px;color:var(--t3)}
+.ts{position:relative;width:40px;height:22px;flex-shrink:0}.ts input{opacity:0;width:0;height:0}
+.ts-track{position:absolute;inset:0;background:var(--s2);border-radius:20px;border:1px solid var(--border);transition:background .2s;cursor:pointer}
+.ts-track::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--t3);transition:transform .2s,background .2s}
+.ts input:checked+.ts-track{background:var(--accent);border-color:var(--accent)}.ts input:checked+.ts-track::after{transform:translateX(18px);background:#fff}
+.fa-selector{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}
+.fa-sel-btn{padding:10px 6px;border:1px solid var(--border);border-radius:var(--rs);background:var(--surface);font-size:13px;font-weight:500;color:var(--t2);cursor:pointer;transition:all .15s;font-family:inherit;text-align:center}
+.fa-sel-btn:hover{border-color:var(--accent);color:var(--accent)}.fa-sel-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.count-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.cbtn{padding:11px 0;border:1px solid var(--border);border-radius:var(--rs);background:var(--surface);font-size:14px;font-weight:500;color:var(--t2);cursor:pointer;transition:all .15s;font-family:inherit;text-align:center}
+.cbtn:hover{border-color:var(--accent);color:var(--accent)}.cbtn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.start-btn{width:100%;padding:14px;border-radius:var(--r);background:var(--accent);border:none;color:#fff;font-size:16px;font-weight:600;font-family:inherit;cursor:pointer;margin-top:8px;transition:opacity .15s,transform .15s}
+.start-btn:hover{opacity:.9}.start-btn:active{transform:scale(.99)}
+
+/* QUIZ */
+#quiz{background:var(--bg)}.qtopbar{background:var(--surface);border-bottom:1px solid var(--b2);padding:13px 0;position:sticky;top:0;z-index:10}
+.qtop-inner{display:flex;align-items:center;gap:14px}.prog-text{font-size:13px;color:var(--t3);white-space:nowrap}
+.prog-bar{flex:1;height:5px;background:var(--s2);border-radius:3px;overflow:hidden}.prog-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .4s ease}
+.qbody{padding:26px 0 60px}
+.qlabel{font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.q-fa-tag{font-size:10px;padding:2px 7px;border-radius:20px;background:var(--s2);color:var(--t2);font-weight:600}
+.qtext{font-size:17px;color:var(--text);line-height:1.65;margin-bottom:22px;font-weight:400}
+.opts-list{display:grid;gap:9px}
+.opt{display:flex;align-items:flex-start;gap:12px;padding:13px 15px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--surface);cursor:pointer;text-align:left;font-family:inherit;transition:all .15s;width:100%}
+.opt:hover:not(:disabled){border-color:var(--accent);background:var(--al)}
+.opt-key{min-width:26px;height:26px;border-radius:50%;background:var(--s2);color:var(--t2);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.opt-txt{font-size:14px;color:var(--text);line-height:1.5;padding-top:3px}
+.opt.correct{border-color:var(--ok);background:var(--okbg)}.opt.correct .opt-key{background:var(--ok);color:#fff}.opt.correct .opt-txt{color:var(--ok)}
+.opt.wrong{border-color:var(--err);background:var(--errbg)}.opt.wrong .opt-key{background:var(--err);color:#fff}.opt.wrong .opt-txt{color:var(--err)}
+.opt:disabled{cursor:default}
+.feedback{margin-top:18px;padding:14px 16px;border-radius:var(--r);font-size:14px;line-height:1.6;display:none}
+.feedback.correct{background:var(--okbg);color:var(--ok);border-left:3px solid var(--ok)}
+.feedback.wrong{background:var(--errbg);color:var(--err);border-left:3px solid var(--err)}
+.feedback.show{display:block}.fb-verdict{font-weight:600;margin-bottom:4px;font-size:14px}
+.fb-correct{font-size:13px;margin-top:6px;padding:7px 9px;background:rgba(255,255,255,.6);border-radius:var(--rs)}
+.fb-expl{color:var(--t2);font-size:13px;margin-top:5px}
+.qactions{margin-top:20px;display:flex;gap:10px}
+.abtn{flex:1;padding:12px 18px;border-radius:var(--rs);font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .15s;border:1.5px solid transparent}
+.abtn.primary{background:var(--accent);color:#fff}.abtn.primary:hover{opacity:.9}
+.abtn.outline{background:var(--surface);color:var(--t2);border-color:var(--border)}.abtn.outline:hover{border-color:var(--accent);color:var(--accent)}
+
+/* RESULTS */
+#results{background:var(--bg)}.res-body{padding:36px 0 60px}
+.score-ring{width:130px;height:130px;border-radius:50%;background:var(--surface);border:1.5px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 28px}
+.score-pct{font-family:'DM Serif Display',serif;font-size:40px;line-height:1}.score-lbl{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-top:4px}
+.res-headline{font-family:'DM Serif Display',serif;font-size:26px;text-align:center;margin-bottom:6px}.res-sub{font-size:14px;color:var(--t2);text-align:center;margin-bottom:28px}
+.res-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:32px}
+.rstat{background:var(--surface);border:1px solid var(--b2);border-radius:var(--r);padding:14px;text-align:center}
+.rstat-num{font-family:'DM Serif Display',serif;font-size:28px}.rstat-num.g{color:var(--ok)}.rstat-num.r{color:var(--err)}
+.rstat-lbl{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;font-weight:500;margin-top:4px}
+.missed-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em}
+.mcard{background:var(--surface);border:1px solid var(--b2);border-left:3px solid var(--err);border-radius:var(--r);padding:16px;margin-bottom:8px}
+.mq{font-size:14px;color:var(--text);line-height:1.6;margin-bottom:8px}
+.myour{font-size:13px;color:var(--err);margin-bottom:3px}.mright{font-size:13px;color:var(--ok);margin-bottom:3px}
+.res-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px}
+.rbtn{padding:12px;border-radius:var(--rs);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .15s;border:1.5px solid var(--border);background:var(--surface);color:var(--t2)}
+.rbtn:hover{border-color:var(--accent);color:var(--accent)}.rbtn.acc{background:var(--accent);color:#fff;border-color:var(--accent)}.rbtn.acc:hover{opacity:.9}
+
+@media(max-width:520px){.fa-cards,.fa-selector{grid-template-columns:1fr}.count-grid{grid-template-columns:repeat(2,1fr)}.res-btns{grid-template-columns:1fr}.qtext{font-size:15px}}
+</style>
+</head>
+<body>
+
+<div id="home" class="page active">
+  <div style="margin:auto" class="wrap"><div class="home-inner">
+    <div class="badge">🖥️ Human–Computer Interaction</div>
+    <h1 class="home-title">HCI Final Activity<br><em>Reviewer</em></h1>
+    <p class="home-sub">All 5 Final Activity sets in one place. Study by topic or take a mixed quiz.</p>
+
+    <div class="all-card" onclick="launchAll()">
+      <div class="all-card-left"><h3>Take Full Mixed Quiz</h3><p>All 268 questions shuffled together</p></div>
+      <div class="all-card-arr">→</div>
+    </div>
+
+    <div class="fa-cards">
+      <div class="fa-card" onclick="launchFA(0)">
+        <div class="fa-card-top"><span class="fa-badge">FA1</span><span class="fa-count">44 questions</span></div>
+        <h3>Experimental Design</h3>
+        <p>Validity, controls, research designs</p>
+      </div>
+      <div class="fa-card" onclick="launchFA(1)">
+        <div class="fa-card-top"><span class="fa-badge">FA2</span><span class="fa-count">52 questions</span></div>
+        <h3>Research Methods & Stats</h3>
+        <p>Qualitative, quantitative, t-tests, chi-square</p>
+      </div>
+      <div class="fa-card" onclick="launchFA(2)">
+        <div class="fa-card-top"><span class="fa-badge">FA3</span><span class="fa-count">52 questions</span></div>
+        <h3>Online Research & Data</h3>
+        <p>Surveys, sampling, sensors, crowdsourcing</p>
+      </div>
+      <div class="fa-card" onclick="launchFA(3)">
+        <div class="fa-card-top"><span class="fa-badge">FA4</span><span class="fa-count">56 questions</span></div>
+        <h3>Usability Testing</h3>
+        <p>Testing types, UI principles, design</p>
+      </div>
+      <div class="fa-card" onclick="launchFA(4)" style="grid-column:span 2">
+        <div class="fa-card-top"><span class="fa-badge">FA5</span><span class="fa-count">64 questions</span></div>
+        <h3>HCI Design Principles & Usability</h3>
+        <p>Affordances, signifiers, feedback, Norman, Shneiderman</p>
+      </div>
+    </div>
+
+    <div class="home-stat">
+      <div><div class="hs-num">268</div><div class="hs-lbl">Total questions</div></div>
+      <div><div class="hs-num">5</div><div class="hs-lbl">FA sets</div></div>
+      <div><div class="hs-num">20+</div><div class="hs-lbl">Topics</div></div>
+    </div>
+  </div></div>
+</div>
+
+<!-- REVIEW -->
+<div id="review" class="page">
+  <div class="topbar"><div class="wrap topbar-inner">
+    <button class="back" onclick="showPage('home')">← Back</button>
+    <div class="topbar-title">Question Reviewer</div>
+  </div></div>
+  <div class="rev-body"><div class="wrap">
+    <div class="search-wrap"><span class="search-icon">🔍</span><input class="search-input" id="searchInput" placeholder="Search questions…" oninput="renderReview()"></div>
+    <div class="fa-filter" id="faFilter"></div>
+    <div class="rev-count" id="revCount"></div>
+    <div id="revList"></div>
+  </div></div>
+</div>
+
+<!-- SETUP -->
+<div id="quiz-setup" class="page">
+  <div class="topbar"><div class="wrap topbar-inner">
+    <button class="back" onclick="showPage('home')">← Back</button>
+    <div class="topbar-title" id="setupTitle">Quiz Settings</div>
+  </div></div>
+  <div class="setup-body"><div class="wrap">
+    <h1 class="setup-title" id="setupHeadline">Customize your quiz</h1>
+    <p class="setup-sub" id="setupDesc">Set up your session before you start.</p>
+    <div class="setup-sec">
+      <div class="setup-lbl">Options</div>
+      <div class="titem" onclick="toggleCb('shuffleQ')">
+        <div class="titem-left"><span>Shuffle questions</span><small>Randomize order each time</small></div>
+        <label class="ts" onclick="event.stopPropagation()"><input type="checkbox" id="shuffleQ" checked><span class="ts-track"></span></label>
+      </div>
+      <div class="titem" onclick="toggleCb('shuffleA')">
+        <div class="titem-left"><span>Shuffle answer choices</span><small>Randomize option order each time</small></div>
+        <label class="ts" onclick="event.stopPropagation()"><input type="checkbox" id="shuffleA" checked><span class="ts-track"></span></label>
+      </div>
+    </div>
+    <div class="setup-sec" id="countSec">
+      <div class="setup-lbl">Number of questions</div>
+      <div class="count-grid" id="countGrid"></div>
+    </div>
+    <button class="start-btn" onclick="startQuiz()">Start Quiz →</button>
+  </div></div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="page">
+  <div class="qtopbar"><div class="wrap qtop-inner">
+    <button class="back" onclick="if(confirm('Exit quiz?'))showPage('home')">✕</button>
+    <div class="prog-bar"><div class="prog-fill" id="progFill"></div></div>
+    <div class="prog-text" id="progText"></div>
+  </div></div>
+  <div class="qbody"><div class="wrap">
+    <div class="qlabel" id="qLabel"></div>
+    <div class="qtext" id="qText"></div>
+    <div id="questionArea"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-verdict" id="fbVerdict"></div>
+      <div class="fb-expl" id="fbExpl"></div>
+    </div>
+    <div class="qactions" id="qActions" style="display:none">
+      <button class="abtn outline" onclick="showPage('home')">Quit</button>
+      <button class="abtn primary" id="nextBtn" onclick="nextQ()">Next →</button>
+    </div>
+  </div></div>
+</div>
+
+<!-- RESULTS -->
+<div id="results" class="page">
+  <div class="topbar"><div class="wrap topbar-inner"><div class="topbar-title">Results</div></div></div>
+  <div class="res-body"><div class="wrap">
+    <div class="score-ring"><div class="score-pct" id="resPct"></div><div class="score-lbl">Score</div></div>
+    <h2 class="res-headline" id="resHL"></h2><p class="res-sub" id="resSub"></p>
+    <div class="res-stats">
+      <div class="rstat"><div class="rstat-num g" id="resOk"></div><div class="rstat-lbl">Correct</div></div>
+      <div class="rstat"><div class="rstat-num r" id="resErr"></div><div class="rstat-lbl">Incorrect</div></div>
+      <div class="rstat"><div class="rstat-num" id="resTotal"></div><div class="rstat-lbl">Total</div></div>
+    </div>
+    <div class="res-btns">
+      <button class="rbtn" onclick="showPage('home')">← Home</button>
+      <button class="rbtn" onclick="showPage('quiz-setup')">New quiz</button>
+      <button class="rbtn" id="retryBtn" onclick="retryMissed()">Retry missed</button>
+      <button class="rbtn acc" onclick="showPage('review');renderReview()">Review all</button>
+    </div>
+    <div id="missedSection"></div>
+  </div></div>
+</div>
+
+<script>
+const FA = [
+  // ─── FA1: Experimental Design ───────────────────────────────────────────────
+  {fa:1,q:"Loss of subjects during an experiment affects:",opts:["External validity","Hypothesis formulation","Randomization","Internal validity"],ans:3},
+  {fa:1,q:"In HCI, experimental units are typically:",opts:["Algorithms","Software applications","Human subjects","Hardware devices"],ans:2},
+  {fa:1,q:"The group that receives the treatment in an experiment is called:",opts:["Control group","Experimental group","Test group","Subject group"],ans:1},
+  {fa:1,q:"Which design involves repeated testing over time?",opts:["Time-series design","Posttest equivalent","One-shot case study","Static-group comparison"],ans:0},
+  {fa:1,q:"Which design includes only a posttest after treatment?",opts:["Static-group comparison","One-group pretest-posttest","One-shot case study","Solomon four-group"],ans:2},
+  {fa:1,q:"Randomization in experiments helps to:",opts:["Increase bias","Control hidden factors","Avoid hypothesis testing","Reduce sample size"],ans:1},
+  {fa:1,q:"Which of the following is a threat to internal validity?",opts:["Control group demoralization","Randomization","Posttest analysis","Hypothesis testing"],ans:0},
+  {fa:1,q:"Which threat involves the control group unintentionally receiving the treatment?",opts:["Maturation","Hawthorne effect","Treatment diffusion","John Henry effect"],ans:2},
+  {fa:1,q:"Which design is considered the most accurate in experimental research?",opts:["Quasi-experimental","True experimental","Observational","Pre-experimental"],ans:1},
+  {fa:1,q:"Which method is commonly used for randomization in modern HCI studies?",opts:["Random digit table","Tossing a coin","Spinning a wheel","Drawing capsules"],ans:0},
+  {fa:1,q:"A researcher wants to test a new keyboard layout. Participants are randomly assigned and only posttest data is collected. What design is used?",opts:["Posttest equivalent","Solomon group","Time-series","Pretest-posttest equivalent"],ans:0},
+  {fa:1,q:"A researcher uses a random digit table to assign participants to groups. What is the purpose of this?",opts:["Increase bias","Ensure fairness","Improve performance","Control hidden variables"],ans:3},
+  {fa:1,q:"A teacher compares two classes: one uses a new reading strategy, the other does not. No random assignment is done. What design is this?",opts:["True experimental","Posttest equivalent","Pre-experimental","Quasi-experimental"],ans:3},
+  {fa:1,q:"A control group feels discouraged because they didn't receive the new teaching method. What threat is this?",opts:["John Henry effect","Hawthorne effect","Control group demoralization","Maturation"],ans:2},
+  {fa:1,q:"A researcher uses four groups to test the effect of pretesting and treatment. What design is this?",opts:["Time-series","Solomon four-group","Posttest equivalent","Static-group comparison"],ans:1},
+  {fa:1,q:"A researcher compares two groups that are known to differ before the experiment. What design is this?",opts:["True experimental","Posttest equivalent","Nonequivalent before-after","Solomon group"],ans:2},
+  {fa:1,q:"A study finds that students improved in math scores, but the improvement may be due to natural development over time. What threat is this?",opts:["Hawthorne effect","Maturation","Treatment diffusion","Loss of subjects"],ans:1},
+  {fa:1,q:"In a study, the control group performs poorly because they feel left out of the treatment. What threat is this?",opts:["John Henry effect","Subject characteristics","Hawthorne effect","Control group demoralization"],ans:3},
+  {fa:1,q:"A study measures typing speed using QWERTY and DVORAK keyboards. Participants have no prior experience. What is being controlled?",opts:["Assignment method","Control group demoralization","Subject characteristics","Treatment diffusion"],ans:2},
+  {fa:1,q:"Children naturally improve in reading over time, regardless of treatment. What threat is this?",opts:["Maturation","Loss of subjects","Hawthorne effect","Control group demoralization"],ans:0},
+  {fa:1,q:"Which of the following is NOT a component of an experiment?",opts:["Units","Hypothesis","Assignment method","Treatments"],ans:1},
+  {fa:1,q:"Which design compares two groups, one treated and one untreated, after treatment?",opts:["Pretest-posttest equivalent","Time-series design","Posttest equivalent","Static-group comparison"],ans:3},
+  {fa:1,q:"Fitts' Law in HCI relates to:",opts:["Reading speed","User satisfaction","Error rate","Pointer movement time"],ans:3},
+  {fa:1,q:"Which design compares groups that are likely different before the study begins?",opts:["Pretest-posttest equivalent","Nonequivalent before-after","Solomon group","Posttest equivalent"],ans:1},
+  {fa:1,q:"A researcher wants to test a new app feature. They randomly assign users and use both pretest and posttest. What design is this?",opts:["Pretest-posttest equivalent","Posttest equivalent","Solomon group","Quasi-experimental"],ans:0},
+  {fa:1,q:"In a school, one class receives a new math curriculum. Another class does not. The researcher compares posttest scores. What design is this?",opts:["Time-series","Solomon group","Static-group comparison","Posttest equivalent"],ans:2},
+  {fa:1,q:"A group of students drops out of a study before the posttest. What threat to validity is this?",opts:["Hawthorne effect","Maturation","Treatment diffusion","Loss of subjects"],ans:3},
+  {fa:1,q:"A researcher observes that students in the control group are copying techniques from the experimental group. What threat is this?",opts:["Hawthorne effect","John Henry effect","Treatment diffusion","Maturation"],ans:2},
+  {fa:1,q:"A study is conducted to test a new diet plan. Participants are not randomly assigned, but both groups are tested before and after. What design is this?",opts:["One-group pretest-posttest","Posttest equivalent","Nonequivalent pretest-posttest","Solomon group"],ans:2},
+  {fa:1,q:"Which design uses both pretest and posttest but without random assignment?",opts:["Pre-experimental","Quasi-experimental","Solomon group","True experimental"],ans:1},
+  {fa:1,q:"A company tests two interface designs by randomly assigning users and measuring satisfaction before and after use. What design is this?",opts:["Pretest-posttest equivalent","Static-group comparison","Solomon group","Posttest equivalent"],ans:0},
+  {fa:1,q:"A control group works harder to outperform the experimental group. What threat is this?",opts:["John Henry effect","Subject characteristics","Treatment diffusion","Hawthorne effect"],ans:0},
+  {fa:1,q:"A researcher wants to test the effect of a new app feature. They use four groups to test the effect of pretesting and treatment. What design is this?",opts:["One-group pretest-posttest","Pretest-posttest equivalent","Solomon four-group","Static-group comparison"],ans:2},
+  {fa:1,q:"The Hawthorne Effect refers to:",opts:["Subjects refusing treatment","Subjects dropping out of the study","Subjects misunderstanding the experiment","Subjects responding differently because they are being studied"],ans:3},
+  {fa:1,q:"A researcher compares two groups after treatment but did not check if they were similar before the study. What is a potential issue here?",opts:["Hawthorne effect","Lack of pretest","Over-testing","Randomization error"],ans:1},
+  {fa:1,q:"A study tracks user engagement weekly for 3 months before and after a UI change. What design is this?",opts:["One-group pretest-posttest","Time-series","Nonequivalent before-after","Solomon group"],ans:1},
+  {fa:1,q:"A teacher implements a new teaching strategy and measures student performance weekly for 2 months. What design is this?",opts:["One-shot case study","Posttest equivalent","Static-group comparison","Time-series"],ans:3},
+  {fa:1,q:"A null hypothesis typically states that:",opts:["There is no significant difference","The treatment is effective","There is a significant difference","The experiment is invalid"],ans:0},
+  {fa:1,q:"A researcher tests a new training program on one group and compares pretest and posttest scores. What design is this?",opts:["Static-group comparison","One-shot case study","One-group pretest-posttest","Solomon group"],ans:2},
+  {fa:1,q:"A researcher notices that the control group starts using techniques from the treatment group. What threat is present?",opts:["Loss of subjects","Subject characteristics","Control group demoralization","Treatment diffusion"],ans:3},
+  {fa:1,q:"In a study, students in one school receive a new curriculum, while another school continues with the old one. No random assignment is done. What design is this?",opts:["Pre-experimental","Quasi-experimental","True experimental","Solomon group"],ans:1},
+  {fa:1,q:"A study on a new medication uses random assignment and measures outcomes only after treatment. What design is this?",opts:["Posttest equivalent","Static-group comparison","One-shot case study","Time-series"],ans:0},
+  {fa:1,q:"In a study, students are taught using a new method. Their performance is measured only after the teaching. What design is used?",opts:["One-shot case study","Time-series","Solomon group","Static-group comparison"],ans:0},
+
+  // ─── FA2: Research Methods & Statistics ─────────────────────────────────────
+  {fa:2,q:"What does qualitative research primarily focus on?",opts:["Numerical data","Lived experiences and meanings","Random sampling","Statistical analysis"],ans:1},
+  {fa:2,q:"What is the goal of correlational research?",opts:["To determine causality","To measure relationships between variables","To describe a phenomenon","To test a new product"],ans:1},
+  {fa:2,q:"Which of the following is NOT a type of quantitative research?",opts:["Descriptive","Experimental","Correlational","Phenomenological"],ans:3},
+  {fa:2,q:"Which type of HCI contribution involves creating new tools or systems?",opts:["Artifact","Methodological","Survey","Theoretical"],ans:0},
+  {fa:2,q:"What is the main characteristic of experimental research?",opts:["Manipulating variables to test hypotheses","Conducting interviews","Observing natural behavior","Measuring variables without control"],ans:0},
+  {fa:2,q:"Which of the following is a common data collection method in qualitative research?",opts:["Rating scales","Interviews","Questionnaires","Surveys"],ans:1},
+  {fa:2,q:"What distinguishes problem solving from research?",opts:["Problem solving contributes to theory","Research is less rigorous","Problem solving is broader","Research aims for generalization"],ans:3},
+  {fa:2,q:"What is the main goal of dataset contributions in HCI?",opts:["To provide benchmarks and data for future research","To develop new theories","To test user interfaces","To conduct interviews"],ans:0},
+  {fa:2,q:"What does empirical contribution in HCI research involve?",opts:["Designing new interfaces","Creating new theories","Observing and analyzing user behavior","Writing opinions"],ans:2},
+  {fa:2,q:"Which type of qualitative research involves studying people in their natural environment?",opts:["Narrative","Experimental","Ethnographic","Correlational"],ans:2},
+  {fa:2,q:"A UX team wants to compare satisfaction scores between two unrelated groups. What test should they use?",opts:["Independent-samples t-test","Correlation","Chi-square","Paired-samples t-test"],ans:0},
+  {fa:2,q:"A researcher wants to know if gender affects device preference. What test should be used?",opts:["Regression","Chi-square","T-test","Correlation"],ans:1},
+  {fa:2,q:"A student wants to summarize how often each device was preferred. What should they create?",opts:["Box plot","Scatter plot","Frequency distribution","Histogram"],ans:2},
+  {fa:2,q:"A student codes gender as Male = 1, Female = 0. What is this process called?",opts:["Cleaning","Coding","Organizing","Tabulation"],ans:1},
+  {fa:2,q:"You have a dataset with only one variable: screen brightness levels. What type of analysis applies?",opts:["Inferential","Univariate","Multivariate","Bivariate"],ans:1},
+  {fa:2,q:"You want to test if device preference differs by age group. What kind of table do you create first?",opts:["Line graph","Scatter plot","Histogram","Contingency table"],ans:3},
+  {fa:2,q:"A developer wants to know which age group prefers stylus input. What kind of test should be used?",opts:["T-test","Regression","Chi-square","Correlation"],ans:2},
+  {fa:2,q:"A student finds the variance of task times is 21704. What is the standard deviation?",opts:["147","21704","76","394"],ans:0},
+  {fa:2,q:"Julius is analyzing survey responses from 100 users. He wants to find the most frequently selected interface design. What statistical measure should he use?",opts:["Median","Mean","Mode","Range"],ans:2},
+  {fa:2,q:"You want to know how spread out the task completion times are. What measure should you use?",opts:["Mode","Standard deviation","Frequency","Mean"],ans:1},
+  {fa:2,q:"Which of the following is a characteristic of quantitative research?",opts:["Small, theoretical samples","Flexible design","Natural settings","Deductive analysis"],ans:3},
+  {fa:2,q:"What is the primary aim of research in HCI?",opts:["To develop software faster","To solve specific problems","To entertain users","To contribute to general knowledge"],ans:3},
+  {fa:2,q:"What is the purpose of a survey contribution in HCI?",opts:["To collect user feedback","To observe user behavior","To synthesize existing research","To test a new interface"],ans:2},
+  {fa:2,q:"Which research method combines both quantitative and qualitative approaches?",opts:["Mixed-methods","Experimental","Longitudinal","Ethnographic"],ans:0},
+  {fa:2,q:"You want to analyze how three age groups prefer three different devices. What is the degree of freedom for the chi-square test?",opts:["4","9","6","2"],ans:0},
+  {fa:2,q:"A researcher uses SPSS to run a t-test. How should the data be arranged for independent samples?",opts:["Same column with group coding","Same row","Separate columns","Frequency table"],ans:0},
+  {fa:2,q:"You want to visualize how many users selected each device. What should you use?",opts:["Scatter plot","Box plot","Frequency table","Line graph"],ans:2},
+  {fa:2,q:"You collected data on age, gender, and device preference. What type of data analysis is appropriate?",opts:["Multivariate","Qualitative","Univariate","Bivariate"],ans:0},
+  {fa:2,q:"A student wants to know if there's a relationship between time spent on a task and years of computer experience. What test should they use?",opts:["Chi-square","Mode","T-test","Pearson correlation"],ans:3},
+  {fa:2,q:"You want to know if task time differs between two software versions used by the same participants. What test applies?",opts:["Paired-samples t-test","Chi-square","Correlation","Independent-samples t-test"],ans:0},
+  {fa:2,q:"Which type of research is concerned with a specific problem and ends once it is solved?",opts:["Mixed-methods","Longitudinal","Problem solving","Research"],ans:2},
+  {fa:2,q:"What is the focus of phenomenological research?",opts:["Cultural practices","Market trends","Statistical relationships","Common lived experiences"],ans:3},
+  {fa:2,q:"What is the purpose of methodological contributions in HCI?",opts:["To describe user behavior","To analyze cultural impact","To propose new research processes or tools","To create new datasets"],ans:2},
+  {fa:2,q:"You're analyzing data with three variables: age, device type, and satisfaction score. What analysis applies?",opts:["Descriptive","Multivariate","Bivariate","Univariate"],ans:1},
+  {fa:2,q:"You want to compare the popularity of four ads among men and women. What type of data is this?",opts:["Qualitative","Bivariate","Multivariate","Univariate"],ans:1},
+  {fa:2,q:"You want to find the midpoint of a class interval 10–12. What is it?",opts:["12","11","10","13"],ans:1},
+  {fa:2,q:"A team wants to compare typing speed before and after using a new predictive keyboard. What test is appropriate?",opts:["Paired-samples t-test","ANOVA","Chi-square","Independent-samples t-test"],ans:0},
+  {fa:2,q:"You want to know the difference between the highest and lowest satisfaction scores. What do you calculate?",opts:["Mode","Mean","Median","Range"],ans:3},
+  {fa:2,q:"A participant's task time is far from the average. What measure helps identify this?",opts:["Frequency","Mode","Standard deviation","Mean"],ans:2},
+  {fa:2,q:"In a usability study, a participant's age is recorded as 222. What should be done first?",opts:["Calculate variance","Clean the data","Run analysis","Code the data"],ans:1},
+  {fa:2,q:"Which type of research is best for studying changes over time?",opts:["Longitudinal","Cross-sectional","Descriptive","Correlational"],ans:0},
+  {fa:2,q:"A researcher finds that as experience increases, task time decreases. What does a negative Pearson's r indicate?",opts:["Negative correlation","Positive correlation","Error in data","No relationship"],ans:0},
+  {fa:2,q:"Which research design is most flexible and evolving?",opts:["Experimental","Qualitative","Quantitative","Cross-sectional"],ans:1},
+  {fa:2,q:"A researcher wants to test if prediction software improves typing speed. What hypothesis is tested?",opts:["The mean is equal","There is no significant difference","There is a relationship","The data is normal"],ans:1},
+  {fa:2,q:"A researcher wants to compare the average task completion time between users who used a mouse and those who used a touchscreen. What test should be used?",opts:["Independent-samples t-test","Correlation test","Chi-square test","Paired-samples t-test"],ans:0},
+  {fa:2,q:"Which of the following is a theoretical contribution in HCI?",opts:["A new interface design","A new dataset","A predictive model like Fitts's Law","A usability test"],ans:2},
+  {fa:2,q:"You want to measure how two variables vary together. What do you calculate?",opts:["Mean","Covariance","Variance","Mode"],ans:1},
+
+  // ─── FA3: Online Research & Data Collection ──────────────────────────────────
+  {fa:3,q:"Which tool allows remote screen sharing and integrated audio for usability studies?",opts:["Web conferencing tools","Online forums","Email","Google Docs"],ans:0},
+  {fa:3,q:"What is a benefit of crowdsourced studies?",opts:["No need for software","Reduced researcher bias","Guaranteed accuracy","Real-time feedback"],ans:1},
+  {fa:3,q:"What is a key benefit of contextual inquiries in online research?",opts:["Participants can control the researcher's computer","Researchers can observe real-time user behavior","It eliminates the need for surveys","No need for participant consent"],ans:1},
+  {fa:3,q:"What is a major concern with using convenience samples in HCI research?",opts:["Time","Validity and generalizability","Technology limitations","Cost"],ans:1},
+  {fa:3,q:"Which platform is popular for DIY sensor projects?",opts:["Photoshop","Arduino","Slack","Excel"],ans:1},
+  {fa:3,q:"Which element is NOT part of a human computation task design?",opts:["Introductory description","Incentives","Hardware specifications","Success criteria"],ans:2},
+  {fa:3,q:"What is 'A/B testing' used for?",opts:["Measuring bandwidth","Comparing alternative website designs","Testing hardware","Comparing user demographics"],ans:1},
+  {fa:3,q:"Which of the following is NOT a method of online data collection?",opts:["Web log analysis","Online surveys","Face-to-face interviews","Instrumented software"],ans:2},
+  {fa:3,q:"What technology allows sensing of objects via radio frequencies?",opts:["GPS","Bluetooth","Wi-Fi","RFID"],ans:3},
+  {fa:3,q:"What was the goal of reCAPTCHA?",opts:["Track user behavior","Encrypt passwords","Digitize difficult text for OCR","Prevent spam"],ans:2},
+  {fa:3,q:"You are designing a mobile app and want to know how many users prefer dark mode. What method should you use?",opts:["Case Study","Interview","Survey","Observation"],ans:2},
+  {fa:3,q:"You want to gather data from 10,000 users quickly and cheaply. What should you use?",opts:["Web-based questionnaire","Case study","Focus group","Passive observation"],ans:0},
+  {fa:3,q:"A team wants to test a new feature with users who are easy to reach. What sampling method are they using?",opts:["Convenience","Systematic","Stratified","Cluster"],ans:0},
+  {fa:3,q:"You are studying a rare user group. What sampling method is most effective?",opts:["Cluster sampling","Systematic sampling","Snowball sampling","Stratified sampling"],ans:2},
+  {fa:3,q:"A researcher wants to compare user satisfaction across different age groups. Which sampling method is best?",opts:["Stratified","Convenience","Simple random","Quota"],ans:0},
+  {fa:3,q:"You want to explore user behavior in a natural setting without interfering. What method should you use?",opts:["Passive observation","Survey","Focus group","Interview"],ans:0},
+  {fa:3,q:"You want to know how many users prefer iOS over Android. What type of question should you ask?",opts:["Likert scale","Open-ended","Unordered closed-ended","Ordered closed-ended"],ans:2},
+  {fa:3,q:"You want to know how many users completed a task in under 5 minutes. What type of data is this?",opts:["Descriptive","Qualitative","Quantitative","Subjective"],ans:2},
+  {fa:3,q:"A researcher uses a list of pre-written questions and asks them in the same order to all participants. What type of interview is this?",opts:["Informal","Structured","Unstructured","Semi-structured"],ans:1},
+  {fa:3,q:"You want to compare user satisfaction between two different app versions. What method is best?",opts:["Focus group","Observation","Case study","Survey"],ans:3},
+  {fa:3,q:"Who introduced the concept of 'embodied virtuality'?",opts:["Alan Turing","Steve Jobs","Marc Weiser","Bill Gates"],ans:2},
+  {fa:3,q:"What type of content is best suited for automated analysis in online communities?",opts:["Video","Audio","Text","Images"],ans:2},
+  {fa:3,q:"Which type of study is easiest to conduct online?",opts:["Ethnographic studies of support groups","Mobile app testing","Hardware usability","Sensor calibration"],ans:0},
+  {fa:3,q:"Which platform is commonly studied in social media research?",opts:["PowerPoint","Excel","Twitter","Zoom"],ans:2},
+  {fa:3,q:"What does CAPTCHA stand for?",opts:["Completely Automated Public Turing test to tell Computers and Humans Apart","Captured Human Algorithm","Computerized Authentication Process","Computer Access Protocol"],ans:0},
+  {fa:3,q:"What is a challenge in designing online research studies?",opts:["Lack of participants","Ethical concerns about privacy","High cost","Limited internet access"],ans:1},
+  {fa:3,q:"A user is asked to rate an app from 1 to 5. What type of question is this?",opts:["Descriptive","Unordered closed-ended","Open-ended","Ordered closed-ended"],ans:3},
+  {fa:3,q:"You want to know how users feel about a feature immediately after using it. What method avoids recall bias?",opts:["Focus group","Interview after one month","Survey after one week","Observation during use"],ans:3},
+  {fa:3,q:"A user is asked to choose their favorite app from a list. What type of question is this?",opts:["Open-ended","Likert scale","Ordered closed-ended","Unordered closed-ended"],ans:3},
+  {fa:3,q:"You want to understand the challenges users face when using your app. Which method is best?",opts:["Closed-ended survey","Likert scale","Random sampling","Open-ended survey"],ans:3},
+  {fa:3,q:"A researcher is already part of a development team and wants to study their workflow. What observation type is this?",opts:["Balanced","Passive","Total participation","External"],ans:2},
+  {fa:3,q:"A researcher asks users to describe their experience using a new app. What type of question is this?",opts:["Open-ended","Binary","Likert scale","Closed-ended"],ans:0},
+  {fa:3,q:"You want to understand how a team adopted a new project management tool. What method fits best?",opts:["Case study","Survey","Observation","Interview"],ans:0},
+  {fa:3,q:"What is an API used for in online research?",opts:["Extracting data from platforms","Encrypting data","Designing surveys","Hosting websites"],ans:0},
+  {fa:3,q:"What is a drawback of crowdsourced studies?",opts:["Lack of direct observation","High cost","Limited participant pool","Complex infrastructure"],ans:0},
+  {fa:3,q:"You want to explore how users feel about a new feature. Which question type is best?",opts:["Multiple choice","Closed-ended","Likert scale","Open-ended"],ans:3},
+  {fa:3,q:"A researcher sends out a paper questionnaire but gets few responses. What is a likely drawback?",opts:["Low response rate","High cost","Inaccurate questions","Biased data"],ans:0},
+  {fa:3,q:"A researcher wants to understand cultural differences in app usage. What method is most appropriate?",opts:["Likert scale","Random sampling","Survey","Interview"],ans:3},
+  {fa:3,q:"You want to know how many users clicked a button last week. What kind of data is this?",opts:["Observational","Qualitative","Quantitative","Subjective"],ans:2},
+  {fa:3,q:"A researcher wants to understand why users abandon a checkout process. Which method is most appropriate?",opts:["Questionnaire","Interview","Observation","Sampling"],ans:1},
+  {fa:3,q:"You want to gather feedback from a group of users discussing a new feature. What method is this?",opts:["Focus group","Survey","Case study","Interview"],ans:0},
+  {fa:3,q:"A researcher uses both surveys and interviews in a study. What is this approach called?",opts:["Experimental","Qualitative","Mixed methods","Quantitative"],ans:2},
+  {fa:3,q:"A researcher wants to study a group of users over time to see how their behavior changes. What method is best?",opts:["Case study","Survey","Observation","Interview"],ans:2},
+  {fa:3,q:"You want to ensure your sample represents different user types. What should you use?",opts:["Stratified sampling","Judgement sampling","Convenience sampling","Snowball sampling"],ans:0},
+  {fa:3,q:"A UX designer wants to observe how users interact with a kiosk without influencing them. Which method is best?",opts:["Active participation","Passive participation","Structured interview","Total participation"],ans:1},
+  {fa:3,q:"What is a major challenge in sensor-based HCI research?",opts:["Data transfer and processing","Survey design","Software licensing","Recruiting participants"],ans:0},
+  {fa:3,q:"You want to know how users feel about your app's usability. Which method gives the deepest insight?",opts:["Likert scale","Survey","Interview","Questionnaire"],ans:2},
+
+  // ─── FA4: Usability Testing ──────────────────────────────────────────────────
+  {fa:4,q:"What is the main difference between formative and summative testing?",opts:["Summative uses paper prototypes","Summative is more informal","Formative is for final designs","Formative explores early concepts; summative evaluates design choices"],ans:3},
+  {fa:4,q:"What is a key difference between classical research and usability testing?",opts:["Classical research is informal","Classical research focuses on fixing interface flaws","Usability testing does not aim for generalization","Usability testing uses more participants"],ans:2},
+  {fa:4,q:"What is the primary goal of usability testing?",opts:["To generalize findings to other systems","To improve interface quality by identifying flaws","To create new interfaces","To replace traditional research methods"],ans:1},
+  {fa:4,q:"Which type of usability testing uses software to evaluate interfaces?",opts:["Summative","Expert-based","Formative","Automated"],ans:3},
+  {fa:4,q:"What is a task list used for in usability testing?",opts:["To guide users through goal-directed tasks","To measure screen resolution","To record user feedback","To evaluate code quality"],ans:0},
+  {fa:4,q:"What is a key limitation of expert-based testing?",opts:["Experts cannot use prototypes","Experts are too expensive","Experts are biased","Experts are unfamiliar with interface tasks"],ans:2},
+  {fa:4,q:"Which device type often requires usability testing due to multitouch and small screen size?",opts:["Printers","Smart TVs","Mobile devices","Desktop computers"],ans:2},
+  {fa:4,q:"What is a common tool for measuring user satisfaction?",opts:["Heatmap","Stopwatch","Code analyzer","Survey"],ans:3},
+  {fa:4,q:"What is a key characteristic of formative testing?",opts:["It requires benchmark comparisons","It uses automated tools","It is exploratory and informal","It evaluates final designs"],ans:2},
+  {fa:4,q:"Which of the following is a benefit of remote usability testing?",opts:["Greater participant access","Easy to observe nonverbal cues","Better for qualitative data","Allows for probing questions"],ans:0},
+  {fa:4,q:"A banking app uses different colors and layouts for each screen. What rule is being broken?",opts:["Strive for Consistency","Offer Error Handling","Support Locus of Control","Enable Shortcuts"],ans:0},
+  {fa:4,q:"A user can't tell what a button does just by looking at it. What's missing?",opts:["Feedback","Closure","Mapping","Affordance"],ans:3},
+  {fa:4,q:"A user interface shows a progress bar during file upload. What principle is applied?",opts:["Closure","Affordance","Mapping","Feedback"],ans:3},
+  {fa:4,q:"A user can preview changes before applying them. What principle is applied?",opts:["Closure","Mapping","Reversal of Actions","Feedback"],ans:2},
+  {fa:4,q:"A user interface shows a tooltip when hovering over a button. What is this?",opts:["Constraint","Feedback","Signifier","Mapping"],ans:2},
+  {fa:4,q:"A user interface prevents invalid inputs with dropdowns. What principle is used?",opts:["Mapping","Constraint","Affordance","Feedback"],ans:1},
+  {fa:4,q:"A user receives a message: 'Upload complete.' What principle is this?",opts:["Mapping","Closure","Constraint","Feedback"],ans:3},
+  {fa:4,q:"A user feels overwhelmed by too many options on a screen. What principle is violated?",opts:["Closure","Feedback","Affordance","Reduce Memory Load"],ans:3},
+  {fa:4,q:"A user interface allows users to undo, redo, and go back easily. Which principle is applied?",opts:["Closure","Reversal of Actions","Mapping","Feedback"],ans:1},
+  {fa:4,q:"A user presses a button and nothing happens. What is missing?",opts:["Mapping","Feedback","Signifier","Constraint"],ans:1},
+  {fa:4,q:"What does task performance measure?",opts:["Number of tasks completed correctly","User satisfaction","Time taken to complete tasks","Interface loading speed"],ans:0},
+  {fa:4,q:"What is measured by time performance?",opts:["Time to complete tasks successfully","Number of errors","Time spent on incorrect tasks","Number of clicks"],ans:0},
+  {fa:4,q:"What is the 'Wizard of Oz' technique?",opts:["A type of expert review","A test where users interact with a human pretending to be the system","A remote usability test","A method for automating usability tests"],ans:1},
+  {fa:4,q:"Usability testing is most closely related to which traditional research methods?",opts:["Case studies and surveys","Meta-analysis and content analysis","Historical analysis and interviews","Experimental design and ethnography"],ans:3},
+  {fa:4,q:"According to Rubin and Chisnell, what is the first step in usability testing?",opts:["Analyze data","Conduct test sessions","Select users","Develop the test plan"],ans:3},
+  {fa:4,q:"A user expects a slider to adjust volume but it changes brightness. What's wrong?",opts:["Signifier","Mapping","Affordance","Feedback"],ans:1},
+  {fa:4,q:"A user is confused by a button labeled 'Execute.' What's missing?",opts:["Feedback","Mapping","Constraint","Signifier"],ans:3},
+  {fa:4,q:"A user interface prevents submission until all fields are filled. What principle is used?",opts:["Feedback","Closure","Constraint","Affordance"],ans:2},
+  {fa:4,q:"A user interface uses consistent icons across screens. What rule is followed?",opts:["Feedback","Mapping","Affordance","Consistency"],ans:3},
+  {fa:4,q:"A user sees a red border around a required field. What is this an example of?",opts:["Mapping","Signifier","Feedback","Constraint"],ans:1},
+  {fa:4,q:"A smart mirror displays weather and news updates. What type of interface is this?",opts:["Tangible UI","Voice UI","GUI","Augmented Reality"],ans:3},
+  {fa:4,q:"What is a drawback of remote usability testing?",opts:["Difficulty in providing real-time help","Inability to collect clickstream data","Limited participant pool","High cost"],ans:0},
+  {fa:4,q:"Which of the following is NOT a type of usability testing mentioned?",opts:["Code debugging","Paper prototype","Wizard of Oz","Beta testing"],ans:0},
+  {fa:4,q:"A user receives a vague error message: 'Something went wrong.' What should be improved?",opts:["Error Handling","Feedback","Affordance","Mapping"],ans:0},
+  {fa:4,q:"A user struggles to find the 'Save' button in a mobile app. What principle is lacking?",opts:["Feedback","Constraint","Affordance","Discoverability"],ans:3},
+  {fa:4,q:"A user interface uses a calendar picker for date input. What principle is applied?",opts:["Constraint","Mapping","Closure","Feedback"],ans:0},
+  {fa:4,q:"A user interface uses a trash icon for deleting files. What principle is this?",opts:["Mapping","Signifier","Feedback","Affordance"],ans:1},
+  {fa:4,q:"A user interface allows users to skip tutorials. What principle is applied?",opts:["Closure","Mapping","Feedback","Internal Locus of Control"],ans:3},
+  {fa:4,q:"A user accidentally deletes a file and cannot undo the action. Which principle was violated?",opts:["Consistency","Feedback","Reversal of Actions","Closure"],ans:2},
+  {fa:4,q:"A microwave has a button labeled 'Start' but no indication of what it does. What is missing?",opts:["Signifier","Feedback","Mapping","Constraint"],ans:0},
+  {fa:4,q:"A user interface uses the same color for clickable and non-clickable items. What's wrong?",opts:["Signifier","Mapping","Feedback","Affordance"],ans:0},
+  {fa:4,q:"A user can easily navigate a form with tab keys. Which rule is followed?",opts:["Mapping","Enable Shortcuts","Feedback","Closure"],ans:1},
+  {fa:4,q:"When is summative usability testing typically conducted?",opts:["After interface release","With high-fidelity prototypes","Before any design work","During brainstorming"],ans:1},
+  {fa:4,q:"What is the purpose of validation testing?",opts:["To gather qualitative feedback","To compare an interface to benchmarks","To test paper prototypes","To explore early design ideas"],ans:1},
+  {fa:4,q:"What is the main purpose of expert-based usability testing?",opts:["To simulate user behavior","To test code functionality","To gather user satisfaction data","To have interface experts inspect the design"],ans:3},
+  {fa:4,q:"A user is forced to watch a tutorial before using the app. What principle is violated?",opts:["Feedback","Affordance","Internal Locus of Control","Mapping"],ans:2},
+
+  // ─── FA5: HCI Design Principles & Usability ─────────────────────────────────
+  {fa:5,q:"What is the purpose of error handling in UI design?",opts:["To log errors silently","To hide system flaws","To help users understand and fix issues","To confuse users"],ans:2},
+  {fa:5,q:"What are 'signifiers' used for?",opts:["To store user data","To decorate the interface","To reduce memory load","To indicate where actions take place"],ans:3},
+  {fa:5,q:"What does HCI stand for?",opts:["Human Cognitive Interface","Human-Computer Interaction","Hybrid Computing Interface","Human-Centered Innovation"],ans:1},
+  {fa:5,q:"What does 'Design Dialog to Yield Closure' mean?",opts:["Use pop-ups","Provide clear task completion feedback","Avoid user interaction","Keep users guessing"],ans:1},
+  {fa:5,q:"What is a 'conceptual model'?",opts:["A visual layout","A database schema","A wireframe","A user's mental understanding of how a system works"],ans:3},
+  {fa:5,q:"What does 'discoverability' refer to in interaction design?",opts:["How users find possible actions","How fast a product loads","How secure a system is","How users feel about a product"],ans:0},
+  {fa:5,q:"What principle emphasizes placing users at the center of the design process?",opts:["Interface Mapping","Cognitive Design","Human-Centered Design","Visual Design"],ans:2},
+  {fa:5,q:"What is the focus of industrial designers?",opts:["Usability","Emotional impact","Form and material","Interface layout"],ans:2},
+  {fa:5,q:"Which type of designer focuses on usability and understandability?",opts:["Industrial designer","Experience designer","Graphic designer","Interaction designer"],ans:3},
+  {fa:5,q:"Which rule helps expert users perform tasks faster?",opts:["Add constraints","Offer shortcuts","Use signifiers","Reduce memory load"],ans:1},
+  {fa:5,q:"A usability test reveals users often miss a key button. What should be adjusted?",opts:["Button placement","Button label","All of the above","Button color"],ans:2},
+  {fa:5,q:"A company uses a validated survey to measure user satisfaction. What metric is this?",opts:["Task performance","User satisfaction","Interface efficiency","Time performance"],ans:1},
+  {fa:5,q:"A usability test is conducted with wireframes. What type of prototype is this?",opts:["Low-fidelity","Final version","Functional","High-fidelity"],ans:0},
+  {fa:5,q:"A usability test is conducted with users performing tasks without guidance. What is this approach?",opts:["Naturalistic observation","Task-driven usability testing","Controlled testing","Expert review"],ans:1},
+  {fa:5,q:"A usability test is conducted with users performing tasks in a workplace setting. What is this called?",opts:["Remote testing","Field usability testing","Expert-based testing","In-lab testing"],ans:1},
+  {fa:5,q:"A participant completes all tasks correctly but takes longer than expected. What should be analyzed?",opts:["Interface layout","User satisfaction","Task abandonment","Time performance"],ans:3},
+  {fa:5,q:"A usability test is conducted using screen mock-ups. What type of prototype is this?",opts:["High-fidelity","Final version","Functional prototype","Low-fidelity"],ans:3},
+  {fa:5,q:"A user struggles with a feature and the moderator asks probing questions. What type of testing is this?",opts:["Automated","Formative","Summative","Validation"],ans:1},
+  {fa:5,q:"A team wants to evaluate a paper prototype of a new dashboard. Which type of testing should they use?",opts:["Validation testing","Summative testing","Formative testing","Automated testing"],ans:2},
+  {fa:5,q:"A company wants to test a new smartwatch interface. What should they focus on?",opts:["Network speed","Physical interaction usability","Screen resolution","Battery life"],ans:1},
+  {fa:5,q:"What should feedback be according to Shneiderman?",opts:["Delayed and vague","Hidden and encrypted","Optional and minimal","Immediate and informative"],ans:3},
+  {fa:5,q:"What does 'Reduce Short-Term Memory Load' aim to do?",opts:["Add more features","Make users memorize steps","Increase cognitive effort","Simplify recognition over recall"],ans:3},
+  {fa:5,q:"Who is the author of The Design of Everyday Things?",opts:["Jakob Nielsen","Don Norman","Ben Shneiderman","Steve Krug"],ans:1},
+  {fa:5,q:"What are 'affordances' in design?",opts:["Indicators of how a product should be used","Error messages","Cost-saving features","Visual aesthetics"],ans:0},
+  {fa:5,q:"What does Ben Shneiderman's rule 'Strive for Consistency' mean?",opts:["Change layout frequently","Avoid user feedback","Use consistent design patterns","Use random colors"],ans:2},
+  {fa:5,q:"A company uses usability testing to evaluate a new feature before release. What is this called?",opts:["Formative testing","Validation testing","Beta testing","Summative testing"],ans:1},
+  {fa:5,q:"A usability test is conducted over the web with screen recording. What is a major drawback?",opts:["Slow data collection","Inability to observe nonverbal cues","Limited participant pool","High cost"],ans:1},
+  {fa:5,q:"A usability test is conducted in users' homes via video call. What kind of testing is this?",opts:["Expert review","Automated inspection","Remote usability testing","In-lab testing"],ans:2},
+  {fa:5,q:"A company wants to compare their new interface against industry benchmarks before launch. What testing type applies?",opts:["Formative","Summative","Validation","Exploratory"],ans:2},
+  {fa:5,q:"A usability test is conducted using a high-fidelity prototype. What type of testing is this?",opts:["Summative","Expert-based","Automated","Formative"],ans:3},
+  {fa:5,q:"A researcher collects data on how long users take to complete tasks. What metric is being measured?",opts:["Task performance","Clickstream","User satisfaction","Time performance"],ans:3},
+  {fa:5,q:"A usability test is conducted with a moderator asking questions during the session. What type of testing is this?",opts:["Validation","Summative","Automated","Formative"],ans:3},
+  {fa:5,q:"A team uses software to scan their interface for font consistency and button sizes. What testing method is this?",opts:["Summative testing","Automated usability testing","Expert-based","Formative testing"],ans:1},
+  {fa:5,q:"During a usability test, a participant struggles with a task and the moderator intervenes. What protocol is this aligned with?",opts:["Task abandonment","Ethnographic immersion","Strict intervention protocol","Open-ended observation"],ans:2},
+  {fa:5,q:"A team wants to know how many users can complete a task within 1 minute. What type of test is this?",opts:["Validation","Summative","Formative","Expert-based"],ans:0},
+  {fa:5,q:"What is the role of 'constraints' in design?",opts:["To challenge the design process","To limit user access","To increase complexity","To reduce feedback"],ans:1},
+  {fa:5,q:"Which of the following is a tangible user interface example?",opts:["Smartwatch","Smartphone","Laptop","Reactable"],ans:3},
+  {fa:5,q:"Which of the following is NOT part of Norman's HCD process?",opts:["Define","Monetize","Observe","Iterate"],ans:1},
+  {fa:5,q:"A usability test is conducted with only 5 participants. Why is this acceptable?",opts:["It's a pilot study","Usability testing requires large samples","Small samples are sufficient to find major flaws","It's a survey-based test"],ans:2},
+  {fa:5,q:"A usability test is conducted in a fixed lab. What is a potential benefit?",opts:["Real-time feedback","Controlled environment","Natural user behavior","Remote access"],ans:1},
+  {fa:5,q:"A moderator avoids helping users unless they are stuck. What principle is being followed?",opts:["Passive observation","Full immersion","Controlled intervention","Open-ended feedback"],ans:2},
+  {fa:5,q:"What does 'feedback' in interaction design refer to?",opts:["System responses to user actions","Marketing surveys","Error logs","User complaints"],ans:0},
+  {fa:5,q:"A team wants to test a new interface with users from different regions. What method is best?",opts:["In-lab testing","Expert review","Remote usability testing","Validation testing"],ans:2},
+  {fa:5,q:"A company wants to test a new interface with real users before launch. What is this called?",opts:["Expert review","Automated inspection","Beta testing","Usability testing"],ans:3},
+  {fa:5,q:"A usability expert is reviewing an interface without knowing the tasks users will perform. What type of testing is this?",opts:["User-based testing","Validation testing","Expert-based testing","Summative testing"],ans:2},
+  {fa:5,q:"What does 'Permit Easy Reversal of Actions' refer to?",opts:["Encrypting user data","Disabling undo","Locking user input","Allowing users to go back or undo actions"],ans:3},
+  {fa:5,q:"A user completes a task incorrectly but quickly. What metric is affected?",opts:["Time performance","Interface clarity","Task performance","User satisfaction"],ans:2},
+  {fa:5,q:"A team wants to understand where users struggle in the interface. What method should they use?",opts:["Experimental design","Usability testing","Survey analysis","Ethnographic observation"],ans:1},
+  {fa:5,q:"A company is testing a new mobile app with users who accidentally trigger features while scrolling. What type of testing is most appropriate?",opts:["Automated testing","Usability testing on mobile devices","Expert-based testing","Beta testing"],ans:1}
+];
+
+const FA_LABELS = ['FA1','FA2','FA3','FA4','FA5'];
+const FA_NAMES = ['Experimental Design','Research Methods & Stats','Online Research & Data','Usability Testing','HCI Design Principles'];
+const FA_COLORS = ['#5C4033','#7B4F2E','#6B5744','#8B6914','#2E5B3F'];
+
+let pool=[],idx=0,answers=[],selCount=20,activeFAFilter=0,currentFASet=-1;
+const KEYS=['A','B','C','D','E','F'];
+
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function toggleCb(id){const c=document.getElementById(id);c.checked=!c.checked;}
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+
+function launchAll(){
+  currentFASet=-1;
+  document.getElementById('setupTitle').textContent='Mixed Quiz Settings';
+  document.getElementById('setupHeadline').textContent='Full Mixed Quiz';
+  document.getElementById('setupDesc').textContent='All 268 questions from FA1–FA5 shuffled together.';
+  buildCountGrid(268,[10,20,40,80,268]);
+  showPage('quiz-setup');
+}
+
+function launchFA(faIdx){
+  currentFASet=faIdx;
+  const count=FA.filter(q=>q.fa===faIdx+1).length;
+  document.getElementById('setupTitle').textContent=`${FA_LABELS[faIdx]} Quiz Settings`;
+  document.getElementById('setupHeadline').textContent=`${FA_LABELS[faIdx]}: ${FA_NAMES[faIdx]}`;
+  document.getElementById('setupDesc').textContent=`${count} questions from this topic.`;
+  const options=[10,20,count];
+  buildCountGrid(count,options);
+  showPage('quiz-setup');
+}
+
+function buildCountGrid(max,options){
+  const grid=document.getElementById('countGrid');
+  const unique=[...new Set(options.filter(v=>v<=max))];
+  grid.innerHTML=unique.map((v,i)=>`<button class="cbtn ${i===0?'active':''}" onclick="setCount(this,${v})">${v==(max)?'All '+v:v}</button>`).join('');
+  selCount=unique[0];
+}
+
+function setCount(btn,v){document.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selCount=v;}
+
+function startQuiz(){
+  const sQ=document.getElementById('shuffleQ').checked,sA=document.getElementById('shuffleA').checked;
+  let src=currentFASet===-1?FA:FA.filter(q=>q.fa===currentFASet+1);
+  let p=sQ?shuffle(src):[...src];
+  p=p.slice(0,Math.min(selCount,p.length));
+  pool=p.map(item=>{
+    if(sA){
+      const paired=item.opts.map((o,i)=>({t:o,a:i===item.ans}));
+      const sh=shuffle(paired);
+      return{...item,opts:sh.map(x=>x.t),ans:sh.findIndex(x=>x.a)};
+    }
+    return{...item};
+  });
+  idx=0;answers=[];
+  showPage('quiz');renderQ();
+}
+
+// REVIEW
+let revFAFilter=-1;
+function renderReview(){
+  const q=(document.getElementById('searchInput').value||'').toLowerCase();
+  const filtered=FA.filter(item=>{
+    const matchFA=revFAFilter===-1||item.fa===revFAFilter;
+    const matchQ=(item.q+item.opts.join('')).toLowerCase().includes(q);
+    return matchFA&&matchQ;
+  });
+  document.getElementById('revCount').textContent=`Showing ${filtered.length} of ${FA.length} questions`;
+  document.getElementById('revList').innerHTML=filtered.map((item,fi)=>{
+    return `<div class="ritem">
+      <div class="ritem-head"><div class="qnum">${FA.indexOf(item)+1}</div><div>
+        <div class="fa-tag">${FA_LABELS[item.fa-1]}</div>
+        <div class="rqtext">${item.q}</div>
+      </div></div>
+      <div class="ropts">${item.opts.map((o,i)=>`<div class="ropt ${i===item.ans?'correct':''}"><span class="key">${KEYS[i]}.</span>${o}</div>`).join('')}</div>
+    </div>`;
+  }).join('');
+}
+
+function buildFAFilter(){
+  const cont=document.getElementById('faFilter');
+  cont.innerHTML=['All',...FA_LABELS].map((lbl,i)=>`<button class="ff-btn ${i===0?'active':''}" onclick="setRevFA(${i-1},this)">${lbl}</button>`).join('');
+}
+
+function setRevFA(fa,btn){
+  revFAFilter=fa;
+  document.querySelectorAll('.ff-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderReview();
+}
+
+// QUIZ
+function renderQ(){
+  const tot=pool.length;
+  document.getElementById('progFill').style.width=((idx/tot)*100)+'%';
+  document.getElementById('progText').textContent=`${idx+1} / ${tot}`;
+  const item=pool[idx];
+  document.getElementById('qLabel').innerHTML=`Question ${idx+1} <span class="q-fa-tag">${FA_LABELS[item.fa-1]}</span>`;
+  document.getElementById('qText').textContent=item.q;
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('qActions').style.display='none';
+  document.getElementById('questionArea').innerHTML=`<div class="opts-list">${item.opts.map((o,i)=>`<button class="opt" onclick="pick(${i})"><div class="opt-key">${KEYS[i]}</div><div class="opt-txt">${o}</div></button>`).join('')}</div>`;
+}
+
+function pick(i){
+  const item=pool[idx];const btns=document.querySelectorAll('.opt');if(btns[0].disabled)return;
+  btns.forEach(b=>b.disabled=true);const ok=i===item.ans;
+  answers.push({qIdx:idx,chosen:i,correct:ok,item});
+  btns[i].classList.add(ok?'correct':'wrong');
+  if(!ok)btns[item.ans].classList.add('correct');
+  const fb=document.getElementById('feedback');
+  fb.className='feedback show '+(ok?'correct':'wrong');
+  document.getElementById('fbVerdict').textContent=ok?'✓ Correct!':'✗ Incorrect — the correct answer is: '+KEYS[item.ans]+'. '+item.opts[item.ans];
+  document.getElementById('fbExpl').textContent='';
+  document.getElementById('qActions').style.display='flex';
+  document.getElementById('nextBtn').textContent=(idx+1>=pool.length)?'See results →':'Next →';
+}
+
+function nextQ(){idx++;if(idx>=pool.length)showResults();else{renderQ();window.scrollTo(0,0);}}
+
+function showResults(){
+  const tot=pool.length,ok=answers.filter(a=>a.correct).length,pct=Math.round((ok/tot)*100);
+  document.getElementById('resPct').textContent=pct+'%';
+  document.getElementById('resOk').textContent=ok;
+  document.getElementById('resErr').textContent=tot-ok;
+  document.getElementById('resTotal').textContent=tot;
+  let hl,sub;
+  if(pct>=90){hl='Outstanding!';sub='Excellent grasp of HCI concepts.';}
+  else if(pct>=75){hl='Great work!';sub='Review the missed questions to sharpen up.';}
+  else if(pct>=60){hl='Good effort!';sub='Some areas need review. Keep going!';}
+  else{hl='Keep practicing!';sub='Review the explanations and try again.';}
+  document.getElementById('resHL').textContent=hl;
+  document.getElementById('resSub').textContent=sub;
+  const missed=answers.filter(a=>!a.correct);
+  document.getElementById('retryBtn').style.display=missed.length?'':'none';
+  document.getElementById('missedSection').innerHTML=missed.length
+    ?`<div class="missed-title">Questions to Review (${missed.length})</div>`+missed.map(a=>{
+        const item=a.item;
+        return `<div class="mcard"><div style="font-size:10px;font-weight:700;color:var(--t3);margin-bottom:6px;text-transform:uppercase">${FA_LABELS[item.fa-1]}</div><div class="mq">${item.q}</div><div class="myour">✗ Your answer: ${KEYS[a.chosen]}. ${item.opts[a.chosen]}</div><div class="mright">✓ Correct: ${KEYS[item.ans]}. ${item.opts[item.ans]}</div></div>`;
+      }).join('')
+    :`<p style="color:var(--t2);font-size:14px;text-align:center;padding:20px 0">Perfect score! 🎉</p>`;
+  showPage('results');
+}
+
+function retryMissed(){
+  const missed=answers.filter(a=>!a.correct);
+  pool=missed.map(a=>pool[a.qIdx]);
+  idx=0;answers=[];showPage('quiz');renderQ();
+}
+
+// Init review
+buildFAFilter();
+renderReview();
+</script>
+</body>
+</html>
