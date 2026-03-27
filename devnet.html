@@ -3,135 +3,157 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DEVASC Quiz</title>
+<title>DevNet Quiz Reviewer</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#F7F3EC;--surface:#FDFAF5;--s2:#F0EAE0;--text:#2C1F0F;--t2:#6B5744;--t3:#A8917A;--accent:#7B4F2E;--al:#F5EDE3;--ok:#1A7A4A;--okbg:#EAF6EF;--err:#C0392B;--errbg:#FDECEA;--border:rgba(44,31,15,.12);--b2:rgba(44,31,15,.06);--r:12px;--rs:8px}
+:root{--bg:#F0F4FA;--surface:#F8FAFF;--s2:#E4ECF7;--text:#0D1B2A;--t2:#3A5470;--t3:#7A96B0;--accent:#1A4F8A;--al:#E6EFF9;--ok:#1A7A4A;--okbg:#EAF6EF;--err:#C0392B;--errbg:#FDECEA;--border:rgba(13,27,42,.12);--b2:rgba(13,27,42,.06);--r:12px;--rs:8px}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
 .page{display:none;min-height:100vh}.page.active{display:flex;flex-direction:column}
-.wrap{max-width:720px;margin:0 auto;padding:0 20px;width:100%}
+.wrap{max-width:740px;margin:0 auto;padding:0 20px;width:100%}
 #home{background:var(--bg);align-items:center;justify-content:center;padding:40px 20px}
-.home-inner{max-width:600px;width:100%}
+.home-inner{max-width:620px;width:100%}
 .badge{display:inline-flex;align-items:center;gap:6px;background:var(--al);color:var(--accent);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:5px 12px;border-radius:20px;margin-bottom:24px}
-.home-title{font-family:'DM Serif Display',serif;font-size:clamp(32px,6vw,50px);line-height:1.1;margin-bottom:16px}
+.home-title{font-family:'DM Serif Display',serif;font-size:clamp(30px,5vw,48px);line-height:1.1;margin-bottom:16px}
 .home-title em{font-style:italic;color:var(--accent)}
-.home-sub{font-size:16px;color:var(--t2);font-weight:300;margin-bottom:48px;max-width:460px}
-.home-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.hcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:28px 24px;cursor:pointer;transition:transform .18s,box-shadow .18s,border-color .18s;position:relative;overflow:hidden}
-.hcard::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--al),transparent 70%);opacity:0;transition:opacity .2s}
-.hcard:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.08);border-color:rgba(123,79,46,.3)}.hcard:hover::before{opacity:1}
-.hcard-icon{font-size:28px;margin-bottom:14px;display:block}.hcard h2{font-size:17px;font-weight:600;margin-bottom:6px}
-.hcard p{font-size:13px;color:var(--t2);line-height:1.5}.hcard-arr{position:absolute;top:24px;right:20px;font-size:18px;color:var(--t3)}
-.home-stat{margin-top:40px;display:flex;gap:32px}
-.hs-num{font-family:'DM Serif Display',serif;font-size:32px}.hs-lbl{font-size:12px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;font-weight:500}
+.home-sub{font-size:15px;color:var(--t2);font-weight:300;margin-bottom:36px;max-width:480px}
+.sa-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.sa-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;cursor:pointer;transition:transform .18s,box-shadow .18s,border-color .18s;position:relative;overflow:hidden}
+.sa-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--al),transparent 70%);opacity:0;transition:opacity .2s}
+.sa-card:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.07);border-color:rgba(26,79,138,.3)}.sa-card:hover::before{opacity:1}
+.sa-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.sa-badge{font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;background:var(--al);color:var(--accent)}
+.sa-count{font-size:11px;color:var(--t3)}
+.sa-card h3{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.sa-card p{font-size:12px;color:var(--t2);line-height:1.4}
+.all-card{background:var(--accent);border-radius:var(--r);padding:18px 22px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:opacity .15s;margin-bottom:12px}
+.all-card:hover{opacity:.9}
+.all-card-left h3{font-size:16px;font-weight:600;color:#fff;margin-bottom:2px}
+.all-card-left p{font-size:13px;color:rgba(255,255,255,.7)}
+.all-card-arr{font-size:20px;color:rgba(255,255,255,.7)}
+.home-stat{display:flex;gap:28px;margin-top:8px}
+.hs-num{font-family:'DM Serif Display',serif;font-size:28px;color:var(--text)}.hs-lbl{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;font-weight:500}
 .topbar{background:var(--surface);border-bottom:1px solid var(--b2);padding:14px 0;position:sticky;top:0;z-index:10}
-.topbar-inner{display:flex;align-items:center;gap:12px}
+.topbar-inner{display:flex;align-items:center;gap:10px}
 .back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--t2);cursor:pointer;background:none;border:none;padding:6px 10px;border-radius:var(--rs);transition:background .15s,color .15s;font-family:inherit}
 .back:hover{background:var(--s2);color:var(--text)}.topbar-title{font-size:15px;font-weight:600;flex:1}
-#review{background:var(--bg)}.rev-body{padding:24px 0 60px}
-.search-wrap{margin-bottom:20px;position:relative}.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--t3);font-size:16px}
-.search-input{width:100%;padding:11px 14px 11px 40px;border:1px solid var(--border);border-radius:var(--rs);font-size:14px;font-family:inherit;color:var(--text);background:var(--surface);transition:border-color .15s}
-.search-input:focus{outline:none;border-color:var(--accent)}.rev-count{font-size:13px;color:var(--t3);margin-bottom:16px}
-.ritem{background:var(--surface);border:1px solid var(--b2);border-radius:var(--r);padding:20px;margin-bottom:10px}
-.ritem-head{display:flex;gap:10px;margin-bottom:12px}
-.qnum{min-width:28px;height:28px;border-radius:50%;background:var(--al);color:var(--accent);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.multi-pill{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:20px;margin-bottom:8px;background:#FEF0FF;color:#8B2FC9}
-.rqtext{font-size:14px;color:var(--text);line-height:1.6;padding-top:4px}
-.ropts{display:grid;gap:6px;margin-top:10px}
-.ropt{display:flex;align-items:flex-start;gap:8px;padding:8px 12px;border-radius:var(--rs);font-size:13px;color:var(--t2);line-height:1.5}
-.ropt.correct{background:var(--okbg);color:var(--ok)}.ropt .key{font-weight:600;min-width:18px}
-.rexpl{margin-top:12px;padding:10px 14px;background:var(--s2);border-radius:var(--rs);border-left:3px solid var(--accent);font-size:13px;color:var(--t2);line-height:1.55}
-#quiz-setup{background:var(--bg)}.setup-body{padding:32px 0 60px}
-.setup-title{font-family:'DM Serif Display',serif;font-size:28px;margin-bottom:6px}.setup-sub{font-size:14px;color:var(--t2);margin-bottom:32px}
-.setup-sec{margin-bottom:28px}.setup-lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:10px}
-.titem{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--b2);border-radius:var(--rs);padding:14px 16px;margin-bottom:8px;cursor:pointer}
+#review{background:var(--bg)}.rev-body{padding:20px 0 60px}
+.search-wrap{margin-bottom:16px;position:relative}.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--t3);font-size:15px}
+.search-input{width:100%;padding:10px 14px 10px 38px;border:1px solid var(--border);border-radius:var(--rs);font-size:14px;font-family:inherit;color:var(--text);background:var(--surface);transition:border-color .15s}
+.search-input:focus{outline:none;border-color:var(--accent)}
+.sa-filter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.ff-btn{padding:6px 14px;border:1px solid var(--border);border-radius:20px;background:var(--surface);font-size:12px;font-weight:500;color:var(--t2);cursor:pointer;transition:all .15s;font-family:inherit}
+.ff-btn:hover{border-color:var(--accent);color:var(--accent)}.ff-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.rev-count{font-size:13px;color:var(--t3);margin-bottom:14px}
+.ritem{background:var(--surface);border:1px solid var(--b2);border-radius:var(--r);padding:18px;margin-bottom:8px}
+.ritem-head{display:flex;gap:10px;margin-bottom:10px}
+.qnum{min-width:26px;height:26px;border-radius:50%;background:var(--al);color:var(--accent);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sa-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;margin-bottom:6px;background:var(--s2);color:var(--t2)}
+.rqtext{font-size:14px;color:var(--text);line-height:1.6}
+.ropts{display:grid;gap:5px;margin-top:8px}
+.ropt{display:flex;align-items:flex-start;gap:8px;padding:7px 10px;border-radius:var(--rs);font-size:13px;color:var(--t2);line-height:1.5}
+.ropt.correct{background:var(--okbg);color:var(--ok)}.ropt .key{font-weight:600;min-width:16px}
+#quiz-setup{background:var(--bg)}.setup-body{padding:28px 0 60px}
+.setup-title{font-family:'DM Serif Display',serif;font-size:26px;margin-bottom:6px}.setup-sub{font-size:14px;color:var(--t2);margin-bottom:28px}
+.setup-sec{margin-bottom:24px}.setup-lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:8px}
+.titem{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--b2);border-radius:var(--rs);padding:13px 15px;margin-bottom:8px;cursor:pointer}
 .titem-left{display:flex;flex-direction:column;gap:2px}.titem-left span{font-size:14px;font-weight:500}.titem-left small{font-size:12px;color:var(--t3)}
 .ts{position:relative;width:40px;height:22px;flex-shrink:0}.ts input{opacity:0;width:0;height:0}
 .ts-track{position:absolute;inset:0;background:var(--s2);border-radius:20px;border:1px solid var(--border);transition:background .2s;cursor:pointer}
 .ts-track::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--t3);transition:transform .2s,background .2s}
 .ts input:checked+.ts-track{background:var(--accent);border-color:var(--accent)}.ts input:checked+.ts-track::after{transform:translateX(18px);background:#fff}
 .count-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.cbtn{padding:12px 0;border:1px solid var(--border);border-radius:var(--rs);background:var(--surface);font-size:14px;font-weight:500;color:var(--t2);cursor:pointer;transition:all .15s;font-family:inherit;text-align:center}
+.cbtn{padding:11px 0;border:1px solid var(--border);border-radius:var(--rs);background:var(--surface);font-size:14px;font-weight:500;color:var(--t2);cursor:pointer;transition:all .15s;font-family:inherit;text-align:center}
 .cbtn:hover{border-color:var(--accent);color:var(--accent)}.cbtn.active{background:var(--accent);border-color:var(--accent);color:#fff}
-.start-btn{width:100%;padding:15px;border-radius:var(--r);background:var(--accent);border:none;color:#fff;font-size:16px;font-weight:600;font-family:inherit;cursor:pointer;margin-top:8px;transition:opacity .15s,transform .15s}
+.start-btn{width:100%;padding:14px;border-radius:var(--r);background:var(--accent);border:none;color:#fff;font-size:16px;font-weight:600;font-family:inherit;cursor:pointer;margin-top:8px;transition:opacity .15s,transform .15s}
 .start-btn:hover{opacity:.9}.start-btn:active{transform:scale(.99)}
-#quiz{background:var(--bg)}.qtopbar{background:var(--surface);border-bottom:1px solid var(--b2);padding:14px 0;position:sticky;top:0;z-index:10}
+#quiz{background:var(--bg)}.qtopbar{background:var(--surface);border-bottom:1px solid var(--b2);padding:13px 0;position:sticky;top:0;z-index:10}
 .qtop-inner{display:flex;align-items:center;gap:14px}.prog-text{font-size:13px;color:var(--t3);white-space:nowrap}
 .prog-bar{flex:1;height:5px;background:var(--s2);border-radius:3px;overflow:hidden}.prog-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .4s ease}
-.qbody{padding:28px 0 60px}
-.qlabel{font-size:12px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;display:flex;align-items:center;gap:8px}
-.multi-badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;background:#FEF0FF;color:#8B2FC9;letter-spacing:.04em}
-.qtext{font-size:17px;color:var(--text);line-height:1.65;margin-bottom:24px;font-weight:400}
-.opts-list{display:grid;gap:10px}
-.opt{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--surface);cursor:pointer;text-align:left;font-family:inherit;transition:all .15s;width:100%}
+.qbody{padding:26px 0 60px}
+.qlabel{font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.q-sa-tag{font-size:10px;padding:2px 7px;border-radius:20px;background:var(--s2);color:var(--t2);font-weight:600}
+.qtext{font-size:17px;color:var(--text);line-height:1.65;margin-bottom:22px;font-weight:400}
+.opts-list{display:grid;gap:9px}
+.opt{display:flex;align-items:flex-start;gap:12px;padding:13px 15px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--surface);cursor:pointer;text-align:left;font-family:inherit;transition:all .15s;width:100%}
 .opt:hover:not(:disabled){border-color:var(--accent);background:var(--al)}
-.opt-key{min-width:28px;height:28px;border-radius:50%;background:var(--s2);color:var(--t2);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
-.opt-txt{font-size:14px;color:var(--text);line-height:1.55;padding-top:4px}
-.opt.sel{border-color:var(--accent);background:var(--al)}.opt.sel .opt-key{background:var(--accent);color:#fff}
+.opt-key{min-width:26px;height:26px;border-radius:50%;background:var(--s2);color:var(--t2);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.opt-txt{font-size:14px;color:var(--text);line-height:1.5;padding-top:3px}
 .opt.correct{border-color:var(--ok);background:var(--okbg)}.opt.correct .opt-key{background:var(--ok);color:#fff}.opt.correct .opt-txt{color:var(--ok)}
 .opt.wrong{border-color:var(--err);background:var(--errbg)}.opt.wrong .opt-key{background:var(--err);color:#fff}.opt.wrong .opt-txt{color:var(--err)}
-.opt.missed{border-color:var(--ok);background:var(--okbg)}.opt.missed .opt-key{background:var(--ok);color:#fff}.opt.missed .opt-txt{color:var(--ok)}
 .opt:disabled{cursor:default}
-.multi-hint{font-size:13px;color:#8B2FC9;background:#FEF0FF;padding:10px 14px;border-radius:var(--rs);margin-bottom:16px;border-left:3px solid #8B2FC9}
-.multi-submit{margin-top:16px;width:100%;padding:12px;border-radius:var(--rs);border:none;background:#8B2FC9;color:#fff;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:opacity .15s}
-.multi-submit:hover{opacity:.9}.multi-submit:disabled{opacity:.4;cursor:default}
-.feedback{margin-top:20px;padding:16px 18px;border-radius:var(--r);font-size:14px;line-height:1.6;display:none}
+.feedback{margin-top:18px;padding:14px 16px;border-radius:var(--r);font-size:14px;line-height:1.6;display:none}
 .feedback.correct{background:var(--okbg);color:var(--ok);border-left:3px solid var(--ok)}
 .feedback.wrong{background:var(--errbg);color:var(--err);border-left:3px solid var(--err)}
-.feedback.show{display:block}.fb-verdict{font-weight:600;margin-bottom:6px;font-size:15px}
-.fb-correct{font-size:13px;margin-top:8px;padding:8px 10px;background:rgba(255,255,255,.6);border-radius:var(--rs)}
-.fb-expl{color:var(--t2);font-size:13px;margin-top:6px}
-.qactions{margin-top:24px;display:flex;gap:10px}
-.abtn{flex:1;padding:13px 20px;border-radius:var(--rs);font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .15s;border:1.5px solid transparent}
+.feedback.show{display:block}.fb-verdict{font-weight:600;font-size:14px}
+.qactions{margin-top:20px;display:flex;gap:10px}
+.abtn{flex:1;padding:12px 18px;border-radius:var(--rs);font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .15s;border:1.5px solid transparent}
 .abtn.primary{background:var(--accent);color:#fff}.abtn.primary:hover{opacity:.9}
 .abtn.outline{background:var(--surface);color:var(--t2);border-color:var(--border)}.abtn.outline:hover{border-color:var(--accent);color:var(--accent)}
-#results{background:var(--bg)}.res-body{padding:40px 0 60px}
-.score-ring{width:140px;height:140px;border-radius:50%;background:var(--surface);border:1.5px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 32px}
-.score-pct{font-family:'DM Serif Display',serif;font-size:42px;line-height:1}.score-lbl{font-size:12px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-top:4px}
-.res-headline{font-family:'DM Serif Display',serif;font-size:28px;text-align:center;margin-bottom:8px}.res-sub{font-size:14px;color:var(--t2);text-align:center;margin-bottom:32px}
-.res-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:36px}
-.rstat{background:var(--surface);border:1px solid var(--b2);border-radius:var(--r);padding:16px;text-align:center}
-.rstat-num{font-family:'DM Serif Display',serif;font-size:30px}.rstat-num.g{color:var(--ok)}.rstat-num.r{color:var(--err)}
-.rstat-lbl{font-size:12px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;font-weight:500;margin-top:4px}
-.missed-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px;text-transform:uppercase;letter-spacing:.06em}
-.mcard{background:var(--surface);border:1px solid var(--b2);border-left:3px solid var(--err);border-radius:var(--r);padding:18px;margin-bottom:10px}
-.mq{font-size:14px;color:var(--text);line-height:1.6;margin-bottom:10px}
-.myour{font-size:13px;color:var(--err);margin-bottom:4px}.mright{font-size:13px;color:var(--ok);margin-bottom:4px}
-.mexpl{margin-top:10px;font-size:13px;color:var(--t2);line-height:1.55;padding:10px 12px;background:var(--s2);border-radius:var(--rs)}
-.res-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:32px}
-.rbtn{padding:13px;border-radius:var(--rs);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .15s;border:1.5px solid var(--border);background:var(--surface);color:var(--t2)}
+#results{background:var(--bg)}.res-body{padding:36px 0 60px}
+.score-ring{width:130px;height:130px;border-radius:50%;background:var(--surface);border:1.5px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 28px}
+.score-pct{font-family:'DM Serif Display',serif;font-size:40px;line-height:1}.score-lbl{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-top:4px}
+.res-headline{font-family:'DM Serif Display',serif;font-size:26px;text-align:center;margin-bottom:6px}.res-sub{font-size:14px;color:var(--t2);text-align:center;margin-bottom:28px}
+.res-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:32px}
+.rstat{background:var(--surface);border:1px solid var(--b2);border-radius:var(--r);padding:14px;text-align:center}
+.rstat-num{font-family:'DM Serif Display',serif;font-size:28px}.rstat-num.g{color:var(--ok)}.rstat-num.r{color:var(--err)}
+.rstat-lbl{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;font-weight:500;margin-top:4px}
+.missed-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em}
+.mcard{background:var(--surface);border:1px solid var(--b2);border-left:3px solid var(--err);border-radius:var(--r);padding:16px;margin-bottom:8px}
+.mq{font-size:14px;color:var(--text);line-height:1.6;margin-bottom:8px}
+.myour{font-size:13px;color:var(--err);margin-bottom:3px}.mright{font-size:13px;color:var(--ok);margin-bottom:3px}
+.res-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px}
+.rbtn{padding:12px;border-radius:var(--rs);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .15s;border:1.5px solid var(--border);background:var(--surface);color:var(--t2)}
 .rbtn:hover{border-color:var(--accent);color:var(--accent)}.rbtn.acc{background:var(--accent);color:#fff;border-color:var(--accent)}.rbtn.acc:hover{opacity:.9}
-@media(max-width:520px){.home-cards{grid-template-columns:1fr}.count-grid{grid-template-columns:repeat(2,1fr)}.res-btns{grid-template-columns:1fr}.qtext{font-size:15px}}
+@media(max-width:520px){.sa-cards{grid-template-columns:1fr}.count-grid{grid-template-columns:repeat(2,1fr)}.res-btns{grid-template-columns:1fr}.qtext{font-size:15px}}
 </style>
 </head>
 <body>
 
+<!-- HOME -->
 <div id="home" class="page active">
-  <div style="margin:auto" class="wrap">
-    <div class="home-inner">
-      <div class="badge">💻 DEVASC · DevNet Associate</div>
-      <h1 class="home-title">DevNet Associate<br><em>Certification</em> Reviewer</h1>
-      <p class="home-sub">86 practice questions straight from your reviewer. Includes multi-select questions.</p>
-      <div class="home-cards">
-        <div class="hcard" onclick="showPage('review');renderReview()">
-          <span class="hcard-icon">📖</span><h2>View Questions</h2>
-          <p>Browse all questions and answers with full explanations</p><span class="hcard-arr">→</span>
-        </div>
-        <div class="hcard" onclick="showPage('quiz-setup')">
-          <span class="hcard-icon">✏️</span><h2>Take the Quiz</h2>
-          <p>Test yourself with single and multi-select questions</p><span class="hcard-arr">→</span>
-        </div>
+  <div style="margin:auto" class="wrap"><div class="home-inner">
+    <div class="badge">🌐 Cisco DevNet Associate</div>
+    <h1 class="home-title">DevNet Exam<br><em>Reviewer</em></h1>
+    <p class="home-sub">All 4 summative sets in one place. Study by topic or take a mixed quiz.</p>
+    <div class="all-card" onclick="launchAll()">
+      <div class="all-card-left"><h3>Take Full Mixed Quiz</h3><p>All 200 questions shuffled together</p></div>
+      <div class="all-card-arr">→</div>
+    </div>
+    <div class="sa-cards">
+      <div class="sa-card" onclick="launchSA(0)">
+        <div class="sa-card-top"><span class="sa-badge">SA1</span><span class="sa-count">50 questions</span></div>
+        <h3>DevNet Basics & APIs</h3>
+        <p>Python, Linux, DevNet resources, sandboxes</p>
       </div>
-      <div class="home-stat">
-        <div><div class="hs-num">86</div><div class="hs-lbl">Questions</div></div>
-        <div><div class="hs-num">14</div><div class="hs-lbl">Multi-select</div></div>
-        <div><div class="hs-num">10+</div><div class="hs-lbl">Topics</div></div>
+      <div class="sa-card" onclick="launchSA(1)">
+        <div class="sa-card-top"><span class="sa-badge">SA2</span><span class="sa-count">50 questions</span></div>
+        <h3>REST, Git & Software Dev</h3>
+        <p>Agile, SDLC, HTTP, REST principles, OAuth</p>
+      </div>
+      <div class="sa-card" onclick="launchSA(2)">
+        <div class="sa-card-top"><span class="sa-badge">SA3</span><span class="sa-count">50 questions</span></div>
+        <h3>NETCONF, RESTCONF & Infra</h3>
+        <p>YANG, Docker, CI/CD, load balancing, security</p>
+      </div>
+      <div class="sa-card" onclick="launchSA(3)" style="grid-column:span 2">
+        <div class="sa-card-top"><span class="sa-badge">SA4</span><span class="sa-count">50 questions</span></div>
+        <h3>Networking & Cisco Tools</h3>
+        <p>IP, protocols, DNA Center, ACI, SD-WAN, Meraki</p>
       </div>
     </div>
-  </div>
+    <div style="display:flex;gap:10px;margin-bottom:20px">
+      <button class="rbtn" style="flex:1;padding:11px" onclick="showPage('review');renderReview()">📖 Review All Q&A</button>
+    </div>
+    <div class="home-stat">
+      <div><div class="hs-num">200</div><div class="hs-lbl">Total questions</div></div>
+      <div><div class="hs-num">4</div><div class="hs-lbl">SA sets</div></div>
+      <div><div class="hs-num">20+</div><div class="hs-lbl">Topics</div></div>
+    </div>
+  </div></div>
 </div>
 
+<!-- REVIEW -->
 <div id="review" class="page">
   <div class="topbar"><div class="wrap topbar-inner">
     <button class="back" onclick="showPage('home')">← Back</button>
@@ -139,19 +161,21 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   </div></div>
   <div class="rev-body"><div class="wrap">
     <div class="search-wrap"><span class="search-icon">🔍</span><input class="search-input" id="searchInput" placeholder="Search questions…" oninput="renderReview()"></div>
+    <div class="sa-filter" id="saFilter"></div>
     <div class="rev-count" id="revCount"></div>
     <div id="revList"></div>
   </div></div>
 </div>
 
+<!-- SETUP -->
 <div id="quiz-setup" class="page">
   <div class="topbar"><div class="wrap topbar-inner">
     <button class="back" onclick="showPage('home')">← Back</button>
-    <div class="topbar-title">Quiz Settings</div>
+    <div class="topbar-title" id="setupTitle">Quiz Settings</div>
   </div></div>
   <div class="setup-body"><div class="wrap">
-    <h1 class="setup-title">Customize your quiz</h1>
-    <p class="setup-sub">Set up your practice session before you start.</p>
+    <h1 class="setup-title" id="setupHeadline">Customize your quiz</h1>
+    <p class="setup-sub" id="setupDesc">Set up your session before you start.</p>
     <div class="setup-sec">
       <div class="setup-lbl">Options</div>
       <div class="titem" onclick="toggleCb('shuffleQ')">
@@ -165,17 +189,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
     <div class="setup-sec">
       <div class="setup-lbl">Number of questions</div>
-      <div class="count-grid">
-        <button class="cbtn active" onclick="setCount(this,10)">10</button>
-        <button class="cbtn" onclick="setCount(this,20)">20</button>
-        <button class="cbtn" onclick="setCount(this,40)">40</button>
-        <button class="cbtn" onclick="setCount(this,86)">All 86</button>
-      </div>
+      <div class="count-grid" id="countGrid"></div>
     </div>
     <button class="start-btn" onclick="startQuiz()">Start Quiz →</button>
   </div></div>
 </div>
 
+<!-- QUIZ -->
 <div id="quiz" class="page">
   <div class="qtopbar"><div class="wrap qtop-inner">
     <button class="back" onclick="if(confirm('Exit quiz?'))showPage('home')">✕</button>
@@ -186,20 +206,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="qlabel" id="qLabel"></div>
     <div class="qtext" id="qText"></div>
     <div id="questionArea"></div>
-    <div class="feedback" id="feedback">
-      <div class="fb-verdict" id="fbVerdict"></div>
-      <div class="fb-correct" id="fbCorrect" style="display:none"></div>
-      <div class="fb-expl" id="fbExpl"></div>
-    </div>
+    <div class="feedback" id="feedback"><div class="fb-verdict" id="fbVerdict"></div></div>
     <div class="qactions" id="qActions" style="display:none">
-      <button class="abtn outline" onclick="showPage('home')">Quit</button>
-      <button class="abtn primary" id="nextBtn" onclick="nextQ()">Next question →</button>
+      <button class="abtn outline" onclick="if(confirm('Exit quiz?'))showPage('home')">Quit</button>
+      <button class="abtn primary" id="nextBtn" onclick="nextQ()">Next →</button>
     </div>
   </div></div>
 </div>
 
+<!-- RESULTS -->
 <div id="results" class="page">
-  <div class="topbar"><div class="wrap topbar-inner"><div class="topbar-title">Quiz Results</div></div></div>
+  <div class="topbar"><div class="wrap topbar-inner"><div class="topbar-title">Results</div></div></div>
   <div class="res-body"><div class="wrap">
     <div class="score-ring"><div class="score-pct" id="resPct"></div><div class="score-lbl">Score</div></div>
     <h2 class="res-headline" id="resHL"></h2><p class="res-sub" id="resSub"></p>
@@ -219,294 +236,302 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 </div>
 
 <script>
-// multi:true = choose two/three, ans = array of correct indices
-const QS = [
-  // Q1
-  {q:"A pharmaceutical company wants secure cloud storage. Which cloud type is best?",opts:["Community","Public","Hybrid","Private"],ans:3,expl:"Private cloud is best for secure, dedicated use by a single organization."},
-  // Q2
-  {q:"What does a read-only automation solution do?",opts:["Configures devices automatically","Retrieves and audits configurations","Deploys updates","Controls network traffic"],ans:1,expl:"Read-only automation is used for auditing and validation, not configuration."},
-  // Q3
-  {q:"Which three describe TCP/UDP? (Choose three)",opts:["UDP encapsulated in IP","UDP uses ports for applications","Source port identifies return traffic","TCP used for low overhead"],multi:true,ans:[0,1,2],expl:"UDP is lightweight; TCP is reliable but heavier. UDP is encapsulated in IP, uses ports, and source ports identify return traffic."},
-  // Q4
-  {q:"What attack injects SQL commands?",opts:["Buffer overflow","SQL injection","XSS","XML injection"],ans:1,expl:"SQL injection exploits input validation flaws."},
-  // Q5
-  {q:"Linux/Mac command for IP?",opts:["ipconfig","ip address","ifconfig","netstat"],ans:2,expl:"ifconfig is the standard Linux/Mac command to display IP configuration."},
-  // Q6
-  {q:"Why use Layer 2 switch segmentation? (Choose two)",opts:["Reduce collisions","Improve bandwidth","Isolate traffic","Increase broadcasts"],multi:true,ans:[1,2],expl:"Layer 2 switch segmentation improves bandwidth utilization and isolates traffic between segments."},
-  // Q7
-  {q:"CI tool for build/test?",opts:["SQL","REST","Docker","Jenkins"],ans:3,expl:"Jenkins is a popular CI/CD tool used for automated build and test pipelines."},
-  // Q8
-  {q:"Port 8008 corresponds to?",opts:["SSH","RESTCONF","HTTP","NETCONF"],ans:2,expl:"Port 8008 is an alternate HTTP port."},
-  // Q9
-  {q:"VLAN broadcast behavior?",opts:["All VLANs","Same VLAN only","Same switch only","Routed"],ans:1,expl:"Broadcasts are confined to the same VLAN only."},
-  // Q10
-  {q:"VM management software?",opts:["OS","Hypervisor","Kernel","CLI"],ans:1,expl:"A hypervisor manages virtual machines by abstracting hardware resources."},
-  // Q11
-  {q:"MAC address structure?",opts:["Network + host","Vendor OUI + unique ID","Serial + random","IP + port"],ans:1,expl:"A MAC address consists of a 3-byte vendor OUI (Organizationally Unique Identifier) and a 3-byte unique device ID."},
-  // Q12
-  {q:"Cisco ACI SDK?",opts:["Cobra","UCS","IMC","CLI"],ans:0,expl:"Cobra is the Python SDK for Cisco ACI (Application Centric Infrastructure)."},
-  // Q13
-  {q:"DevNet sharing platform?",opts:["Forums","Sandbox","Exchange","Zone"],ans:2,expl:"DevNet Exchange is the platform for sharing code, tools, and integrations."},
-  // Q14
-  {q:"RESTCONF formats? (Choose two)",opts:["JSON","XML","YAML","HTML"],multi:true,ans:[0,1],expl:"RESTCONF supports JSON and XML as data encoding formats."},
-  // Q15
-  {q:"DevNet code repository?",opts:["Labs","Sandbox","Code Exchange","Support"],ans:2,expl:"DevNet Code Exchange is the repository for sharing and discovering code."},
-  // Q16
-  {q:"Dev + Ops role?",opts:["Agile","SRE","DevOps","Scrum"],ans:1,expl:"SRE (Site Reliability Engineer) combines software development (Dev) and IT operations (Ops)."},
-  // Q17
-  {q:"Ansible inventory file?",opts:["playbook","hosts","config","vars"],ans:1,expl:"The Ansible inventory/hosts file defines the managed nodes."},
-  // Q18
-  {q:"DevNet testing environment?",opts:["Labs","Sandbox","CLI","Exchange"],ans:1,expl:"DevNet Sandbox provides hands-on testing environments for Cisco technologies."},
-  // Q19
-  {q:"Reverse proxy purpose?",opts:["DNS mapping","Mask backend servers","Encrypt traffic","Route traffic"],ans:1,expl:"A reverse proxy sits in front of backend servers and masks their identity from clients."},
-  // Q20
-  {q:"Agile characteristic?",opts:["Sequential","Iterative delivery","Fixed plan","Rigid"],ans:1,expl:"Agile is characterized by iterative delivery of working software in short cycles."},
-  // Q21
-  {q:"Docker default tag?",opts:["default","latest","tag","none"],ans:1,expl:"Docker uses 'latest' as the default tag when no tag is specified."},
-  // Q22
-  {q:"pyATS job runner?",opts:["Genie","EasyPy","AEtest","API"],ans:1,expl:"EasyPy is the job runner component of pyATS for executing test scripts."},
-  // Q23
-  {q:"DevNet support? (Choose three)",opts:["Forum","Webex","Cisco Learning Network","FTP"],multi:true,ans:[0,1,2],expl:"DevNet support channels include Forums, Webex, and the Cisco Learning Network."},
-  // Q24
-  {q:"Hands-on DevNet resource?",opts:["Zone","Labs","Sandbox","Support"],ans:1,expl:"DevNet Labs provide guided, hands-on learning experiences."},
-  // Q25
-  {q:"Default Linux shell?",opts:["tcsh","bash","zsh","sh"],ans:1,expl:"Bash (Bourne Again Shell) is the default shell on most Linux distributions."},
-  // Q26
-  {q:"Immutable infrastructure?",opts:["Manual config allowed","Code-only changes","Containers only","VM only"],ans:1,expl:"Immutable infrastructure means servers are never modified after deployment — changes are made only through code and redeployment."},
-  // Q27
-  {q:"Main cause of outages?",opts:["Cyberattack","Human error","Hardware failure","Software bug"],ans:1,expl:"Human error is consistently cited as the leading cause of IT outages."},
-  // Q28
-  {q:"YAML document separator?",opts:["///","---","###","***"],ans:1,expl:"In YAML, three dashes (---) are used as a document separator."},
-  // Q29
-  {q:"Function vs method?",opts:["Same","Methods belong to objects","Functions use classes","Methods standalone"],ans:1,expl:"Methods are functions that belong to an object or class, while standalone functions are independent."},
-  // Q30
-  {q:"Git init does?",opts:["Clone repo","Create repo","Push code","Pull code"],ans:1,expl:"git init creates a new empty Git repository in the current directory."},
-  // Q31
-  {q:"Lean prioritizes?",opts:["Speed","Customer value","Documentation","Testing"],ans:1,expl:"Lean methodology focuses on maximizing customer value while minimizing waste."},
-  // Q32
-  {q:"YAML key-value separator?",opts:[":",";"," /","_"],ans:0,expl:"YAML uses a colon (:) to separate keys from values."},
-  // Q33
-  {q:"Compare files in Git?",opts:["git diff","git log","git pull","git add"],ans:0,expl:"git diff shows the differences between files, commits, or branches."},
-  // Q34
-  {q:"UCS purpose?",opts:["Routing","Server management","Switching","Security"],ans:1,expl:"Cisco UCS (Unified Computing System) is used for server management and data center compute."},
-  // Q35
-  {q:"Webex API user lookup?",opts:["Email","Person ID","Name","Org"],ans:1,expl:"The Webex API uses Person ID as the primary identifier for user lookups."},
-  // Q36
-  {q:"NETCONF Python library?",opts:["ncclient","pip","json","rest"],ans:0,expl:"ncclient is the Python library used to interact with NETCONF-enabled devices."},
-  // Q51
-  {q:"Port 443?",opts:["HTTP","HTTPS","FTP","DNS"],ans:1,expl:"Port 443 is the standard port for HTTPS (HTTP Secure) traffic."},
-  // Q52
-  {q:"Data plane function?",opts:["Routing","Forwarding packets","Monitoring","Config"],ans:1,expl:"The data plane (forwarding plane) is responsible for actually forwarding packets based on decisions made by the control plane."},
-  // Q53
-  {q:"Dockerfile is used to?",opts:["Run containers","Build images","Monitor containers","Store data"],ans:1,expl:"A Dockerfile is a text file containing instructions to build a Docker image."},
-  // Q54
-  {q:"VM characteristics? (Choose three)",opts:["Guest OS","Hypervisor","Self-contained","Shares OS"],multi:true,ans:[0,1,2],expl:"VMs have their own guest OS, are managed by a hypervisor, and are self-contained environments."},
-  // Q55
-  {q:"Staging environment? (Choose two)",opts:["Realistic","Production use","Testing","User access"],multi:true,ans:[0,2],expl:"A staging environment is realistic (mirrors production) and used for testing before deployment."},
-  // Q56
-  {q:"Jenkins run pipeline?",opts:["Build Now","Configure","Workspace","Changes"],ans:0,expl:"'Build Now' is the Jenkins button used to manually trigger a pipeline build."},
-  // Q57
-  {q:"Password salting?",opts:["Encrypt","Randomize hash","Validate","Store"],ans:1,expl:"Password salting adds random data to a password before hashing to prevent rainbow table attacks."},
-  // Q58
-  {q:"Self-service IT?",opts:["Manual setup","Automated provisioning","Hardware config","Monitoring"],ans:1,expl:"Self-service IT enables users to provision resources themselves through automated systems without manual intervention."},
-  // Q59
-  {q:"Orchestration means?",opts:["Provision hardware","Automate workflows","Monitor systems","Deploy code"],ans:1,expl:"Orchestration refers to the automated coordination and management of complex workflows and services."},
-  // Q60
-  {q:"Read-only automation?",opts:["Configure","Audit only","Deploy","Delete"],ans:1,expl:"Read-only automation is used only for auditing and retrieving information, not making changes."},
-  // Q61
-  {q:"SSL warning cause?",opts:["Expired cert","Self-signed cert","No encryption","Weak key"],ans:1,expl:"SSL warnings are commonly caused by self-signed certificates that are not trusted by a certificate authority."},
-  // Q62
-  {q:"API benefit?",opts:["Faster CPU","Automation","Storage","Hardware"],ans:1,expl:"APIs enable automation by allowing applications to communicate and exchange data programmatically."},
-  // Q63
-  {q:"DNS port?",opts:["80","443","53","22"],ans:2,expl:"DNS uses port 53 for both UDP and TCP queries."},
-  // Q64
-  {q:"Traceroute does?",opts:["Ping","Show path","DNS lookup","Route config"],ans:1,expl:"Traceroute shows the network path (hops) packets take to reach a destination."},
-  // Q65
-  {q:"HTTP update methods?",opts:["POST","GET","PUT/PATCH","DELETE"],ans:2,expl:"PUT replaces an entire resource and PATCH partially updates it — both are used for updates."},
-  // Q66
-  {q:"HTTP 4xx?",opts:["Success","Server error","Client error","Redirect"],ans:2,expl:"HTTP 4xx status codes indicate client-side errors (e.g., 404 Not Found, 403 Forbidden)."},
-  // Q67
-  {q:"Webhook requirement? (Choose two)",opts:["Always running","Registered URL","SSH required","DNS required"],multi:true,ans:[0,1],expl:"Webhooks require the receiving server to always be running and have a registered URL endpoint to receive events."},
-  // Q68
-  {q:"HTTP 202?",opts:["Success","Accepted processing","Error","Redirect"],ans:1,expl:"HTTP 202 Accepted means the request has been accepted for processing but processing is not yet complete."},
-  // Q69
-  {q:"Stateless app? (Choose two)",opts:["Scalable","No memory","External DB","Fixed"],multi:true,ans:[0,2],expl:"Stateless apps are highly scalable and rely on external databases to store state rather than keeping it in memory."},
-  // Q70
-  {q:"CI characteristic?",opts:["Deploy to prod","Merge frequently","Manual test","Slow dev"],ans:1,expl:"Continuous Integration (CI) is characterized by developers merging code changes frequently (often multiple times per day)."},
-  // Q71
-  {q:"Waterfall?",opts:["Iterative","Sequential","Agile","Fast"],ans:1,expl:"Waterfall is a sequential software development methodology where each phase must be completed before the next begins."},
-  // Q72
-  {q:"Deployment phase?",opts:["Code","Install to production","Test","Design"],ans:1,expl:"The deployment phase involves installing and releasing the application into the production environment."},
-  // Q73
-  {q:"Python private variable convention?",opts:["__var (double underscore)","_var (single underscore)","var","#var"],ans:0,expl:"In Python, double underscore prefix (__var) invokes name mangling for private variables. Single underscore (_var) is a convention for 'protected'."},
-  // Q74
-  {q:"Port 80?",opts:["HTTP","HTTPS","SSH","FTP"],ans:0,expl:"Port 80 is the standard port for HTTP (unencrypted web) traffic."},
-  // Q75
-  {q:"Webex xAPI protocols? (Choose three)",opts:["HTTP","Telnet","RS-232","FTP"],multi:true,ans:[0,1,2],expl:"Webex xAPI supports HTTP, Telnet, and RS-232 as communication protocols."},
-  // Q76
-  {q:"Webex API send message method?",opts:["GET","POST","PUT","PATCH"],ans:1,expl:"The Webex API uses POST to send messages."},
-  // Q77
-  {q:"Invalid subnet?",opts:["/26 overlap","/27 error","Overlapping range","Valid"],ans:2,expl:"Overlapping IP address ranges create an invalid subnet configuration."},
-  // Q78
-  {q:"Stateful firewall?",opts:["Tracks sessions","Only L3","NAT","DNS"],ans:0,expl:"A stateful firewall tracks the state of active network connections and makes decisions based on session context."},
-  // Q79
-  {q:"Lean characteristic?",opts:["Sequential","Optimize flow","Waterfall","Fixed"],ans:1,expl:"Lean methodology focuses on optimizing flow and eliminating waste in the development process."},
-  // Q80
-  {q:"Valid URI?",opts:["Proper encoding","Invalid","Missing key","Wrong format"],ans:0,expl:"A valid URI requires proper encoding of special characters."},
-  // Q81
-  {q:"REST constraint?",opts:["Stateful","Stateless","Local","Static"],ans:1,expl:"Statelessness is a core REST constraint — each request must contain all information needed to process it."},
-  // Q82
-  {q:"DNS port? (Q82)",opts:["21","53","80","22"],ans:1,expl:"DNS uses port 53."},
-  // Q83
-  {q:"Dynamic NAT?",opts:["Static mapping","Dynamic mapping","DNS","DHCP"],ans:1,expl:"Dynamic NAT maps private IP addresses to a pool of public IP addresses dynamically as needed."},
-  // Q84
-  {q:"Port 830?",opts:["HTTP","NETCONF","SSH","FTP"],ans:1,expl:"Port 830 is the standard port for NETCONF over SSH."},
-  // Q85
-  {q:"Webex macro language?",opts:["Python","Java","JavaScript","C++"],ans:2,expl:"Webex device macros are written in JavaScript."},
-  // Q86
-  {q:"SDN platform (Nexus)?",opts:["ACI","IOS","CLI","UCS"],ans:0,expl:"Cisco ACI (Application Centric Infrastructure) is the SDN platform used with Nexus switches."},
-  // Q87
-  {q:"Python venv command?",opts:["Install","Create env","Run","Delete"],ans:1,expl:"The python -m venv command creates a new virtual environment."},
-  // Q88
-  {q:"SSH is used by?",opts:["Ansible","Docker","REST","SNMP"],ans:0,expl:"Ansible uses SSH as its primary transport protocol to connect to and manage remote hosts."},
-  // Q89
-  {q:"NAT process?",opts:["Translate IP","Route","Encrypt","Filter"],ans:0,expl:"NAT (Network Address Translation) translates private IP addresses to public IP addresses and vice versa."},
-  // Q90
-  {q:"Control plane?",opts:["Forward","Routing logic","Monitor","CLI"],ans:1,expl:"The control plane handles routing logic — it determines how packets should be forwarded but doesn't forward them itself."},
-  // Q91
-  {q:"TCP/IP layer for ports?",opts:["Network","Transport","Physical","Session"],ans:1,expl:"Ports are a Transport layer concept used by TCP and UDP to identify applications."},
-  // Q92
-  {q:"Cisco ISE function?",opts:["Routing","Identity control","Switching","Storage"],ans:1,expl:"Cisco ISE (Identity Services Engine) provides identity-based access control and network security policy management."},
-  // Q93
-  {q:"DHCP ACK?",opts:["Offer","Confirm lease","Request","Discover"],ans:1,expl:"DHCP ACK is the final message in the DORA process, confirming the IP address lease to the client."},
-  // Q94
-  {q:"MapQuest URI component (query string)?",opts:["Path","Query","Scheme","Authority"],ans:1,expl:"The query component of a URI (after the ?) contains key-value pairs like search parameters."},
-  // Q95
-  {q:"Management plane?",opts:["Forward","Monitor","Route","Encrypt"],ans:1,expl:"The management plane handles monitoring, management, and configuration of network devices (e.g., SSH, SNMP, NETCONF)."},
-  // Q96
-  {q:"RESTCONF formats?",opts:["JSON/XML","CSV","TXT","HTML"],ans:0,expl:"RESTCONF uses JSON and XML as its data encoding formats."},
-  // Q97
-  {q:"Switching method?",opts:["Store-and-forward","Cut-through","Both","Routing"],ans:2,expl:"Modern switches support both store-and-forward (checks entire frame) and cut-through (starts forwarding immediately) switching methods."},
-  // Q98
-  {q:"Social engineering example?",opts:["Phishing","Survey imitation","Password attack","Virus"],ans:1,expl:"Survey imitation (pretending to conduct a survey to extract information) is a social engineering technique."},
-  // Q99
-  {q:"SQL defense last resort?",opts:["Escaping input","Parameterized queries","Firewall","Validation"],ans:0,expl:"Input escaping is considered a last resort defense against SQL injection. Parameterized queries are the preferred primary defense."},
-  // Q100
-  {q:"Container orchestration?",opts:["Docker","Kubernetes","Git","API"],ans:1,expl:"Kubernetes is the leading container orchestration platform for automating deployment, scaling, and management of containers."}
+const SA_LABELS=['SA1','SA2','SA3','SA4'];
+const SA_NAMES=['DevNet Basics & APIs','REST, Git & Software Dev','NETCONF, RESTCONF & Infra','Networking & Cisco Tools'];
+const KEYS=['A','B','C','D'];
+
+const ALL_Q=[
+  // SA1
+  {sa:1,q:"Which Python function opens a file?",opts:["open()","import()","load()","get()"],ans:0},
+  {sa:1,q:"Which of these is a common use of Linux?",opts:["Only desktop PCs","Only mobile gaming","Web browsing","IoT devices and servers"],ans:3},
+  {sa:1,q:"Which Linux course is free and self-paced for beginners?",opts:["Linux Pro","Linux Admin","Linux Unhatched","Linux Essentials"],ans:2},
+  {sa:1,q:"Which lab task involves preparing your computer for virtualization?",opts:["Install the Virtual Lab Environment","Linux Review","Networking Basics","Python Programming Review"],ans:0},
+  {sa:1,q:"Which of the following is NOT a Python feature mentioned?",opts:["Easy to learn","Proprietary licensing","Easy to use","Free and open"],ans:1},
+  {sa:1,q:"Which Python keyword ends a loop early?",opts:["stop","end","exit","break"],ans:3},
+  {sa:1,q:"Which lab reviews file management and regular expressions?",opts:["Python Lab","API Lab","Networking Lab","Linux Review Lab"],ans:3},
+  {sa:1,q:"Python is considered a good starting language because:",opts:["It is expensive to use","It is complex and detailed","It only works on Windows","It is easy to learn, use, and install"],ans:3},
+  {sa:1,q:"Which free online course is suggested if you struggle with Python?",opts:["DevNet Sandbox","Webex Essentials","Python Essentials","Linux Essentials"],ans:2},
+  {sa:1,q:"Which Linux command is used to change directories?",opts:["ls","cd","chmod","ps"],ans:1},
+  {sa:1,q:"Which Python loop is often used to iterate over a list?",opts:["if","def","for","while"],ans:2},
+  {sa:1,q:"What symbol is used to define a dictionary in Python?",opts:["()","[]","<>","{}"],ans:3},
+  {sa:1,q:"Python is a ____ language.",opts:["High-level","Low-level","Machine","Assembly"],ans:0},
+  {sa:1,q:"Which of the following is required to run a virtual machine?",opts:["A smartphone","None of the above","A modern computer and OS","A web browser"],ans:2},
+  {sa:1,q:"What does VM stand for?",opts:["Virtual Management","Virtual Module","Virtual Model","Virtual Machine"],ans:3},
+  {sa:1,q:"Which of the following is a Python data type?",opts:["GET","ICMP","HTML","Integer"],ans:3},
+  {sa:1,q:"The DEVASC course prepares learners for:",opts:["Network automation and programmability","Basic PC repair","Mobile app development","Cloud gaming"],ans:0},
+  {sa:1,q:"Which Linux command modifies file permissions?",opts:["pwd","ps","chmod","mkdir"],ans:2},
+  {sa:1,q:"Webex Teams installation is part of which lab?",opts:["Python Essentials","Linux Unhatched","Virtual Lab Environment","GitHub Setup"],ans:2},
+  {sa:1,q:"Which type of VM is used in DEVASC coding labs?",opts:["Android VM","Windows-based VM","macOS-based VM","Linux-based VM"],ans:3},
+  {sa:1,q:"In Python, which function displays output?",opts:["print()","output()","show()","display()"],ans:0},
+  {sa:1,q:"The physical computer that hosts a VM is often referred to as:",opts:["Client","Guest","Server","Host"],ans:3},
+  {sa:1,q:"What does the command pwd display?",opts:["List of files","Permissions of a file","Current working directory","System processes"],ans:2},
+  {sa:1,q:"Which Python loop executes as long as a condition is true?",opts:["for","break","while","if"],ans:2},
+  {sa:1,q:"Which of the following is part of DevNet Developer Support?",opts:["Game server","Linux kernel repository","Knowledge Base","Docker Hub"],ans:2},
+  {sa:1,q:"DevNet Learning Labs tutorials may include topics such as:",opts:["Browser extensions","REST APIs, Python, and model-driven programmability","Hardware wiring guides","Gaming software installation"],ans:1},
+  {sa:1,q:"DevNet Sandboxes are best described as:",opts:["Production-like environments for testing and development","Cloud-only virtual labs","A place to store hardware devices","Cisco's gaming platform"],ans:0},
+  {sa:1,q:"Which online resource provides API documentation for developers?",opts:["DevNet Home page at developer.cisco.com","DevNet TV","Cisco Press","Webex Teams"],ans:0},
+  {sa:1,q:"A support case in DevNet provides:",opts:["One-on-one support with a response time of one business day","Automated responses only","Social media-based feedback","24/7 chatbots only"],ans:0},
+  {sa:1,q:"Which DevNet resource is a repository of sample code?",opts:["Automation Exchange","Learning Labs","Code Exchange","Ecosystem Exchange"],ans:2},
+  {sa:1,q:"Which DevNet resource is most helpful for finding third-party Cisco-related solutions?",opts:["Code Exchange","Ecosystem Exchange","Linux Exchange","Sandbox"],ans:1},
+  {sa:1,q:"Which DevNet Exchange provides categorized source code using GitHub APIs?",opts:["Automation Exchange","Ecosystem Exchange","Code Exchange","Sandbox Exchange"],ans:2},
+  {sa:1,q:"DevNet forums are primarily for:",opts:["Buying Cisco licenses","Selling routers","File hosting","Developer community collaboration and support"],ans:3},
+  {sa:1,q:"Which DevNet Exchange is most likely to help in designing solutions with partners?",opts:["Code Exchange","Sandbox","Automation Exchange","Ecosystem Exchange"],ans:3},
+  {sa:1,q:"Which DevNet Exchange is directly tied to sharing automation scripts?",opts:["DevNet TV","Code Exchange","Ecosystem Exchange","Automation Exchange"],ans:3},
+  {sa:1,q:"A developer can access DevNet forums by visiting:",opts:["devnetsupport.cisco.com","github.com/devnetcommunity","dockerhub.com/cisco","facebook.com/cisco"],ans:0},
+  {sa:1,q:"Which of the following is NOT a feature of DevNet?",opts:["Learning Labs","Code Exchange","Hardware simulation software","Sandboxes"],ans:2},
+  {sa:1,q:"The purpose of DevNet Code Exchange is:",opts:["To download IOS images","To provide categorized sample code and tools","To run containers","To configure routers"],ans:1},
+  {sa:1,q:"DevNet Developer Support provides help for:",opts:["API integrations, connections, and developer use cases","Windows-only issues","Consumer hardware troubleshooting","Gaming configurations"],ans:0},
+  {sa:1,q:"Which DevNet Exchange lists solutions across industries and geographies?",opts:["Code Exchange","Router Exchange","Automation Exchange","Ecosystem Exchange"],ans:3},
+  {sa:1,q:"DevNet Learning Labs include tutorials on:",opts:["Networking, IoT, Python, REST APIs","Microsoft Office","Video gaming","Hardware assembly"],ans:0},
+  {sa:1,q:"What is the purpose of DevNet Sandboxes?",opts:["Virtualize video games","Sell Cisco devices","Provide hands-on exploration of software and APIs","Build physical networking labs"],ans:2},
+  {sa:1,q:"What is Cisco DevNet?",opts:["A social networking platform","A cloud-only networking service","An integrated developer program with tools, sandboxes, and community","A new Cisco hardware line"],ans:2},
+  {sa:1,q:"The Ecosystem Exchange provides:",opts:["Over 1,500 solutions across technologies and industries","Access to Webex Teams support","Ticketing for developer support","Only Cisco IOS configurations"],ans:0},
+  {sa:1,q:"What does the Automation Exchange provide?",opts:["Network automation use cases with tools like Ansible and Puppet","Security-only solutions","Cisco router firmware updates","Only sandbox reservations"],ans:0},
+  {sa:1,q:"What is the main benefit of DevNet Sandboxes?",opts:["Buy Cisco gear","Play network games","Learn subnetting only","Test APIs and platforms in safe environments"],ans:3},
+  {sa:1,q:"Which DevNet Exchange provides solutions across geographies and industries?",opts:["Community Exchange","Code Exchange","Ecosystem Exchange","Automation Exchange"],ans:2},
+  {sa:1,q:"Python is described as:",opts:["Only used for mobile apps","Only used for gaming","A proprietary language","Free, open, and multiplatform"],ans:3},
+  {sa:1,q:"A developer can troubleshoot API issues in DevNet by:",opts:["Using DevNet Developer Support","Buying a Cisco router","Reading only Linux manuals","Installing Windows updates"],ans:0},
+  {sa:1,q:"Which DevNet Exchange provides categorized reusable automation scripts?",opts:["Code Exchange","Ecosystem Exchange","Automation Exchange","Sandbox Exchange"],ans:2},
+  // SA2
+  {sa:2,q:"Which Agile principle emphasizes customer involvement?",opts:["Documentation","Customer collaboration","Following a strict plan","Ignoring change"],ans:1},
+  {sa:2,q:"Which Git command shows repository history?",opts:["git status","git log","git init","git commit"],ans:1},
+  {sa:2,q:"Which principle says 'Don't Repeat Yourself'?",opts:["DRY","KISS","SOLID","Agile"],ans:0},
+  {sa:2,q:"Which format is lightweight and commonly used in APIs?",opts:["XML","JSON","YAML","HTML"],ans:1},
+  {sa:2,q:"Which SDLC model uses short, iterative development cycles?",opts:["Waterfall","Agile","V-Model","Spiral"],ans:1},
+  {sa:2,q:"Which Git command saves changes permanently to history?",opts:["git add","git commit","git log","git branch"],ans:1},
+  {sa:2,q:"Which practice improves readability?",opts:["Random variable names","Meaningful variable names","Long functions","Inline logic everywhere"],ans:1},
+  {sa:2,q:"Which of the following makes code harder to maintain?",opts:["Modular functions","Proper naming","Code duplication","Clear comments"],ans:2},
+  {sa:2,q:"Which format uses tags to store data?",opts:["XML","JSON","YAML","CSV"],ans:0},
+  {sa:2,q:"Which Python structure stores key-value pairs?",opts:["List","Tuple","Dictionary","Array"],ans:2},
+  {sa:2,q:"Continuous Integration (CI) focuses on:",opts:["Writing documentation","Frequently merging code changes","Replacing Agile","Final deployment"],ans:1},
+  {sa:2,q:"In MVC, which part handles business logic?",opts:["Model","View","Controller","Database"],ans:0},
+  {sa:2,q:"Which format is indentation-sensitive?",opts:["JSON","XML","YAML","CSV"],ans:2},
+  {sa:2,q:"Which Git command shows current file states?",opts:["git status","git log","git merge","git push"],ans:0},
+  {sa:2,q:"Which keyword is used for decision-making?",opts:["if","for","while","else"],ans:0},
+  {sa:2,q:"Which is the main advantage of YAML?",opts:["Machine efficiency","Human readability","Binary storage","Complexity"],ans:1},
+  {sa:2,q:"Which principle says 'Keep It Simple, Stupid'?",opts:["DRY","KISS","SOLID","Agile"],ans:1},
+  {sa:2,q:"Which Python structure is immutable?",opts:["List","Dictionary","Tuple","Set"],ans:2},
+  {sa:2,q:"JSON arrays are represented with:",opts:["{}","[]","<>","–"],ans:1},
+  {sa:2,q:"In MVC, which part processes input and updates the model?",opts:["Model","View","Controller","Database"],ans:2},
+  {sa:2,q:"DevOps encourages collaboration between:",opts:["Developers and clients","Developers and operations","Customers and testers","Designers and analysts"],ans:1},
+  {sa:2,q:"Which Git command creates a new branch?",opts:["git init","git branch","git clone","git log"],ans:1},
+  {sa:2,q:"Which Git command stages changes for commit?",opts:["git commit","git add","git push","git branch"],ans:1},
+  {sa:2,q:"Which SDLC model delivers software in sequential steps?",opts:["Agile","Waterfall","Scrum","Kanban"],ans:1},
+  {sa:2,q:"Which Agile framework is based on sprints and stand-ups?",opts:["Kanban","Scrum","XP","Lean"],ans:1},
+  {sa:2,q:"SOAP uses which format for messaging?",opts:["JSON","YAML","XML","CSV"],ans:2},
+  {sa:2,q:"Authentication proves:",opts:["Identity of the user","Permissions of the user","Data encryption","Server availability"],ans:0},
+  {sa:2,q:"REST was authored by:",opts:["Roy Thomas Fielding","Tim Berners-Lee","Linus Torvalds","Dennis Ritchie"],ans:0},
+  {sa:2,q:"Which HTTP status code means 'Forbidden'?",opts:["400","401","403","500"],ans:2},
+  {sa:2,q:"Which of the following is NOT one of the six REST principles?",opts:["Client-Server","Stateless","Cache","Multi-threading"],ans:3},
+  {sa:2,q:"Which rate limit algorithm resets requests per fixed time window?",opts:["Leaky Bucket","Token Bucket","Fixed Window Counter","Sliding Window Counter"],ans:2},
+  {sa:2,q:"Which HTTP method is used to update an existing resource?",opts:["GET","POST","PUT","PATCH"],ans:2},
+  {sa:2,q:"Which HTTP status code means 'No Content'?",opts:["200","201","204","404"],ans:2},
+  {sa:2,q:"Which requirement is necessary to consume a webhook?",opts:["Application must be running to receive HTTP POST","Application must send a GET request","Application must disable SSL","Application must poll the server"],ans:0},
+  {sa:2,q:"Which category of HTTP status codes indicates client error?",opts:["1xx","2xx","3xx","4xx"],ans:3},
+  {sa:2,q:"Which version of OAuth is not backward compatible?",opts:["OAuth 1.0","OAuth 2.0","OAuth 3.0","None"],ans:1},
+  {sa:2,q:"Which authentication method uses unique alphanumeric keys assigned to users?",opts:["Basic Authentication","Bearer Token","API Key","Certificate"],ans:2},
+  {sa:2,q:"Which category of HTTP status codes indicates success?",opts:["1xx","2xx","3xx","4xx"],ans:1},
+  {sa:2,q:"Which HTTP status code means 'Not Found'?",opts:["200","201","400","404"],ans:3},
+  {sa:2,q:"Authorization defines:",opts:["Identity of the user","Permissions of the user","Encryption standards","Token format"],ans:1},
+  {sa:2,q:"Which status code means 'Internal Server Error'?",opts:["500","404","403","200"],ans:0},
+  {sa:2,q:"Which API design style allows execution to continue while waiting for a response?",opts:["Asynchronous","Synchronous","REST","SOAP"],ans:0},
+  {sa:2,q:"Which HTTP method is used to remove a resource?",opts:["GET","POST","PUT","DELETE"],ans:3},
+  {sa:2,q:"Which part of a URI represents the location of the resource?",opts:["Scheme","Authority","Path","Query"],ans:2},
+  {sa:2,q:"Which part of a URI specifies the protocol (http/https)?",opts:["Scheme","Authority","Path","Query"],ans:0},
+  {sa:2,q:"Which authentication mechanism transmits Base64 encoded credentials?",opts:["Basic Authentication","Bearer Token","API Key","OAuth"],ans:0},
+  {sa:2,q:"What is the primary purpose of an API?",opts:["To allow software to communicate with hardware","To allow one piece of software to communicate with another","To replace operating systems","To configure network devices"],ans:1},
+  {sa:2,q:"Which rate limit algorithm uses a queue and processes at a fixed rate?",opts:["Leaky Bucket","Token Bucket","Fixed Window Counter","Sliding Window Counter"],ans:0},
+  {sa:2,q:"Which HTTP status code means 'OK'?",opts:["200","201","400","404"],ans:0},
+  {sa:2,q:"Which API design style waits for a response before continuing execution?",opts:["Asynchronous","Synchronous","REST","RPC"],ans:1},
+  // SA3
+  {sa:3,q:"Which NETCONF feature locks configuration to prevent conflicts?",opts:["lock","edit-config","get","commit"],ans:0},
+  {sa:3,q:"Which YANG type represents an integer?",opts:["string","decimal64","boolean","Int32"],ans:3},
+  {sa:3,q:"Which HTTP method deletes a RESTCONF resource?",opts:["PUT","GET","POST","DELETE"],ans:3},
+  {sa:3,q:"Which protocol provides a REST-like interface to YANG-based data?",opts:["SOAP","NETCONF","gRPC","RESTCONF"],ans:3},
+  {sa:3,q:"Which YANG statement defines a key for list uniqueness?",opts:["type","key","must","leaf"],ans:1},
+  {sa:3,q:"Which data modeling language is most associated with NETCONF?",opts:["JSON","YAML","YANG","XML"],ans:2},
+  {sa:3,q:"Which datastore persists across device reloads?",opts:["candidate","edit","running","startup"],ans:3},
+  {sa:3,q:"Which Python library is used to interact with REST APIs?",opts:["ncclient","sshlib","requests","yangson"],ans:2},
+  {sa:3,q:"In RESTCONF, what does '/restconf/operations/' access?",opts:["Schemas","Data resources","Notifications","RPC operations"],ans:3},
+  {sa:3,q:"Which HTTP response code means 'Not Found'?",opts:["201","400","404","200"],ans:2},
+  {sa:3,q:"Which NETCONF operation validates configuration data without applying it?",opts:["edit-config","get-config","validate","commit"],ans:2},
+  {sa:3,q:"RESTCONF resources are identified by?",opts:["IP Address","Port Number","Schema ID","URI"],ans:3},
+  {sa:3,q:"Which of the following operations is NOT a NETCONF base operation?",opts:["get","delete-config","edit-config","run-script"],ans:3},
+  {sa:3,q:"Which YANG construct defines mandatory fields?",opts:["namespace","list","must","type"],ans:2},
+  {sa:3,q:"What does YANG stand for?",opts:["YAML And Network Grammar","Yet Another Next Generation","Your API Network Guide","Yet Another Network Group"],ans:1},
+  {sa:3,q:"Which YANG keyword is used to include another module?",opts:["import","prefix","use","load"],ans:0},
+  {sa:3,q:"In NETCONF, which datastore is used for staging configuration changes?",opts:["running","lock","candidate","startup"],ans:2},
+  {sa:3,q:"In RESTCONF, what does the URI '/restconf/data/' access?",opts:["Data resources","Notifications","Schema resources","RPC operations"],ans:0},
+  {sa:3,q:"Which YANG type is used for true/false values?",opts:["decimal64","int","boolean","string"],ans:2},
+  {sa:3,q:"Which YANG statement defines a list of items?",opts:["leaf","key","list","container"],ans:2},
+  {sa:3,q:"Which YANG node holds a single data element?",opts:["list","container","key","leaf"],ans:3},
+  {sa:3,q:"Which HTTP response code means 'Forbidden'?",opts:["500","403","400","401"],ans:1},
+  {sa:3,q:"Which transport protocol does NETCONF typically run over?",opts:["FTP","SSH","HTTP","HTTPS"],ans:1},
+  {sa:3,q:"Which NETCONF operation confirms applying changes after testing?",opts:["validate","lock","confirmed-commit","delete-config"],ans:2},
+  {sa:3,q:"What does NETCONF stand for?",opts:["Network Control Framework","Network Connectivity Format","Network Configuration Protocol","Network Central Function"],ans:2},
+  {sa:3,q:"What prevents CSRF attacks by validating a hidden token?",opts:["CSRFToken","DNS server","Hash salting","Jump box"],ans:0},
+  {sa:3,q:"What command does Jenkins use in a build step to execute shell scripts?",opts:["docker run","Hypervisor start","Execute shell","Build pipeline"],ans:2},
+  {sa:3,q:"What is Continuous Deployment?",opts:["Building Docker images locally","Automatically deploying every version marked production-ready","Always writing new features","Using only staging environments"],ans:1},
+  {sa:3,q:"Which social engineering attack uses SMS messages?",opts:["Phishing","Vishing","Impersonation","Smishing"],ans:3},
+  {sa:3,q:"What is the main function of a firewall?",opts:["Encrypting user passwords","Balancing server traffic","Allowing or blocking network packets based on rules","Storing Docker images"],ans:2},
+  {sa:3,q:"Which device spreads requests across multiple servers?",opts:["Reverse proxy","Load balancer","DNS server","Firewall"],ans:1},
+  {sa:3,q:"Which command starts a Docker container in detached mode?",opts:["docker pull","docker commit","docker run -d","docker exec -it"],ans:2},
+  {sa:3,q:"Which load balancing method sends requests in order?",opts:["IP hash","Round robin","Least connections","Persistent session"],ans:1},
+  {sa:3,q:"Which deployment model starts faster and shares the host operating system?",opts:["Containers","Virtual Machines","Bare Metal","Edge Cloud"],ans:0},
+  {sa:3,q:"What does the EXPOSE command in a Dockerfile do?",opts:["Informs which port should be published","Uploads image to registry","Runs the container","Logs into container"],ans:0},
+  {sa:3,q:"What is 'salting' a password used for?",opts:["Encoding data for DNS","Adding randomness to hashes to prevent rainbow table attacks","Increasing container size","Encrypting at rest"],ans:1},
+  {sa:3,q:"Which password storage method cannot be reversed?",opts:["Docker commit","Encrypted text","Hashed password","Plaintext"],ans:2},
+  {sa:3,q:"What is the key role of a load balancer?",opts:["Run CI/CD pipelines","Provide multi-factor authentication","Encrypt files at rest","Distribute traffic evenly to prevent overload"],ans:3},
+  {sa:3,q:"Which load balancing method sends requests to the least busy server?",opts:["Round robin","Persistent session","IP hash","Least connections"],ans:3},
+  {sa:3,q:"What type of infrastructure is physically located inside the building?",opts:["Public Cloud","Edge Cloud","On-Premises","Serverless"],ans:2},
+  {sa:3,q:"In Jenkins, what is a 'job'?",opts:["A password hash","A project that automates tasks like building code","A Docker container","A VM image"],ans:1},
+  {sa:3,q:"What does XSS stand for?",opts:["Cross-Site Security","XML Secure Service","Cross-Site Scripting","Cross-System Security"],ans:2},
+  {sa:3,q:"Which deployment strategy tests new code on a small subset of users first?",opts:["Rolling upgrade","Manual deployment","Canary pipeline","Container orchestration"],ans:2},
+  {sa:3,q:"What software manages virtual machines?",opts:["Hypervisor","Kernel","Docker","Jenkins"],ans:0},
+  {sa:3,q:"Which command builds a Docker image from a Dockerfile?",opts:["docker exec","docker build","docker pull","docker run"],ans:1},
+  {sa:3,q:"What does encrypting data at rest ensure?",opts:["It cannot be stored in the cloud","No one can transmit it","Unauthorized access won't reveal readable data","It is deleted automatically"],ans:2},
+  {sa:3,q:"Which proxy makes multiple servers appear as one?",opts:["Hypervisor","Reverse proxy","Jump box","Firewall"],ans:1},
+  {sa:3,q:"What is the main purpose of saving a Docker image to a registry?",opts:["To monitor logs","To share images for deployment or reuse","To encrypt code","To delete containers"],ans:1},
+  {sa:3,q:"In serverless computing, when are costs typically incurred?",opts:["When building the application","Only when functions are executed","Always running","Only during deployment"],ans:1},
+  {sa:3,q:"What is the main purpose of Jenkins?",opts:["Automating build and deployment pipelines","Running Docker Hub","Encrypting data","Replacing cloud infrastructure"],ans:0},
+  // SA4
+  {sa:4,q:"Which Cisco command verifies interface status?",opts:["show version","show running-config","show vlan brief","show ip interface brief"],ans:3},
+  {sa:4,q:"Which device forwards packets between networks based on IP addresses?",opts:["Router","Hub","Firewall","Switch"],ans:0},
+  {sa:4,q:"Which IP protocol provides connectionless service?",opts:["HTTP","TCP","UDP","ICMP"],ans:2},
+  {sa:4,q:"Which IPv4 address class supports 16 million hosts?",opts:["Class C","Class D","Class A","Class B"],ans:2},
+  {sa:4,q:"Which IPv4 address block is reserved for APIPA?",opts:["172.16.0.0/12","169.254.0.0/16","10.0.0.0/8","192.168.0.0/16"],ans:1},
+  {sa:4,q:"Which protocol is used for retrieving email?",opts:["SNMP","SMTP","FTP","IMAP"],ans:3},
+  {sa:4,q:"Which protocol is used for exchanging routing information between ISPs?",opts:["EIGRP","OSPF","BGP","RIP"],ans:2},
+  {sa:4,q:"Which protocol enables file transfers between network devices?",opts:["NTP","SMTP","FTP","SNMP"],ans:2},
+  {sa:4,q:"Which term describes a network that spans a single building?",opts:["LAN","WAN","MAN","Internet"],ans:0},
+  {sa:4,q:"Which IPv4 address is reserved for loopback testing?",opts:["224.0.0.1","10.0.0.1","127.0.0.1","192.168.1.1"],ans:2},
+  {sa:4,q:"Which protocol is used to translate human-readable names to IP addresses?",opts:["NTP","SNMP","DHCP","DNS"],ans:3},
+  {sa:4,q:"Which frequency band is used by 802.11b Wi-Fi?",opts:["2.4 GHz","60 GHz","900 MHz","5 GHz"],ans:0},
+  {sa:4,q:"What is the purpose of a default gateway?",opts:["To filter traffic","To forward traffic to remote networks","To provide DNS resolution","To assign IP addresses"],ans:1},
+  {sa:4,q:"Which IPv6 address is automatically assigned to interfaces?",opts:["Unique Local","Multicast","Link Local","Anycast"],ans:2},
+  {sa:4,q:"Which routing protocol uses link-state advertisements?",opts:["EIGRP","BGP","OSPF","RIP"],ans:2},
+  {sa:4,q:"Which protocol is used for sending email?",opts:["IMAP","SNMP","POP3","SMTP"],ans:3},
+  {sa:4,q:"What is the primary purpose of a VLAN?",opts:["Compress data","Segment networks logically","Encrypt traffic","Authenticate users"],ans:1},
+  {sa:4,q:"Which organization assigns IP addresses globally?",opts:["IEEE","ITU","IANA","Cisco"],ans:2},
+  {sa:4,q:"Which IP class supports up to 254 hosts per network?",opts:["Class D","Class C","Class A","Class B"],ans:1},
+  {sa:4,q:"Which wireless security protocol is considered most secure?",opts:["WPA","WPA2","None","WEP"],ans:1},
+  {sa:4,q:"Which cable type uses RJ-45 connectors?",opts:["Coaxial","Fiber optic","Twisted pair","Serial"],ans:2},
+  {sa:4,q:"What is the primary function of ARP?",opts:["Assign IP addresses automatically","Resolve IP addresses to MAC addresses","Encrypt network traffic","Resolve hostnames to IP addresses"],ans:1},
+  {sa:4,q:"Which layer of the OSI model defines cable types and connectors?",opts:["Transport","Network","Physical","Data Link"],ans:2},
+  {sa:4,q:"Which type of IPv6 address begins with FE80?",opts:["Unique Local","Anycast","Multicast","Link Local"],ans:3},
+  {sa:4,q:"Which protocol is primarily used for secure network device management?",opts:["SMTP","Telnet","FTP","SSH"],ans:3},
+  {sa:4,q:"Which Cisco security tool provides sandboxing for suspicious files?",opts:["Umbrella","Meraki","ISE","AMP"],ans:3},
+  {sa:4,q:"Cisco Webex Teams provides:",opts:["Messaging and meetings","Router provisioning","Compute virtualization","Malware scanning"],ans:0},
+  {sa:4,q:"In SD-WAN, which component authenticates new devices?",opts:["vManage","vSmart","UCS Manager","vBond"],ans:3},
+  {sa:4,q:"Cisco ISE provides:",opts:["WAN monitoring","Malware analysis","Cloud file storage","Policy-based access control"],ans:3},
+  {sa:4,q:"Which feature allows adding buttons or widgets to Webex Touch 10?",opts:["Cobra SDK","UI Extensions","xAPI only","UCS Profiles"],ans:1},
+  {sa:4,q:"Cisco NSO uses which modeling language?",opts:["OpenAPI","JSON Schema","YANG","XML"],ans:2},
+  {sa:4,q:"Which Umbrella API provides threat intelligence lookups?",opts:["Enforcement API","Devices API","Reporting API","Investigate API"],ans:3},
+  {sa:4,q:"Which UCS API method retrieves objects by Distinguished Name (DN)?",opts:["queryDN","aaaLogin","configResolveDn","configScope"],ans:2},
+  {sa:4,q:"Cisco UCS Director provides which feature for users?",opts:["Intersight Ansible","UI Extensions","API Inspector","Self-service catalog"],ans:3},
+  {sa:4,q:"Which UCS API method is used for authentication?",opts:["netconf-yang","aaaLogin","configResolveClass","configConfMo"],ans:1},
+  {sa:4,q:"Cisco UCS is described as:",opts:["Hyperconverged infrastructure","Malware protection","WAN monitoring system","Collaboration-only"],ans:0},
+  {sa:4,q:"AXL in Unified CM is based on:",opts:["REST","SOAP/XML","NETCONF","GraphQL"],ans:1},
+  {sa:4,q:"Cisco Finesse is a:",opts:["UCS automation toolkit","Browser-based contact center desktop","Security platform","SD-WAN orchestrator"],ans:1},
+  {sa:4,q:"Which of the following is NOT a Cisco DevNet technology center?",opts:["Security","Collaboration","Cloud","Gaming"],ans:3},
+  {sa:4,q:"Cisco ACI can extend fabric to AWS or Azure using:",opts:["Meraki Dashboard","UCS Central","DNA Center","Multi-Site Orchestrator"],ans:3},
+  {sa:4,q:"What Cisco APIC feature lets you view API messages generated by the GUI?",opts:["Command Inspector","REST Analyzer","Policy Viewer","API Inspector"],ans:3},
+  {sa:4,q:"Which API in DNA Center allows automation of services and functions?",opts:["Cobra SDK","UDS","Intent API","xAPI"],ans:2},
+  {sa:4,q:"RESTCONF is easier to learn for engineers with experience in which technology?",opts:["REST APIs","Python SDKs","NETCONF","CLI"],ans:0},
+  {sa:4,q:"Which Cisco platform provides centralized management and analytics for enterprises?",opts:["DNA Center","Webex","UCS","ACI"],ans:0},
+  {sa:4,q:"Which protocol is most commonly used with YANG models?",opts:["RESTCONF","CLI","SNMP","NETCONF"],ans:3},
+  {sa:4,q:"What does SDK stand for?",opts:["System Deployment Kit","Secure Data Kernel","Software Development Kit","Server Development Key"],ans:2},
+  {sa:4,q:"Which operating system runs on Nexus switches?",opts:["IOS XR","IOS XE","NX-OS","Linux only"],ans:2},
+  {sa:4,q:"Which Cisco solution provides cloud-managed networking with wireless, switching, and security?",opts:["UCS","Meraki","ACI","NSO"],ans:1},
+  {sa:4,q:"UDS API in Unified CM is:",opts:["SOAP-based","CLI-only","REST-based","NETCONF-based"],ans:2},
+  {sa:4,q:"Which Cisco platform exposes an Intent API?",opts:["Meraki","ISE","UCS","DNA Center"],ans:3},
 ];
 
-let pool=[],idx=0,answers=[],selCount=10;
-let multiSelected=new Set();
-const KEYS=['A','B','C','D'];
+let pool=[],idx=0,answers=[],selCount=20,currentSASet=-1;
 
 function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
 function toggleCb(id){const c=document.getElementById(id);c.checked=!c.checked;}
-function setCount(btn,v){document.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selCount=v;}
 function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 
-function renderReview(){
-  const q=(document.getElementById('searchInput').value||'').toLowerCase();
-  const filtered=QS.filter(item=>(item.q+item.opts.join('')+(item.expl||'')).toLowerCase().includes(q));
-  document.getElementById('revCount').textContent=`Showing ${filtered.length} of ${QS.length} questions`;
-  document.getElementById('revList').innerHTML=filtered.map(item=>{
-    const n=QS.indexOf(item)+1;
-    const ansArr=item.multi?item.ans:[item.ans];
-    return `<div class="ritem">
-      <div class="ritem-head"><div class="qnum">${n}</div><div>
-        ${item.multi?'<div class="multi-pill">Multi-select</div>':''}
-        <div class="rqtext">${item.q}</div>
-      </div></div>
-      <div class="ropts">${item.opts.map((o,i)=>`<div class="ropt ${ansArr.includes(i)?'correct':''}"><span class="key">${KEYS[i]}.</span>${o}</div>`).join('')}</div>
-      ${item.expl?`<div class="rexpl"><strong>Explanation:</strong> ${item.expl}</div>`:''}
-    </div>`;
-  }).join('');
+function launchAll(){
+  currentSASet=-1;
+  document.getElementById('setupTitle').textContent='Mixed Quiz Settings';
+  document.getElementById('setupHeadline').textContent='Full Mixed Quiz';
+  document.getElementById('setupDesc').textContent='All 200 questions from SA1–SA4 shuffled together.';
+  buildCountGrid(200,[10,20,50,100,200]);
+  showPage('quiz-setup');
 }
-
+function launchSA(saIdx){
+  currentSASet=saIdx;
+  const count=ALL_Q.filter(q=>q.sa===saIdx+1).length;
+  document.getElementById('setupTitle').textContent=`${SA_LABELS[saIdx]} Quiz Settings`;
+  document.getElementById('setupHeadline').textContent=`${SA_LABELS[saIdx]}: ${SA_NAMES[saIdx]}`;
+  document.getElementById('setupDesc').textContent=`${count} questions from this topic.`;
+  buildCountGrid(count,[10,20,count]);
+  showPage('quiz-setup');
+}
+function buildCountGrid(max,options){
+  const grid=document.getElementById('countGrid');
+  const unique=[...new Set(options.filter(v=>v<=max))];
+  grid.innerHTML=unique.map((v,i)=>`<button class="cbtn ${i===0?'active':''}" onclick="setCount(this,${v})">${v===max?'All '+v:v}</button>`).join('');
+  selCount=unique[0];
+}
+function setCount(btn,v){document.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selCount=v;}
 function startQuiz(){
   const sQ=document.getElementById('shuffleQ').checked,sA=document.getElementById('shuffleA').checked;
-  let p=sQ?shuffle(QS):[...QS];
+  let src=currentSASet===-1?ALL_Q:ALL_Q.filter(q=>q.sa===currentSASet+1);
+  let p=sQ?shuffle(src):[...src];
   p=p.slice(0,Math.min(selCount,p.length));
   pool=p.map(item=>{
-    if(sA){
-      const ansArr=item.multi?item.ans:[item.ans];
-      const paired=item.opts.map((o,i)=>({t:o,a:ansArr.includes(i)}));
-      const sh=shuffle(paired);
-      const newAns=sh.map((x,i)=>x.a?i:-1).filter(i=>i>=0);
-      return{...item,opts:sh.map(x=>x.t),ans:item.multi?newAns:newAns[0]};
-    }
+    if(sA){const paired=item.opts.map((o,i)=>({t:o,a:i===item.ans}));const sh=shuffle(paired);return{...item,opts:sh.map(x=>x.t),ans:sh.findIndex(x=>x.a)};}
     return{...item};
   });
-  idx=0;answers=[];
-  showPage('quiz');renderQ();
+  idx=0;answers=[];showPage('quiz');renderQ();
 }
+
+let revSAFilter=-1;
+function renderReview(){
+  const q=(document.getElementById('searchInput').value||'').toLowerCase();
+  const filtered=ALL_Q.filter(item=>{
+    const matchSA=revSAFilter===-1||item.sa===revSAFilter;
+    const matchQ=(item.q+item.opts.join('')).toLowerCase().includes(q);
+    return matchSA&&matchQ;
+  });
+  document.getElementById('revCount').textContent=`Showing ${filtered.length} of ${ALL_Q.length} questions`;
+  document.getElementById('revList').innerHTML=filtered.map(item=>{
+    return `<div class="ritem"><div class="ritem-head"><div class="qnum">${ALL_Q.indexOf(item)+1}</div><div><div class="sa-tag">${SA_LABELS[item.sa-1]}</div><div class="rqtext">${item.q}</div></div></div><div class="ropts">${item.opts.map((o,i)=>`<div class="ropt ${i===item.ans?'correct':''}"><span class="key">${KEYS[i]}.</span>${o}</div>`).join('')}</div></div>`;
+  }).join('');
+}
+function buildSAFilter(){
+  const cont=document.getElementById('saFilter');
+  cont.innerHTML=['All',...SA_LABELS].map((lbl,i)=>`<button class="ff-btn ${i===0?'active':''}" onclick="setRevSA(${i-1},this)">${lbl}</button>`).join('');
+}
+function setRevSA(sa,btn){revSAFilter=sa;document.querySelectorAll('.ff-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderReview();}
 
 function renderQ(){
   const tot=pool.length;
   document.getElementById('progFill').style.width=((idx/tot)*100)+'%';
   document.getElementById('progText').textContent=`${idx+1} / ${tot}`;
   const item=pool[idx];
-  const isMulti=item.multi===true;
-  document.getElementById('qLabel').innerHTML=`Question ${idx+1}${isMulti?' <span class="multi-badge">Multi-select</span>':''}`;
+  document.getElementById('qLabel').innerHTML=`Question ${idx+1} <span class="q-sa-tag">${SA_LABELS[item.sa-1]}</span>`;
   document.getElementById('qText').textContent=item.q;
   document.getElementById('feedback').className='feedback';
-  document.getElementById('fbCorrect').style.display='none';
   document.getElementById('qActions').style.display='none';
-  multiSelected=new Set();
-  if(isMulti) renderMulti(item);
-  else renderSingle(item);
+  document.getElementById('questionArea').innerHTML=`<div class="opts-list">${item.opts.map((o,i)=>`<button class="opt" onclick="pick(${i})"><div class="opt-key">${KEYS[i]}</div><div class="opt-txt">${o}</div></button>`).join('')}</div>`;
 }
-
-function renderSingle(item){
-  document.getElementById('questionArea').innerHTML=`<div class="opts-list">${item.opts.map((o,i)=>`<button class="opt" onclick="pickSingle(${i})"><div class="opt-key">${KEYS[i]}</div><div class="opt-txt">${o}</div></button>`).join('')}</div>`;
-}
-function pickSingle(i){
+function pick(i){
   const item=pool[idx];const btns=document.querySelectorAll('.opt');if(btns[0].disabled)return;
   btns.forEach(b=>b.disabled=true);const ok=i===item.ans;
-  answers.push({qIdx:idx,chosen:[i],correct:ok,item});
+  answers.push({qIdx:idx,chosen:i,correct:ok,item});
   btns[i].classList.add(ok?'correct':'wrong');
   if(!ok)btns[item.ans].classList.add('correct');
-  showFB(ok,null,item.expl||'');
-}
-
-function renderMulti(item){
-  const count=item.ans.length;
-  document.getElementById('questionArea').innerHTML=`
-    <div class="multi-hint">Select ${count} answer${count>1?'s':''}. Click all that apply, then click "Check answers".</div>
-    <div class="opts-list">${item.opts.map((o,i)=>`<button class="opt" id="mopt${i}" onclick="toggleMulti(${i})"><div class="opt-key">${KEYS[i]}</div><div class="opt-txt">${o}</div></button>`).join('')}</div>
-    <button class="multi-submit" id="multiSub" onclick="submitMulti()" disabled>Check answers</button>`;
-}
-function toggleMulti(i){
-  const item=pool[idx];const count=item.ans.length;
-  const btn=document.getElementById('mopt'+i);
-  if(multiSelected.has(i)){multiSelected.delete(i);btn.classList.remove('sel');btn.querySelector('.opt-key').style.background='';btn.querySelector('.opt-key').style.color='';}
-  else{if(multiSelected.size>=count)return;multiSelected.add(i);btn.classList.add('sel');}
-  document.getElementById('multiSub').disabled=multiSelected.size!==count;
-}
-function submitMulti(){
-  const item=pool[idx];const correct=new Set(item.ans);
-  const chosen=[...multiSelected];
-  const ok=chosen.length===correct.size&&chosen.every(i=>correct.has(i));
-  document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
-  document.getElementById('multiSub').disabled=true;
-  chosen.forEach(i=>{const btn=document.getElementById('mopt'+i);btn.classList.remove('sel');btn.classList.add(correct.has(i)?'correct':'wrong');});
-  correct.forEach(i=>{if(!multiSelected.has(i)){const btn=document.getElementById('mopt'+i);btn.classList.add('missed');}});
-  answers.push({qIdx:idx,chosen,correct:ok,item});
-  const corrHtml=ok?null:`Correct: ${item.ans.map(i=>KEYS[i]+'. '+item.opts[i]).join(' & ')}`;
-  showFB(ok,corrHtml,item.expl||'');
-}
-
-function showFB(ok,corrHtml,expl){
-  const fb=document.getElementById('feedback');fb.className='feedback show '+(ok?'correct':'wrong');
-  document.getElementById('fbVerdict').textContent=ok?'✓ Correct!':'✗ Incorrect';
-  const fbc=document.getElementById('fbCorrect');
-  if(corrHtml){fbc.style.display='block';fbc.textContent=corrHtml;}else{fbc.style.display='none';}
-  document.getElementById('fbExpl').textContent=expl;
+  const fb=document.getElementById('feedback');
+  fb.className='feedback show '+(ok?'correct':'wrong');
+  document.getElementById('fbVerdict').textContent=ok?'✓ Correct!':'✗ Incorrect — the correct answer is: '+KEYS[item.ans]+'. '+item.opts[item.ans];
   document.getElementById('qActions').style.display='flex';
-  document.getElementById('nextBtn').textContent=(idx+1>=pool.length)?'See results →':'Next question →';
+  document.getElementById('nextBtn').textContent=(idx+1>=pool.length)?'See results →':'Next →';
 }
-
 function nextQ(){idx++;if(idx>=pool.length)showResults();else{renderQ();window.scrollTo(0,0);}}
-
 function showResults(){
   const tot=pool.length,ok=answers.filter(a=>a.correct).length,pct=Math.round((ok/tot)*100);
   document.getElementById('resPct').textContent=pct+'%';
@@ -514,37 +539,27 @@ function showResults(){
   document.getElementById('resErr').textContent=tot-ok;
   document.getElementById('resTotal').textContent=tot;
   let hl,sub;
-  if(pct>=90){hl='Outstanding!';sub='You have a strong grasp of DevNet Associate concepts.';}
-  else if(pct>=75){hl='Great work!';sub="You're well-prepared — review missed questions to sharpen up.";}
-  else if(pct>=60){hl='Good effort!';sub='Some areas need review. Keep studying!';}
-  else{hl='Keep practicing!';sub='Review the explanations carefully and try again.';}
+  if(pct>=90){hl='Outstanding!';sub='Excellent grasp of DevNet concepts.';}
+  else if(pct>=75){hl='Great work!';sub='Review the missed questions to sharpen up.';}
+  else if(pct>=60){hl='Good effort!';sub='Some areas need review. Keep going!';}
+  else{hl='Keep practicing!';sub='Review the topics and try again.';}
   document.getElementById('resHL').textContent=hl;
   document.getElementById('resSub').textContent=sub;
   const missed=answers.filter(a=>!a.correct);
   document.getElementById('retryBtn').style.display=missed.length?'':'none';
   document.getElementById('missedSection').innerHTML=missed.length
-    ?`<div class="missed-title">Questions to Review (${missed.length})</div>`+missed.map(a=>{
-        const item=a.item;
-        const ansArr=item.multi?item.ans:[item.ans];
-        const your=a.chosen.map(i=>KEYS[i]+'. '+item.opts[i]).join(', ');
-        const right=ansArr.map(i=>KEYS[i]+'. '+item.opts[i]).join(', ');
-        return `<div class="mcard">
-          <div class="mq">${item.q}</div>
-          <div class="myour">✗ Your answer: ${your}</div>
-          <div class="mright">✓ Correct answer: ${right}</div>
-          ${item.expl?`<div class="mexpl">${item.expl}</div>`:''}
-        </div>`;
-      }).join('')
-    :`<p style="color:var(--t2);font-size:14px;text-align:center;padding:20px 0">Perfect score — no questions to review! 🎉</p>`;
+    ?`<div class="missed-title">Questions to Review (${missed.length})</div>`+missed.map(a=>{const item=a.item;return `<div class="mcard"><div style="font-size:10px;font-weight:700;color:var(--t3);margin-bottom:6px;text-transform:uppercase">${SA_LABELS[item.sa-1]}</div><div class="mq">${item.q}</div><div class="myour">✗ Your answer: ${KEYS[a.chosen]}. ${item.opts[a.chosen]}</div><div class="mright">✓ Correct: ${KEYS[item.ans]}. ${item.opts[item.ans]}</div></div>`;}).join('')
+    :`<p style="color:var(--t2);font-size:14px;text-align:center;padding:20px 0">Perfect score! 🎉</p>`;
   showPage('results');
 }
-
 function retryMissed(){
   const missed=answers.filter(a=>!a.correct);
-  pool=missed.map(a=>pool[a.qIdx]);
-  idx=0;answers=[];
-  showPage('quiz');renderQ();
+  pool=missed.map(a=>a.item);
+  idx=0;answers=[];showPage('quiz');renderQ();
 }
+
+buildSAFilter();
+renderReview();
 </script>
 </body>
 </html>
