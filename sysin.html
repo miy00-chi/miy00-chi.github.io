@@ -138,6 +138,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .rbtn{padding:12px;border-radius:var(--rs);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .15s;border:1.5px solid var(--border);background:var(--surface);color:var(--t2)}
 .rbtn:hover{border-color:var(--accent);color:var(--accent)}.rbtn.acc{background:var(--accent);color:#fff;border-color:var(--accent)}.rbtn.acc:hover{opacity:.9}
 
+
 /* accent2 tag variant */
 .fa-badge.v2{background:rgba(142,151,125,.2);color:#4a5242}
 .fa-badge.v3{background:rgba(219,206,165,.5);color:#5a4a20}
@@ -160,6 +161,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="all-card" onclick="launchAll()">
       <div class="all-card-left"><h3>Take Full Mixed Quiz</h3><p id="allCount">All questions shuffled together</p></div>
       <div class="all-card-arr">→</div>
+    </div>
+
+    <div class="all-card" style="background:var(--surface);border:1px solid var(--border)" onclick="showPage('review');renderReview()">
+      <div class="all-card-left"><h3 style="color:var(--text)">Question Reviewer</h3><p style="color:var(--t2)">Browse all Q&amp;As with search &amp; filter</p></div>
+      <div class="all-card-arr" style="color:var(--t3)">📖</div>
     </div>
 
     <div class="fa-cards">
@@ -285,9 +291,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
     <div class="res-btns">
       <button class="rbtn" onclick="showPage('home')">← Home</button>
-      <button class="rbtn" onclick="showPage('quiz-setup')">New quiz</button>
+      <button class="rbtn" onclick="newQuiz()">New quiz</button>
       <button class="rbtn" id="retryBtn" onclick="retryMissed()">Retry missed</button>
       <button class="rbtn acc" onclick="showPage('review');renderReview()">Review all</button>
+    </div>
+    <div id="continueWrap" style="display:none;margin-bottom:16px">
+      <button class="start-btn" style="background:var(--accent2)" onclick="continueQuiz()">Continue — <span id="continueCount"></span> unseen questions →</button>
     </div>
     <div id="missedSection"></div>
   </div></div>
@@ -780,7 +789,13 @@ const FA_NAMES = [
 ];
 
 let pool=[],idx=0,answers=[],selCount=20,currentFASet=-1;
+// seenIndices: tracks FA indices of questions already shown, keyed by scope key
+// key = "all" or "fa0".."fa6"
+let seenMap={};   // e.g. { "fa0": Set([0,3,7,...]) }
+let lastScopeKey='';
 const KEYS=['A','B','C','D','E','F'];
+
+function getScopeKey(){return currentFASet===-1?'all':'fa'+currentFASet;}
 
 function initCounts(){
   FA_LABELS.forEach((_,i)=>{
@@ -826,21 +841,59 @@ function buildCountGrid(max,options){
 
 function setCount(btn,v){document.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selCount=v;}
 
-function startQuiz(){
-  const sQ=document.getElementById('shuffleQ').checked,sA=document.getElementById('shuffleA').checked;
-  let src=currentFASet===-1?FA:FA.filter(q=>q.fa===currentFASet+1);
-  let p=sQ?shuffle(src):[...src];
-  p=p.slice(0,Math.min(selCount,p.length));
-  pool=p.map(item=>{
-    if(sA){
+function getSourcePool(){
+  return currentFASet===-1?FA:FA.filter(q=>q.fa===currentFASet+1);
+}
+
+function buildPool(src, count, shuffleQ, shuffleA){
+  let p=shuffleQ?shuffle(src):[...src];
+  p=p.slice(0,Math.min(count,p.length));
+  return p.map(item=>{
+    if(shuffleA){
       const paired=item.opts.map((o,i)=>({t:o,a:i===item.ans}));
       const sh=shuffle(paired);
       return{...item,opts:sh.map(x=>x.t),ans:sh.findIndex(x=>x.a)};
     }
     return{...item};
   });
+}
+
+function startQuiz(){
+  const sQ=document.getElementById('shuffleQ').checked,sA=document.getElementById('shuffleA').checked;
+  const key=getScopeKey();
+  lastScopeKey=key;
+  // Reset seen for this scope (New quiz always starts fresh)
+  seenMap[key]=new Set();
+  const src=getSourcePool();
+  // Mark all as unseen, pick selCount
+  const chosen=sQ?shuffle([...src]):[...src];
+  const picked=chosen.slice(0,Math.min(selCount,chosen.length));
+  picked.forEach(item=>seenMap[key].add(FA.indexOf(item)));
+  pool=buildPool(picked,picked.length,false,sA);
   idx=0;answers=[];
   showPage('quiz');renderQ();
+}
+
+function continueQuiz(){
+  const sA=document.getElementById('shuffleA').checked;
+  const key=lastScopeKey;
+  if(!seenMap[key]) seenMap[key]=new Set();
+  const src=getSourcePool();
+  // Get unseen items
+  const unseen=src.filter(item=>!seenMap[key].has(FA.indexOf(item)));
+  const toTake=Math.min(selCount,unseen.length);
+  const chosen=shuffle(unseen).slice(0,toTake);
+  chosen.forEach(item=>seenMap[key].add(FA.indexOf(item)));
+  pool=buildPool(chosen,chosen.length,false,sA);
+  idx=0;answers=[];
+  showPage('quiz');renderQ();
+}
+
+function newQuiz(){
+  // Reset seen for current scope and go back to setup
+  const key=getScopeKey();
+  seenMap[key]=new Set();
+  showPage('quiz-setup');
 }
 
 // REVIEW
@@ -866,12 +919,12 @@ function renderReview(){
 
 function buildFAFilter(){
   const cont=document.getElementById('faFilter');
-  cont.innerHTML=['All',...FA_LABELS].map((lbl,i)=>`<button class="ff-btn ${i===0?'active':''}" onclick="setRevFA(${i-1},this)">${lbl}</button>`).join('');
+  cont.innerHTML=['All',...FA_LABELS].map((lbl,i)=>`<button class="ff-btn ${i===0?'active':''}" onclick="setRevFA(${i===0?-1:i},this)">${lbl}</button>`).join('');
 }
 
 function setRevFA(fa,btn){
   revFAFilter=fa;
-  document.querySelectorAll('.ff-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('#faFilter .ff-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   renderReview();
 }
@@ -920,6 +973,17 @@ function showResults(){
   document.getElementById('resSub').textContent=sub;
   const missed=answers.filter(a=>!a.correct);
   document.getElementById('retryBtn').style.display=missed.length?'':'none';
+  // Show "Continue" button if there are unseen questions remaining
+  const key=lastScopeKey;
+  const src=getSourcePool();
+  const unseenCount=src.filter(item=>!seenMap[key]||!seenMap[key].has(FA.indexOf(item))).length;
+  const contWrap=document.getElementById('continueWrap');
+  if(unseenCount>0){
+    contWrap.style.display='block';
+    document.getElementById('continueCount').textContent=unseenCount;
+  } else {
+    contWrap.style.display='none';
+  }
   document.getElementById('missedSection').innerHTML=missed.length
     ?`<div class="missed-title">Questions to Review (${missed.length})</div>`+missed.map(a=>{
         const item=a.item;
